@@ -380,7 +380,7 @@ export const fetchTasksInformation = createAsyncThunk(
             user: newUser,
             createNumber : imTwo.data,
             category : order.category.id,
-            subCategory : order.subCategory[0].id
+            subCategory : order.subCategory.id
           });
         }
 
