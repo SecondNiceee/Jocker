@@ -7,6 +7,46 @@
   border: none;
 }
 
+
+
+
+::-webkit-scrollbar {
+  width: 0 !important;
+}
+
+
+::-webkit-scrollbar {
+  display: none !important;
+}
+
+
+
+html::-webkit-scrollbar {
+    display: none !important;
+}
+
+html{
+  scrollbar-width: none !important;
+}
+
+
+body{
+  scrollbar-width: none !important;
+}
+body::-webkit-scrollbar {
+    display: none !important;
+}
+
+
+
+html{
+  scrollbar-width: none;  
+}
+
+body::-webkit-scrollbar {
+  display: none;             /* Chrome, Safari и Opera */
+}
+
 .normail {
   -ms-flex-item-align: center;
       align-self: center;
@@ -15,23 +55,17 @@
 }
 
 .First {
-  position: fixed;
-  overflow: scroll;
-  height: 100vh;
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
-  -webkit-transition: -webkit-transform 0.4s;
-  transition: -webkit-transform 0.4s;
-  transition: transform 0.4s;
-  transition: transform 0.4s, -webkit-transform 0.4s;
-  will-change: transform;
-  overflow-x: hidden;
-  min-width: 100vw;
 }
 
+::-webkit-scrollbar {
+    display: none;
+}
+
+
 .first-container {
-  min-height: 100vh;
   -webkit-transition: 0.4s;
   transition: 0.4s;
   display: -webkit-box;
@@ -54,21 +88,10 @@
 }
 
 .first-wrapper {
-  height: -webkit-max-content;
-  height: -moz-max-content;
-  height: max-content;
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
-  -webkit-transform: translateX(0%);
-      -ms-transform: translateX(0%);
-          transform: translateX(0%);
-  -webkit-transition: -webkit-transform 0.4s;
-  transition: -webkit-transform 0.4s;
-  transition: transform 0.4s;
-  transition: transform 0.4s, -webkit-transform 0.4s;
-  will-change: transform;
-  width: 100vw;
+  width: 100%;
   margin-bottom: 96px;
 }
 
@@ -108,7 +131,7 @@
   width: 100%;
   -webkit-transition: 0.5s;
   transition: 0.5s;
-  min-width: 100vw;
+  min-width: 100%;
 }
 
 .EmptyText {
@@ -156,7 +179,7 @@
 }
 
 .FirstMain {
-  width: calc(100vw - 32px);
+  width: 100%;
   margin-top: 17px;
   display: -webkit-box;
   display: -ms-flexbox;
@@ -269,7 +292,7 @@
      object-fit: cover;
 }
 .First__block .FirstMain__top {
-  margin-top: 17.33px;
+  margin-top: 13.33px;
   padding-left: 17px;
   padding-right: 19px;
   -webkit-box-align: center;
@@ -290,13 +313,14 @@
 }
 .First__block .FirstMain__top p {
   /* Default text */
-  color: rgb(255, 255, 255);
-  font-family: "SF Pro Display";
-  font-size: 14.67px;
-  font-weight: 500;
-  letter-spacing: 0%;
-  text-align: left;
-  max-width: 237px;
+      color: #FFF;
+      font-family: "SF Pro Rounded 600";
+      font-size: 16px;
+      font-style: normal;
+      font-weight: 600;
+      line-height: 19.667px; /* 122.917% */
+      letter-spacing: 0.448px;
+      max-width: 237px;
 }
 .First__block .circle {
   margin-left: auto;
@@ -357,7 +381,7 @@
   -webkit-box-direction: normal;
       -ms-flex-direction: column;
           flex-direction: column;
-  gap: 2px;
+  gap: 2.33px;
 }
 .First__block .FirstMain__bottom-left p {
   /* Default text */
@@ -376,13 +400,12 @@
   gap: 5px;
 }
 .First__block .FirstMain__price-up p {
-  color: rgba(255, 255, 255, 0.5);
+  color: #FFF;
   font-family: "SF Compact Rounded";
-  font-size: 23.33px;
+  font-size: 20.019px;
+  font-style: normal;
   font-weight: 500;
-  line-height: 28px;
-  letter-spacing: 0%;
-  text-align: left;
+  line-height: normal;
 }
 .First__block .FirstMain__price-up {
   opacity: 1;
@@ -395,14 +418,13 @@
           align-items: center;
 }
 .First__block .FirstMain__price-up p {
-  color: rgb(255, 255, 255);
+  color: #FFF;
   font-family: "SF Compact Rounded";
-  font-size: 23.33px;
+  font-size: 20.019px;
+  font-style: normal;
   font-weight: 500;
-  line-height: 28px;
-  letter-spacing: 0%;
-  text-align: left;
-}
+  line-height: normal;
+  }
 .First__block .FirstMain__price-up img {
   width: 21.67px;
   height: 21.67px;
@@ -512,7 +534,7 @@
   padding-bottom: 27px;
   will-change: transform;
   background-color: #20303F;
-  z-index: 11000;
+  z-index: 99999999;
   position: fixed;
   bottom: 0px;
   width: 100vw;
@@ -829,11 +851,8 @@
   }
 }
 .TaskDetails {
-  min-height: 100vh;
-  height: 100vh;
-  min-width: 100vw;
+  min-width: 100%;
   top: 0;
-  overflow-y: scroll;
   z-index: 1000;
   width: 100%;
   background: rgb(24, 34, 45);
@@ -846,8 +865,7 @@
   -webkit-transform: translateX(100%);
       -ms-transform: translateX(100%);
           transform: translateX(100%);
-  position: fixed;
-  padding-bottom: 74px;
+  padding-bottom: 16px;
 }
 .TaskDetails.active {
   -webkit-transform: translateX(0%);
@@ -1400,12 +1418,12 @@
             transform: translateX(0%);
   }
   50% {
-    -webkit-transform: translateX(calc(-100vw - 10px));
-            transform: translateX(calc(-100vw - 10px));
+    -webkit-transform: translateX(calc(-100% - 10px));
+            transform: translateX(calc(-100% - 10px));
   }
   100% {
-    -webkit-transform: translateX(-100vw);
-            transform: translateX(-100vw);
+    -webkit-transform: translateX(-100%);
+            transform: translateX(-100%);
   }
 }
 @keyframes stepOne {
@@ -1414,46 +1432,46 @@
             transform: translateX(0%);
   }
   50% {
-    -webkit-transform: translateX(calc(-100vw - 10px));
-            transform: translateX(calc(-100vw - 10px));
+    -webkit-transform: translateX(calc(-100% - 10px));
+            transform: translateX(calc(-100% - 10px));
   }
   100% {
-    -webkit-transform: translateX(-100vw);
-            transform: translateX(-100vw);
+    -webkit-transform: translateX(-100%);
+            transform: translateX(-100%);
   }
 }
 @-webkit-keyframes stepTwo {
   0% {
-    -webkit-transform: translateX(-100vw);
-            transform: translateX(-100vw);
+    -webkit-transform: translateX(-100%);
+            transform: translateX(-100%);
   }
   50% {
-    -webkit-transform: translateX(calc(-200vw - 10px));
-            transform: translateX(calc(-200vw - 10px));
+    -webkit-transform: translateX(calc(-200% - 10px));
+            transform: translateX(calc(-200% - 10px));
   }
   100% {
-    -webkit-transform: translateX(-200vw);
-            transform: translateX(-200vw);
+    -webkit-transform: translateX(-200%);
+            transform: translateX(-200%);
   }
 }
 @keyframes stepTwo {
   0% {
-    -webkit-transform: translateX(-100vw);
-            transform: translateX(-100vw);
+    -webkit-transform: translateX(-100%);
+            transform: translateX(-100%);
   }
   50% {
-    -webkit-transform: translateX(calc(-200vw - 10px));
-            transform: translateX(calc(-200vw - 10px));
+    -webkit-transform: translateX(calc(-200% - 10px));
+            transform: translateX(calc(-200% - 10px));
   }
   100% {
-    -webkit-transform: translateX(-200vw);
-            transform: translateX(-200vw);
+    -webkit-transform: translateX(-200%);
+            transform: translateX(-200%);
   }
 }
 @-webkit-keyframes oneBack {
   0% {
-    -webkit-transform: translateX(-100vw);
-            transform: translateX(-100vw);
+    -webkit-transform: translateX(-100%);
+            transform: translateX(-100%);
   }
   50% {
     -webkit-transform: translateX(10px);
@@ -1466,8 +1484,8 @@
 }
 @keyframes oneBack {
   0% {
-    -webkit-transform: translateX(-100vw);
-            transform: translateX(-100vw);
+    -webkit-transform: translateX(-100%);
+            transform: translateX(-100%);
   }
   50% {
     -webkit-transform: translateX(10px);
@@ -1480,30 +1498,30 @@
 }
 @-webkit-keyframes twoBack {
   0% {
-    -webkit-transform: translateX(-200vw);
-            transform: translateX(-200vw);
+    -webkit-transform: translateX(-200%);
+            transform: translateX(-200%);
   }
   50% {
-    -webkit-transform: translateX(calc(-100vw + 10px));
-            transform: translateX(calc(-100vw + 10px));
+    -webkit-transform: translateX(calc(-100% + 10px));
+            transform: translateX(calc(-100% + 10px));
   }
   100% {
-    -webkit-transform: translateX(-100vw);
-            transform: translateX(-100vw);
+    -webkit-transform: translateX(-100%);
+            transform: translateX(-100%);
   }
 }
 @keyframes twoBack {
   0% {
-    -webkit-transform: translateX(-200vw);
-            transform: translateX(-200vw);
+    -webkit-transform: translateX(-200%);
+            transform: translateX(-200%);
   }
   50% {
-    -webkit-transform: translateX(calc(-100vw + 10px));
-            transform: translateX(calc(-100vw + 10px));
+    -webkit-transform: translateX(calc(-100% + 10px));
+            transform: translateX(calc(-100% + 10px));
   }
   100% {
-    -webkit-transform: translateX(-100vw);
-            transform: translateX(-100vw);
+    -webkit-transform: translateX(-100%);
+            transform: translateX(-100%);
   }
 }
 .twoBack {
@@ -1788,12 +1806,11 @@
 }
 
 .adCreatingThree-wrapper {
-  min-width: 100vw;
+  min-width: 100%;
 }
 
 .AdCreating__container {
   padding-bottom: 76px;
-  min-height: 100vh;
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
@@ -1804,13 +1821,14 @@
   -webkit-transform: translateY(100%);
       -ms-transform: translateY(100%);
           transform: translateY(100%);
-  z-index: 200;
+  z-index: 100000 !important;
 }
 
 .Modal-Portal .datepicker-modal {
   position: fixed;
   top: 0;
   height: 100vh;
+  z-index: 100000;
   z-index: -1;
   overflow-y: hidden;
   background-color: unset;
@@ -1860,6 +1878,19 @@ input {
 .profile__container .pofile__icon {
   width: 94px;
   height: 94px;
+}
+.urName{  
+  color: rgb(255, 255, 255);
+  font-family: "SF Compact Rounded";
+  font-size: 23.33px;
+  font-weight: 500;
+  line-height: 28px;
+  letter-spacing: 0%;
+  text-align: left;
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: 18.33px;
+  text-align: center;
 }
 .profile__container .urName {
   color: rgb(255, 255, 255);
@@ -2789,7 +2820,6 @@ input {
           transform: translateX(-50%) translateY(-50%);
 }
 .MyAdsContainer .AdCreatingMy {
-  position: fixed;
   width: 100%;
   background: rgb(24, 34, 45);
   display: -webkit-box;
@@ -2807,7 +2837,6 @@ input {
   -webkit-transform: translateX(100%);
       -ms-transform: translateX(100%);
           transform: translateX(100%);
-  min-height: 100vh;
   padding-bottom: 20px;
 }
 .MyAdsContainer .new-textarea {
@@ -3100,7 +3129,7 @@ input {
 .PickerContent {
   will-change: transform;
   position: static;
-  min-width: 200vw;
+  min-width: calc(200% + 64px);
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
@@ -3131,7 +3160,9 @@ input {
   -webkit-box-pack: center;
       -ms-flex-pack: center;
           justify-content: center;
-  width: calc(100vw - 32px);
+  width: calc(100% - 32px);
+  margin-left: auto;
+  margin-right: auto;
 }
 
 .animation-text {
@@ -3164,21 +3195,12 @@ input {
 }
 
 .responce-wrapper {
-  min-width: 100vw;
-  width: 100vw;
-  padding-bottom: 60px;
+  padding-bottom: 16px;
   padding-top: 18px;
   padding-left: 16px;
   padding-right: 16px;
-  position: fixed;
-  left: 100vw;
-  height: 100vh;
   top: 0;
   overflow-y: auto;
-  -webkit-transform: translateX(100%);
-      -ms-transform: translateX(100%);
-          transform: translateX(100%);
-  z-index: 100000;
   -webkit-transition: 0.4s;
   transition: 0.4s;
   background-color: #18222d;
@@ -3522,19 +3544,10 @@ input {
   margin: 0px;
 }
 
-html {
-  position: absolute;
-  overflow: hidden;
-  left: 0;
-  top: 0;
-  right: 0;
-  bottom: 0;
-}
 
 body {
   width: 100%;
   height: auto;
-  overflow: hidden;
   background: rgb(24, 34, 45);
 }
 
@@ -3559,6 +3572,9 @@ body {
   -webkit-transition: 0.5s;
   transition: 0.5s;
   height: auto;
+  max-width: 500px;
+  margin-left: auto;
+  margin-right: auto;
   overflow-x: hidden;
   position: relative;
 }

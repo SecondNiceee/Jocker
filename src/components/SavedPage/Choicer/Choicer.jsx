@@ -4,6 +4,8 @@ import cl from "./Choicer.module.css";
 import ChoicerInfo from "./ChoicerInfo";
 import { useSelector } from "react-redux";
 import translation from "../../../functions/translate";
+import useSlider from "../../../hooks/useSlider";
+import CssTransitionSlider from "../../UI/PhotosSlider/CssTransitionSlider";
 const Choicer = ({ nowKey, keys, setDetails, setResponce, setCard }) => {
   const savedTasks = useSelector((state) => state.saves.tasks);
   const savedResponces = useSelector((state) => state.saves.responces);
@@ -42,7 +44,6 @@ const Choicer = ({ nowKey, keys, setDetails, setResponce, setCard }) => {
         }
       }
 
-
       return () => {
 
       }
@@ -70,9 +71,24 @@ const Choicer = ({ nowKey, keys, setDetails, setResponce, setCard }) => {
   }, [keys, nowKey]);
 
   
+      const {
+        isSliderOpened,
+        photoIndex,
+        photos,
+        setPhotoIndex,
+        setPhotos,
+        setSlideOpened,
+      } = useSlider();
+
+
   return (
+    <>
+
     <div ref={pickerRef} style={style} className={cl.main}>
       <ChoicerInfo
+        setPhotos = {setPhotos}
+        setPhotoIndex = {setPhotoIndex}
+        setSlideOpened = {setSlideOpened}
         nowKey = {nowKey}
         viewsNumber={viewsNumber}
         setViewsNumber={setViewsNumber}
@@ -83,6 +99,9 @@ const Choicer = ({ nowKey, keys, setDetails, setResponce, setCard }) => {
         text={textOne}
       />
       <ChoicerInfo
+      setPhotos = {setPhotos}
+      setPhotoIndex = {setPhotoIndex}
+      setSlideOpened = {setSlideOpened}
       nowKey = {nowKey}
         viewsNumber={viewsNumber}
         setViewsNumber={setViewsNumber}
@@ -93,6 +112,9 @@ const Choicer = ({ nowKey, keys, setDetails, setResponce, setCard }) => {
         text={textTwo}
       />
       <ChoicerInfo
+      setPhotos = {setPhotos}
+      setPhotoIndex = {setPhotoIndex}
+      setSlideOpened = {setSlideOpened}
       nowKey = {nowKey}
         viewsNumber={viewsNumber}
         setViewsNumber={setViewsNumber}
@@ -103,6 +125,20 @@ const Choicer = ({ nowKey, keys, setDetails, setResponce, setCard }) => {
         text={textThree}
       />
     </div>
+
+    <CssTransitionSlider
+          blockerAll={true}
+          blockerId={""}
+          isSliderOpened={isSliderOpened}
+          leftPosition={0}
+          renderMap={photos}
+          setSliderOpened={setSlideOpened}
+          sliderIndex={photoIndex}
+          swiperId={"1"}
+          top={0}
+        />
+
+    </>
   );
 };
 

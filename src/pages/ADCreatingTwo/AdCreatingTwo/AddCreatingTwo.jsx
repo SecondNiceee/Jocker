@@ -1,5 +1,5 @@
 
-import React, { memo, useEffect, useState } from 'react';
+import React, { memo, useCallback, useEffect, useState } from 'react';
 
 import Cap from '../../../components/UI/Cap/Cap';
 import Budget from '../Budget/Budget'
@@ -11,6 +11,8 @@ import cl from './SecondAddCreating.module.css'
 import MainButton from '../../../constants/MainButton';
 import Text from '../../../components/Text/Text';
 import en from '../../../constants/language';
+import { useDispatch } from 'react-redux';
+import { setSecondPage } from '../../../store/taskCreating';
 
 
 // eslint-disable-next-line
@@ -20,10 +22,12 @@ Date.prototype.addHours = function(h) {
 }
 const menu = document.documentElement.querySelector(".FirstMenu")
 
+ // eslint-disable-next-line
 Date.prototype.addHours = function (h) {
   this.setTime(this.getTime() + h * 60 * 60 * 1000);
   return this;
 };
+
 let monthMap;
 if (en){
   monthMap = {
@@ -97,10 +101,16 @@ else{
     },
   };
 }
-const SecondAddCreating = ({taskInformation , setTaskInformation, tonConstant , GreyWidth , GreyIntWidth , errors , whichOne, setWhichOne}) => {
+const SecondAddCreating = ({GreyWidth , GreyIntWidth , errors , whichOne, setWhichOne}) => {
 
+    
+      // const taskInformation = useSelector( (state) => state.taskCreating );
 
+      const dispatch = useDispatch();
 
+      const setTaskInformation = useCallback( (par) => {
+        dispatch(setSecondPage(par))
+      }, [dispatch] )
 
       const [state, setState] = useState({
         time: new Date().addHours(1),
@@ -113,26 +123,24 @@ const SecondAddCreating = ({taskInformation , setTaskInformation, tonConstant , 
         isStartOpen : false,
         isEndOpen : false
       });
+
       function handleSelect(time){
         if (state.isStartOpen){
-
           setState({...state , time : time, isOpen : false, isStartOpen : false, startTime : time })
-          setTaskInformation({...taskInformation , startTime :time })
+          setTaskInformation({ startTime :time })
         }
         if (state.isSingleOpen){
           setState({...state , time : time, isOpen : false, isSingleOpen : false, singleTime : time })
-          setTaskInformation({...taskInformation , singleTime :time })
+          setTaskInformation({singleTime :time })
         }
         if (state.isEndOpen){
           setState({...state , time : time, isOpen : false, isEndOpen : false, endTime : time })
-          setTaskInformation({...taskInformation , endTime :time })
+          setTaskInformation({endTime :time })
         }
       }
       function handleCancel(){
         setState({...state , isOpen : false})
       }
-
-
     let dateObject = document.querySelectorAll('.datepicker-modal')[1]
     let datePickerObject = document.querySelectorAll('.datepicker')[1]
     
@@ -144,9 +152,6 @@ const SecondAddCreating = ({taskInformation , setTaskInformation, tonConstant , 
       datePickerObject.style.transition = '0.3s'
     }
     useEffect( () => {
-
-
-      
     function appear(){
       menu.style.display = "none"
       dateObject.style.zIndex = '100'
@@ -157,46 +162,23 @@ const SecondAddCreating = ({taskInformation , setTaskInformation, tonConstant , 
     }
     function disappear(){
       menu.style.display = "flex"
-
       MainButton.show()
       dateObject.style.backgroundColor = 'unset'
       dateObject.style.display = 'block'
       datePickerObject.style.transform = 'translateY(100%)'
-
-
-      
-
     }
-
-
       if(dateObject && datePickerObject){
-
         if (state.isOpen){
           appear()
-
         }
         else{
           disappear()
-
         }
       }
-      
     } , [state.isOpen , dateObject , datePickerObject] )
-
-
-
-
-
-
-
-
-
-
 
     return (
       <div className = {cl.SecondAddCreating} 
-      
-      style={{minWidth : document.documentElement.clientWidth.toString() + 'px' }}
       >
 
     <DatePicker
@@ -214,12 +196,12 @@ const SecondAddCreating = ({taskInformation , setTaskInformation, tonConstant , 
 
 
             <Cap className={cl.Cap}  step={2} > <Text className = {cl.CapText}> Создайте объявление </Text> </Cap>
-            <Budget errorTon = {errors.ton} taskInformation={taskInformation} setTaskInformation={setTaskInformation}  className={cl.Budget} tonConstant = {tonConstant} />
+            <Budget errorTon = {errors.ton}  className={cl.Budget} />
             <MyDatePicker 
             whichOne={whichOne}
             setWhichOne={setWhichOne}
             errors = {{singleError : errors.singleError , startError : errors.startError, endError : errors.endError }}
-            state={state} setState = {setState} GreyWidth = {GreyWidth} GreyIntWidth={GreyIntWidth} taskInformation={taskInformation} setTaskInformation={setTaskInformation} className={cl.DatePicker} />
+            state={state} setState = {setState} GreyWidth = {GreyWidth} GreyIntWidth={GreyIntWidth} className={cl.DatePicker} />
       </div>
     );
 };

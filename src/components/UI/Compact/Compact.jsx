@@ -5,9 +5,7 @@ const Compact = ({ title, children, className , ...props}) => {
     return (
         <div {...props} className={className ? [cl.compactWrapper , className].join(' ') : cl.compactWrapper}>
             <Text className={cl.compactTitle}>{title}</Text>
-            
                 {children}
-
         </div>
     );
 };

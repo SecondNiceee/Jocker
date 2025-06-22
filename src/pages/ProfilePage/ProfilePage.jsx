@@ -9,13 +9,10 @@ import AboutTop from "../MyAds/components/AboutTop";
 import axios from "axios";
 import ExampleWorks from "../MyAds/components/ExampleWorks";
 import MyLoader from "../../components/UI/MyLoader/MyLoader";
-import makeNewFile from "../../functions/newMakeFile";
 import Compact from "../../components/UI/Compact/Compact";
 import "../MyAds/MyAds.css"
 import BackButton from "../../constants/BackButton";
 import { useNavigate } from "react-router-dom";
-// const parOne = window.Telegram.WebApp.initDataUnsafe.user.id;
-// const parTwo = 1;
 
 const menu = document.documentElement.querySelector(".FirstMenu")
 let enter = true
@@ -137,7 +134,7 @@ const ProfilePage = ({ ...props }) => {
         );
 
         for (let e of allCards.data) {
-          let files = await makeNewFile(e.folder, e.photos);
+          let files = e.photos
           localCards.push({
             id: e.id,
             title: e.title,
@@ -149,7 +146,7 @@ const ProfilePage = ({ ...props }) => {
             photos: files,
           });
         }
-        let newFiles = await makeNewFile(cardOne.data.folder, cardOne.data.photos);
+        let newFiles = cardOne.data.photos;
         return {
           localCards: localCards,
           responce: { user: user.data, createNumber : imTwo.data },

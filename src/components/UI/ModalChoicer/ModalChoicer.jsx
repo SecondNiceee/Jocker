@@ -127,6 +127,7 @@ const CustomButton = React.forwardRef(function CustomButton(props, ref) {
       {other.children}
 
       <svg
+        className=""
         width="11"
         height="13"
         viewBox="0 0 11 13"
@@ -162,7 +163,8 @@ const StyledButton = styled("button", { shouldForwardProp: () => true })(
     color: #2ea5ff;
     background-color : transparent;
     border : none;
-    font-size: 16px;
+    font-size: 13px;
+    text-transform:uppercase;
   `
 );
 

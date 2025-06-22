@@ -1,0 +1,30 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+
+
+
+body::-webkit-scrollbar, html::-webkit-scrollbar, html::-webkit-scrollbar-thumb, body::-webkit-scrollbar-thumb,
+body::-webkit-scrollbar-track, html::-webkit-scrollbar-track, body::-webkit-scrollbar-track-piece, html::-webkit-scrollbar-track-piece   {
+  display: none !important;
+  width: 0 !important;
+  height: 0 !important;
+  background: transparent !important;
+}
+
+/* Специально для iOS Safari */
+html,
+body {
+  scrollbar-width: none !important;
+}
+
+html::-webkit-scrollbar,
+body::-webkit-scrollbar {
+  display: none !important;
+  width: 0 !important;
+  height: 0 !important;
+}
+
+/* Дополнительные правила для iOS */
+/* Альтернативный подход - скрытие через overflow */

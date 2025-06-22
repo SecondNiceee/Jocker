@@ -6,8 +6,6 @@ import FullPicker from "../../../components/UI/FullPicker/FullPicker";
 
 const MyDatePicker = ({
   className,
-  taskInformation,
-  setTaskInformation,
   GreyIntWidth,
   GreyWidth,
   setState,
@@ -28,13 +26,6 @@ const MyDatePicker = ({
       }
     >
       <GreyText className={cl.GreyText}>Время выполнения</GreyText>
-      {/* <Picker
-        className={cl.picker}
-        whichOne={whichOne}
-        setWhichOne={setWhichOne}
-        taskInformation={taskInformation}
-        setTaskInformation={setTaskInformation}
-      /> */}
 
       {/* <CatchDate className={cl.CatchDate} whichOne={whichOne} />  */}
       <FullPicker

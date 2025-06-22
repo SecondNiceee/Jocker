@@ -7,6 +7,7 @@ import translation from '../../functions/translate';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import pagesHistory from '../../constants/pagesHistory';
+import { USERID } from '../../constants/tgStatic.config';
 const HappyPage = ({task , congradulate, setShowCongradulate }) => {
     const navigate = useNavigate()
 
@@ -23,7 +24,7 @@ const HappyPage = ({task , congradulate, setShowCongradulate }) => {
                  await axios.patch("https://www.connectbirga.ru/user", {},  {
                     params: {
                       congratulateId : congradulate[0].id ,
-                      userId: window.Telegram.WebApp.initDataUnsafe.user.id,
+                      userId: USERID,
                     },
                     headers : {
                       "X-API-KEY-AUTH" : process.env.REACT_APP_API_KEY

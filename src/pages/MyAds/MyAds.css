@@ -283,9 +283,7 @@
     padding-right: 16px;
     padding-top: 17px;
     margin-bottom: 18.33px;
-    min-width: 100vw;
-    height: calc(100vh);
-    overflow-y: scroll;
+    min-width: 100%;
     display: flex;
     flex-direction: column;
     position: relative;
@@ -311,20 +309,12 @@
 .aboutOne{
     padding: 0px 16px;
     padding-top: 20px;
-    min-width: 100vw;
-    height: calc(100vh);
-    overflow-y: scroll;
     position: relative;
     z-index: 999;
     padding-bottom: 97px;
-    position: fixed;
-    left: 0;
-    top: 0;
     background-color: rgb(24, 34, 45);
     transition:  transform 0.3s;
     width: 100%;
-        
-    transform: translateX(100%);
 }
 .aboutOne-enter{
     transform: translateX(0%);
@@ -716,27 +706,15 @@
     margin-top: 0px;
 }
 .last-ads{
-    position: absolute;
-    left: 0;
     z-index: 1000;
-    left: 100%;
-    transform: translateX(100%);
     height: calc(calc(100vh) - 68px);
     padding-bottom: 74px;
-    position: fixed;
     width: 100vw;
     transition: 0.4s;
-    -webkit-backface-visibility: hidden;
-    -webkit-perspective: 1000;
-    left: 0;
     /* top: 70px; */
     padding: 0px 17px; 
     background-color: #18222d;
-    will-change:  transform  , transition;
     transition: 0.4s;
-    overflow-y: scroll;
-    /* top: 0; */
-    height: calc(100vh);
     padding-top: 20px;
 }
 .last-top{

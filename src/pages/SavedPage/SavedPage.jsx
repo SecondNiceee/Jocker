@@ -9,14 +9,17 @@ import MainButton from "../../constants/MainButton";
 import BackButton from "../../constants/BackButton";
 import axios from "axios";
 import { addResponce } from "../../store/information";
-import pagesHistory from "../../constants/pagesHistory";
 import SavedResponse from "../../components/SavedPage/SavedReponse/SavedResponse";
 import SavedProfile from "../../components/SavedPage/SavedProfile/SavedProfile";
 import CardPage from "../CardPage/CardPage";
 import AboutReaction from "../MyAds/components/AboutReaction";
-import { clearAll, fetchSavedAdvertisements, fetchSavedCards, fetchSavedResponses } from "../../store/saves";
 import translation from "../../functions/translate";
 import en from "../../constants/language";
+import { USERID } from "../../constants/tgStatic.config";
+import CssTransitionSlider from "../../components/UI/PhotosSlider/CssTransitionSlider";
+import useSlider from "../../hooks/useSlider";
+import useBlockInputs from "../../hooks/useBlockInputs";
+import useApiFetch from "./hooks/useApiFetch";
 
 const values = ["Заказы", "Отклики", "Кейсы"];
 const keys = ["advertisment", "responces", "cards"];
@@ -26,30 +29,10 @@ const textButton = translation("Вы действительно хотите о�
 const menu = document.documentElement.querySelector(".FirstMenu")
 const Yes = translation("Да")
 const No = translation("Нет")
+
 const SavedPage = () => {
 
-  useEffect( () => {
-    
-    const input = document.querySelectorAll('input');
-    const textarea  = document.querySelectorAll('textarea');
-    for (let smallInput of input){
-      smallInput.addEventListener('focus', () => {
-        menu.style.display = 'none'; // скрываем меню
-      });
-      smallInput.addEventListener('blur', () => {
-        menu.style.display = 'flex'; // скрываем меню
-      });
-    }
-    for (let smallTextarea of textarea){
-      smallTextarea.addEventListener('focus', () => {
-        menu.style.display = 'none'; // скрываем меню
-      });
-      smallTextarea.addEventListener('blur', () => {
-        menu.style.display = 'flex'; // скрываем меню
-      });
-    }
-  } , [] )
-
+  useBlockInputs()
 
   const [card, setCard] = useState({
     isOpen: false,
@@ -82,6 +65,7 @@ const SavedPage = () => {
 
 
   const dispatch = useDispatch();
+
   const [nowKey, setNowKey] = useState("advertisment");
 
   const [isProfileOpen , setProfileOpen] = useState(false)
@@ -99,32 +83,24 @@ const SavedPage = () => {
     isOpen: false,
     id: 0,
   });
+
   const [extraDetails, setExtraDetails] = useState({
     isOpen : false,
     id : 0
     })
 
-  useEffect(() => {
-    dispatch(fetchSavedAdvertisements([1]))
-    dispatch(fetchSavedCards([1]))
-    dispatch(fetchSavedResponses([1]))
-    return () => {
+  useApiFetch() // Фетчим все таски и тд
 
-      pagesHistory.push("/SavedPage");
-      dispatch(clearAll())
-
-    };
-  }, [dispatch]);
   const savedTasks = useSelector((state) => state.saves.tasks);
 
-  const gotIt = useMemo(() => {
+  const isMyResponse = useMemo(() => {
     if (
       savedTasks !== null &&
       savedTasks.length > 0 &&
       savedTasks[details.id]
     ) {
       if (savedTasks[details.id].responces) {
-        if (savedTasks[details.id].responces.find(e => String(e.user.id) === "window.Telegram.WebApp.initDataUnsafe.user.id")){
+        if (savedTasks[details.id].responces.find(e => String(e.user.id) === USERID)){
           return true
         }
         else{
@@ -134,6 +110,8 @@ const SavedPage = () => {
     }
     return false;
   }, [savedTasks, details.id]);
+
+  const {isSliderOpened, photoIndex, photos, setPhotoIndex, setPhotos, setSlideOpened} = useSlider()
 
   useEffect(() => {
     // setStep(varStep)
@@ -145,26 +123,28 @@ const SavedPage = () => {
 
   useEffect(() => {
     function forward() {
-      if (gotIt) {
-        window.Telegram.WebApp.showPopup({
-          title: translation("Ошибка"),
-          message:
-            translation("Вы уже откликнулись на это задание. Заказчик обязательно увидит ваш отклик."),
-        });
-      } else {
-        if (!responce.isOpen) {
-          setResponce((value) => ({ ...value, isOpen: true }));
+      if (!isSliderOpened){
+
+        if (isMyResponse) {
+          window.Telegram.WebApp.showPopup({
+            title: translation("Ошибка"),
+            message:
+              translation("Вы уже откликнулись на это задание. Заказчик обязательно увидит ваш отклик."),
+          });
+        } else {
+          if (!responce.isOpen) {
+            setResponce((value) => ({ ...value, isOpen: true }));
+          }
         }
       }
+      else{
+        setSlideOpened(false)
+      }
     }
-
     function back() {
-      if (false) {
-        // setSliderActive({...sliderActive, isActive : false})
+      if (isSliderOpened) {
+        setSlideOpened(false)
       } else {
-
-        
-
           if (responce.isShablonModalActive) {
             setResponce((responce) => ({
               ...responce,
@@ -193,13 +173,12 @@ const SavedPage = () => {
           }
         
         }
-
-
       }
     }
 
     MainButton.onClick(forward);
     BackButton.onClick(back);
+
     if (details.isOpen) {
       menu.classList.add("disappearAnimation")
       menu.classList.remove("appearAnimation")
@@ -207,7 +186,7 @@ const SavedPage = () => {
       MainButton.show();
       
 
-      if (gotIt) {
+      if (isMyResponse) {
         MainButton.setParams({
           //неизвесетно
           color: "#2f2f2f",
@@ -242,13 +221,15 @@ const SavedPage = () => {
   }, [
     details.isOpen,
     responce.isOpen,
-    gotIt,
+    isMyResponse,
     responce.isShablonModalActive,
     responce.shablonMaker,
     isProfile,
     setProfile,
     card.isOpen,
-    setCard
+    setCard,
+    isSliderOpened,
+    setSlideOpened
   ]);
 
   useEffect( () => {
@@ -285,7 +266,6 @@ const SavedPage = () => {
         
       }
   } , [myResponse.isActive, isProfileOpen, card.isOpen, setMyResponse, setProfileOpen, extraDetails.isOpen, setCard] )
-
 
 
   useEffect( () => {
@@ -378,30 +358,34 @@ const SavedPage = () => {
         console.warn(e);
       }
     }
-
-    if (responce.isOpen && !responce.shablonMaker) {
-      window.Telegram.WebApp.showPopup(
-        {
-          title: translation("Откликнуться?"),
-          message: textButton,
-          buttons: [
-            { id: "save", type: "default", text: Yes },
-            { id: "delete", type: "destructive", text: No },
-          ],
-        },
-        (buttonId) => {
-          if (buttonId === "delete" || buttonId === null) {
-            // setShablon({...shablon , isActive : false})
+    if (!isSliderOpened){
+      if (responce.isOpen && !responce.shablonMaker) {
+        window.Telegram.WebApp.showPopup(
+          {
+            title: translation("Откликнуться?"),
+            message: textButton,
+            buttons: [
+              { id: "save", type: "default", text: Yes },
+              { id: "delete", type: "destructive", text: No },
+            ],
+          },
+          (buttonId) => {
+            if (buttonId === "delete" || buttonId === null) {
+              // setShablon({...shablon , isActive : false})
+            }
+            if (buttonId === "save") {
+              postResponce(savedTasks[details.id].id, USERID);
+              setResponce((value) => ({ ...value, isOpen: false }));
+              setDetails((value) => ({ ...value, isOpen: false }));
+            }
           }
-          if (buttonId === "save") {
-            postResponce(savedTasks[details.id].id, window.Telegram.WebApp.initDataUnsafe.user.id);
-            setResponce((value) => ({ ...value, isOpen: false }));
-            setDetails((value) => ({ ...value, isOpen: false }));
-          }
-        }
-      );
+        );
+      }
     }
-  }, [responce, savedTasks, details.id, dispatch]);
+    else{
+      setSlideOpened(false)
+    }
+  }, [responce, savedTasks, details.id, dispatch, isSliderOpened, setSlideOpened]);
 
   window.Telegram.WebApp.disableVerticalSwipes();
 
@@ -433,7 +417,10 @@ const SavedPage = () => {
   } , [changer] )
 
 
+
   return (
+    <>
+
     <div className="saved-wraper">
       <FullPicker
         GreyIntWidth={GreyIntWidth}
@@ -475,7 +462,7 @@ const SavedPage = () => {
         unmountOnExit
         mountOnEnter
       >
-        <FirstDetails style = {{
+        <FirstDetails setPhotos={setPhotos} setPhotoIndex={setPhotoIndex} setSliderOpened={setSlideOpened}  style = {{
           zIndex : '2002'
         }}  orderInformation={myResponse.responce.advertisement} />
       </CSSTransition>
@@ -487,7 +474,7 @@ const SavedPage = () => {
         unmountOnExit
         mountOnEnter
       >
-        <FirstDetails setProfile={setProfile}  orderInformation={savedTasks[details.id]} />
+        <FirstDetails setPhotos={setPhotos} setPhotoIndex={setPhotoIndex} setSliderOpened={setSlideOpened} setProfile={setProfile}  orderInformation={savedTasks[details.id]} />
       </CSSTransition>
 
       <CSSTransition
@@ -499,7 +486,6 @@ const SavedPage = () => {
         mountOnEnter
       >
           <Responce
-            
             left="0%"
             responce={responce}
             setResponce={setResponce}
@@ -528,9 +514,10 @@ const SavedPage = () => {
             <AboutReaction setOneCard={setCard} responce={savedTasks[details.id] ? { createNumber : savedTasks[details.id].createNumber  , user : savedTasks[details.id].user} : {}}
             />
           </CSSTransition>
-
-
     </div>
+        <CssTransitionSlider blockerAll={true} blockerId={""} isSliderOpened={isSliderOpened} leftPosition={0} renderMap={photos} setSliderOpened={setSlideOpened} sliderIndex={photoIndex}  swiperId={"1"} top={0}  />
+    </>
+
   );
 };
 

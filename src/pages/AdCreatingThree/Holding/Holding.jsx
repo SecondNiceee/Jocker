@@ -8,8 +8,6 @@ import MainButton from '../../../constants/MainButton';
 import translation from '../../../functions/translate';
 const Holding = ({className, taskInformation , rezult }) => {
 
-    // window.Telegram.WebApp.initDataUnsafe.user.id
-    // window.Telegram.WebApp.initDataUnsafe.user.id
     const value = useSelector(state => state.ton.value)
     useEffect( () => {
         MainButton.setText(translation("ЗАХОЛДИРОВАТЬ"))

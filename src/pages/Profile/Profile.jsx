@@ -1,17 +1,12 @@
 import React, {
   useCallback,
   useEffect,
-  useMemo,
   useRef,
   useState,
 } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
 import { CSSTransition } from "react-transition-group";
-
-import { useNavigate } from "react-router-dom";
-import BackButton from "../../constants/BackButton";
-import userPhoto from "../../images/userPhoto/user.png";
 
 import SmallTextarea from "../../components/UI/SmallTextarea/SmallTextarea";
 import Compact from "../../components/UI/Compact/Compact";
@@ -23,30 +18,27 @@ import Options from "./components/Options/Options";
 import ChangeCards from "../ChangeCard/ChangeCard";
 import {
   changeProfile,
-  deleteCard,
-  deleteServerCard,
   putUserInfo,
 } from "../../store/telegramUserInfo";
 import pagesHistory from "../../constants/pagesHistory";
 import MyLoader from "../../components/UI/MyLoader/MyLoader";
 import CardsArray from "./components/CardsArray/CardsArray";
-import Text from "../../components/Text/Text";
 import translation from "../../functions/translate";
 import PayBlock from "./components/PayBlock/PayBlock";
-import en from "../../constants/language";
+import useBlockInputs from "../../hooks/useBlockInputs";
+import useStartControllerMainButton from "./hooks/useStartControllerMainButton";
+import useProfileStyle from "./hooks/useProfileStyle";
+import useDeleteCardFunction from "./hooks/useDeleteCardFunction";
+import useYearAdittionInputs from "./hooks/useYearAdittionInputs";
+import { useStageInputController } from "./hooks/useStageInputController";
+import useBackButton from "./hooks/useBackButton";
+import ProfileCup from "./components/ProfileCup/ProfileCup";
 
-const lett = translation("лет");
-const goda = translation("года");
-const god = translation("год");
 let aboutULocal = null;
 
-let userInfoLocal = null;
-
-
-const Yes = translation("Да");
-const No = translation("Нет");
 const menu = document.documentElement.querySelector(".FirstMenu");
 const Profile = () => {
+
   const mainRef = useRef(null);
 
   window.Telegram.WebApp.disableVerticalSwipes();
@@ -68,13 +60,12 @@ const Profile = () => {
     stageError: false,
   });
 
-  const navigate = useNavigate();
-
   const [cardsActive, setCardsActive] = useState(false);
 
   const [changeActive, setChangeActive] = useState(false);
 
   const changer = useSelector((state) => state.menuSlice.changer);
+
   useEffect(() => {
     setCardsActive(false);
     setChangeActive(false);
@@ -89,57 +80,12 @@ const Profile = () => {
   const cards = useSelector((state) => state.telegramUserInfo.profile.cards);
 
   aboutULocal = aboutU;
-  userInfoLocal = userInfo;
 
-  useEffect(() => {
-    let stage = String(userInfoLocal.profile.stage);
-    let numb = String(stage).slice(stage.length - 1, stage.length);
-
-    const numberInput = document.getElementById("numberInput");
-
-    if (numberInput) {
-      if (en) {
-        if (Number(stage) === 1) {
-          if (!numberInput.value.includes("year")) {
-            numberInput.value += ` year`;
-          }
-        } else {
-          if (!numberInput.value.includes("years")) {
-            numberInput.value += ` years`;
-          }
-        }
-      } else {
-        if (Number(stage) > 10 && Number(stage) < 20) {
-          if (!numberInput.value.includes(lett)) {
-            numberInput.value += ` ${lett}`;
-          }
-        } else {
-          if (numb > 1 && numb < 5) {
-            if (!numberInput.value.includes(`${goda}`)) {
-              numberInput.value += ` ${goda}`;
-            }
-          } else {
-            if (numb === 1) {
-              if (!numberInput.value.includes(`${god}`)) {
-                numberInput.value += ` ${god}`;
-              }
-            } else {
-              if (!numberInput.value.includes(`${lett}`)) {
-                numberInput.value += ` ${lett}`;
-              }
-            }
-          }
-        }
-      }
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-
-  const save = useCallback(() => {
-    dispatch(changeProfile({...aboutULocal , about : aboutULocal.about.trim()}));
+  const save = useCallback(() => { // Функция сохранения профиля 
+    dispatch(changeProfile({...aboutU , about : aboutU.about.trim()}));
     dispatch(
       putUserInfo([
-        { stage: Number(aboutULocal.stage), about: aboutULocal.about.trim() },  
+        { stage: Number(aboutU.stage), about: aboutU.about.trim() },  
       ])
     );
     const input = document.querySelectorAll("input");
@@ -150,40 +96,19 @@ const Profile = () => {
     for (let smallTextarea of textarea) {
       smallTextarea.blur();
     }
-  }, [dispatch]);
+  }, [dispatch, aboutU]);
+  
 
-  useEffect(() => {
+  useEffect(() => { // Просто логика появления и уисчезновения кнопки , в заивисимости от изменений стажа и О себе
     function compare2Objects(x, y) {
       if (x.about === y.about && x.stage === y.stage) {
         return true;
       } else {
         return false;
       }
-      // if (JSON.stringify(x) !== JSON.stringify(y)){
-      //   return false
-      // }
-      // if (x.cards.length !== y.cards.length){
-      //   return false
-      // }
-      // else{
-      //   for (let xCard of x.cards){
-      //     for (let yCard of y.cards){
-      //       if (JSON.stringify(xCard) !== JSON.stringify(yCard)){
-      //         return false
-      //       }
-      //     }
-      //   }
-      // }
-      // return true;
     }
-    
-    
     if (!cardsActive && !changeActive) {
       if (compare2Objects(userInfo.profile, {...aboutU, about : aboutU.about.trim()}) === false && userInfo.state === "yes" && userInfo.profile.about !== null && aboutU.about !== null) {
-        console.log('====================================');
-        console.log(userInfo.profile);
-        console.log(aboutU);
-        console.log('====================================');
         MainButton.enable();
         MainButton.setParams({
           text: translation("Сохранить"),
@@ -222,15 +147,10 @@ const Profile = () => {
       }
     } else {
       MainButton.offClick(save);
-      // MainButton.hide()
-      // MainButton.setParams({
-      //   color : '#2ea5ff',
-      //   text_color : '#ffffff'
-      // })
     }
   }, [
-    userInfo.state,
     aboutU,
+    userInfo.state,
     changeActive,
     cardsActive,
     save,
@@ -238,141 +158,22 @@ const Profile = () => {
     userInfo.profile,
   ]);
 
-  useEffect(() => {
-    BackButton.show();
-    function goBack() {
-      navigate(-1);
-    }
-    if (cardsActive || changeActive) {
-      BackButton.offClick(goBack);
-    } else {
-      BackButton.onClick(goBack);
-    }
-    return () => {
-      BackButton.offClick(goBack);
-    };
-  });
+  useBackButton({cardsActive, changeActive})
 
-  const onBlurFunc = useCallback((e) => {
-    let numb = Number(
-      e.target.value.slice(e.target.value.length - 1, e.target.value.length)
-    );
+  useYearAdittionInputs({userInfo}); //  Логика добавления год / года к инпуту
 
-    if (e.target.value === "") {
-      if (en) {
-        setAboutU((value) => ({ ...value, stage: `0 years` }));
-      } else {
-        setAboutU((value) => ({ ...value, stage: `0 ${lett}` }));
-      }
-    }
+  const {onBlurFunc, onFocusFunc, setValueFunc} = useStageInputController({setAboutU, aboutU})
 
-    if (en) {
-      if (Number(e.target.value) === 1) {
-        e.target.value += " year";
-      } else {
-        e.target.value += " years";
-      }
-    } else {
-      if (Number(e.target.value) > 10 && Number(e.target.value) < 20) {
-        e.target.value += ` ${lett}`;
-      } else {
-        if (numb > 1 && numb < 5) {
-          e.target.value += ` ${goda}`;
-        } else {
-          if (numb === 1) {
-            e.target.value += ` ${god}`;
-          } else {
-            e.target.value += ` ${lett}`;
-          }
-        }
-      }
-    }
-  }, []);
-
-  const onFocusFunc = useCallback((e) => {
-    e.target.value = String(aboutULocal.stage).split(" ")[0];
-  }, []);
-
-  const setValueFunc = useCallback((e) => {
-    if (!isNaN(e)) {
-      if (e.slice(0, 1) !== "0") {
-        setAboutU({ ...aboutULocal, stage: Number(e) });
-      } else {
-        if (e !== "00") {
-          setAboutU({ ...aboutULocal, stage: Number(e.slice(1, 2)) });
-        } else {
-          setAboutU({ ...aboutULocal, stage: 0 });
-        }
-      }
-    }
-  }, []);
-
-  function deleteFunction(index, e) {
-    window.Telegram.WebApp.showPopup(
-      {
-        title: translation("Удалить?"),
-        message: translation("Вы хотите удалить этот кейс?"),
-        buttons: [
-          { id: "save", type: "default", text: Yes },
-          { id: "delete", type: "destructive", text: No },
-        ],
-      },
-      (buttonId) => {
-        if (buttonId === "delete" || buttonId === null) {
-        }
-        if (buttonId === "save") {
-          dispatch(deleteServerCard(e.id));
-          dispatch(deleteCard(index));
-        }
-      }
-    );
-  }
+  const deleteFunction = useDeleteCardFunction()
 
   const postStatus = useSelector((state) => state.telegramUserInfo.postState);
   const putStatus = useSelector((state) => state.telegramUserInfo.putState);
 
-  useEffect(() => {
-    const input = document.querySelectorAll("input");
-    const textarea = document.querySelectorAll("textarea");
-    for (let smallInput of input) {
-      smallInput.addEventListener("focus", () => {
-        menu.style.display = "none"; // скрываем меню
-      });
-      smallInput.addEventListener("blur", () => {
-        menu.style.display = "flex"; // скрываем меню
-      });
-    }
-    for (let smallTextarea of textarea) {
-      smallTextarea.addEventListener("focus", () => {
-        menu.style.display = "none"; // скрываем меню
-      });
-      smallTextarea.addEventListener("blur", () => {
-        menu.style.display = "flex"; // скрываем меню
-      });
-    }
-  }, []);
+  useBlockInputs();
 
+  const profileStyle = useProfileStyle({cardsActive, changeActive}) // Логика изменения left профиля (для появления и удаления карточки)
 
-
-  const profileStyle = useMemo(() => {
-    if (cardsActive || changeActive) {
-      return {
-        transform: "translate3d(-100vw , 0 , 0)",
-      };
-    }
-    return {
-      transform: "translate3d(0, 0, 0)",
-    };
-  }, [cardsActive, changeActive]);
-
-  useEffect( () => {
-    MainButton.hide()
-    return () => {
-      if (pagesHistory[pagesHistory.length - 1] === "/AdCreating"){
-        MainButton.hide()
-      }
-    }
-  } , [] )
+  useStartControllerMainButton(); // Логика появления кнопки перед рендером и после рендера странички (перед входом и выходом из неё)
 
   return (
     <>
@@ -386,18 +187,8 @@ const Profile = () => {
           style={profileStyle}
         >
           <div className="profile__container">
-            <img
-              style={{ objectFit: "cover" }}
-              src={userInfo.photo.length > 0 ? userInfo.photo.split('https://').length === 2 ? userInfo.photo : `${process.env.REACT_APP_HOST}/${userInfo.id}/${userInfo.photo}` : userPhoto}
-              className="profile__icon icon"
-              alt=""
-            />
 
-            <Text className="urName" id="Name">
-              {userInfo.firstName.length > 22
-                ? userInfo.firstName.slice(0, 22) + ".."
-                : userInfo.firstName}
-            </Text>
+            <ProfileCup /> 
 
             <PayBlock className="pay-block" />
 
@@ -405,7 +196,7 @@ const Profile = () => {
 
             <Compact title={"О себе"} className={"compact-block"}>
               <SmallTextarea
-                value={aboutULocal.about}
+                value={aboutU.about}
                 setValue={(e) => {
                   setAboutU({ ...aboutULocal, about: e });
                 }}
@@ -480,18 +271,6 @@ const Profile = () => {
               setCardsOpen={setChangeActive}
             />
           </CSSTransition>
-
-
-
-          
-          {/* <CSSTransition
-            mountOnEnter
-            unmountOnExit
-            in={true}
-            timeout={400}
-          >
-            <PaymentPageOne />
-          </CSSTransition> */}
 
 
         </div>

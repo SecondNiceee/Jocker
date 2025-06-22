@@ -17,10 +17,10 @@ i18n
     interpolation: { escapeValue: false },
   });
 
-const Text = forwardRef(({ children, ...props} , ref) => {
-    const { t, i18n } = useTranslation();
+const Text = forwardRef(({ children, className = {},  ...props} , ref) => {
+    const { t } = useTranslation();
     return (
-        <p ref={ref} {...props}>{t(String(children))}</p>
+        <p className={className} ref={ref} {...props}>{t(String(children))}</p>
     );
 });
 

@@ -1,15 +1,15 @@
 import React, { memo } from "react";
 import MyButton from "../../UI/MyButton/MyButton";
 
-const QFour = ({isResponce, deleteFunction, isButton, setDetailsActive}) => {
+const QFour = ({isResponce, deleteFunction, id, isButton, setDetailsActive}) => {
   return (
     <>
       {isResponce ? (
         <>
           <svg
             id="myTrash"
-            onClick={deleteFunction}
-            className="my-trash"
+            onClick={() => deleteFunction(id)}
+            className="my-trash cursor-pointer"
             width="16"
             height="19"
             viewBox="0 0 16 19"
@@ -23,7 +23,7 @@ const QFour = ({isResponce, deleteFunction, isButton, setDetailsActive}) => {
           </svg>
           <MyButton
             style={isButton ? {} : { display: "none" }}
-            onClick={(e) => setDetailsActive(true)}
+            onClick={() => setDetailsActive(true)}
           >
             Изменить
           </MyButton>

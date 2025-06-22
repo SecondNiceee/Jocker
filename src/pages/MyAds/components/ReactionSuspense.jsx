@@ -2,7 +2,9 @@ import React, { lazy, Suspense, useEffect, useState } from 'react';
 import { useInView } from 'react-intersection-observer';
 import BlockSpinner from '../../../components/UI/BlockSpinner/BlockSpinner';
 const Reaction = lazy(() => import('./Reaction'))
-const ReactionSuspense = ({openAboutReactionFunc, responce, setOpen}) => {
+const ReactionSuspense = ({openAboutReactionFunc, responce, setOpen,setPhotos,
+  setPhotoIndex,
+  setSlideOpened}) => {
 
     const { ref, inView } = useInView({
         threshold: 0, // Порог видимости (от 0 до 1)
@@ -24,6 +26,9 @@ const ReactionSuspense = ({openAboutReactionFunc, responce, setOpen}) => {
         {isVisible && <Suspense fallback={<BlockSpinner style = { responce.photos.length > 0 ? {minHeight : "282px"} :{minHeight : "114px"}} />} >
 
             <Reaction
+            setPhotos = {setPhotos}
+            setPhotoIndex = {setPhotoIndex}
+            setSlideOpened = {setSlideOpened}
             openAboutReactionFunc={openAboutReactionFunc}
             responce={responce}
             setOpen={setOpen}

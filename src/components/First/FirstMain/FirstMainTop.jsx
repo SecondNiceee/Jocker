@@ -4,12 +4,12 @@ import ShareIcon from "../../UI/ShareIcon/ShareIcon";
 import Text from "../../Text/Text";
 import { shareFunction } from "../../../functions/shareFunction";
 
-const FirstMainTop = ({isMyAds , category, isWatched, taskName, id, end}) => {
+const FirstMainTop = ({isMyAds , className, category, isWatched, taskName, id, end}) => {
 
 
   return (
     <div
-      className="FirstMain__top"
+      className={"FirstMain__top"}
       style={isMyAds ? { marginTop: "13px" } : {}}
     >
       <Pallete category={category} />

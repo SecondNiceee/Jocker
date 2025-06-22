@@ -1,10 +1,10 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
 
-import makeNewFile from "../functions/newMakeFile";
 import translation from "../functions/translate";
 import en from "../constants/language";
 import makeNewUser from "../functions/makeNewUser";
+import { USERID } from "../constants/tgStatic.config";
 
 
 
@@ -29,7 +29,7 @@ export const fetchResponseByAdvertisement = createAsyncThunk(
             let photos = [];
     
             if (responces[i].photos) {
-              photos = await makeNewFile(responces[i].folder, responces[i].photos);
+              photos = responces[i].photos;
             }
 
             let b = await axios.get(`${process.env.REACT_APP_HOST}/card/countByUser` , {
@@ -74,7 +74,7 @@ export const deleteResponse = createAsyncThunk(
     async function(id){
         try{
 
-            await axios.delete(`${process.env.REACT_APP_HOST}/response`, {
+            await axios.delete(`${process.env.REACT_APP_HOST}/respon    se`, {
                 params : {
                     id : id
                 },
@@ -133,15 +133,6 @@ export const addResponse = createAsyncThunk(
     "addResponse" , 
     async function (par){
         try{
-            // for (let i = 0 ; i < 20;i++){
-
-            //     await axios.post(`${process.env.REACT_APP_HOST}/response` , par[0], {
-            //         params : {
-            //             advertisementId : par[1].advertisement.id,
-            //             userId : par[1].user.id
-            //         }
-            //     })
-            // }
 
             const messageOne = translation("📣 Вы получили отклик на задачу «")
             const messageTwo = translation("» от ")
@@ -155,7 +146,6 @@ export const addResponse = createAsyncThunk(
                   }
 
             })
-
 
             const en = true
             
@@ -207,7 +197,7 @@ export const fetchResponses = createAsyncThunk(
         
         let im = await axios.get(`${process.env.REACT_APP_HOST}/response/findByUser` , {
             params : {
-                "userId" : window.Telegram.WebApp.initDataUnsafe.user.id,
+                "userId" : USERID,
                 page : par[1],
                 limit : 4
                 
@@ -247,7 +237,7 @@ export const fetchResponses = createAsyncThunk(
                two = ""
             }
 
-            let files = await makeNewFile(advertisement.folder, advertisement.photos);
+            let files = advertisement.photos;
 
             try {
                 let imTwo = await axios.get(
@@ -267,8 +257,6 @@ export const fetchResponses = createAsyncThunk(
                 window.Telegram.WebApp.showAlert(e);
               }
             
-            console.log(localResponses)
-
             const advertisementUser = await axios.get(`${process.env.REACT_APP_HOST}/user/findOne` , {
                 params : {
                     "id" : advertisement.user.id
@@ -318,7 +306,7 @@ export const fetchResponses = createAsyncThunk(
             let photos = [];
     
             if (localResponses[i].photos) {
-              photos = await makeNewFile(localResponses[i].folder, localResponses[i].photos);
+              photos = localResponses[i].photos;
             }
     
             localResponses[i].photos = photos;
@@ -383,7 +371,6 @@ const responses = createSlice({
             if (action.payload.length < 4){
                 state.responsesByAStatus = "all"
             }
-            console.log(state.responsesByAIds)
         }))
 
         builder.addCase(fetchResponseByAdvertisement.pending, ((state , action) => {

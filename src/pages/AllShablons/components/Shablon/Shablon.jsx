@@ -11,7 +11,7 @@ const Shablon = ({ shablon , putFunction, deleteFunction }) => {
             <img style={shablon.photos.length === 1 ? 
               {width : '100%'} :
               {}
-            } key={i} src={URL.createObjectURL(e)}  alt=""/>
+            } key={i} src={e}  alt=""/>
           )
         })}
       </div>

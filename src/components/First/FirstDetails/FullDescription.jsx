@@ -8,10 +8,9 @@ const FullDescription = ({ fullDescription, ...props }) => {
       textAreaRef.current.style.height = (refTwo.current.scrollHeight).toString() + 'px'
   } , [fullDescription] )
 
-  
   return (
     <>
-      <textarea style={{
+      <textarea   style={{
         position : "absolute",
         opacity : 0,
         height : "17.65px",

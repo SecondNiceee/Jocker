@@ -1,5 +1,4 @@
-import React, {
-  forwardRef,
+import {
   useCallback,
   useEffect,
   useRef,
@@ -11,10 +10,11 @@ import ResponseSuspense from "./ResponseSuspense";
 import { useDispatch, useSelector } from "react-redux";
 import {  fetchResponses } from "../../../store/responses";
 import MyAnimation from "./MyAnimation";
-const MyResponses = forwardRef(
-  (
-    { responsesArr, buttonFunction, viewsNumber, setViewsNumber, nowValue , text },
-    ref
+import { useNavigate } from "react-router";
+import { setAdvertisement, setResponse } from "../../../store/information";
+const MyResponses = 
+  ( 
+    { responsesArr,text},
   ) => {
     const [page, setPage] = useState(2);
     const orderStatus = useSelector((state) => state.responses.status);
@@ -40,9 +40,7 @@ const MyResponses = forwardRef(
       [orderStatus, getMore]
     );
 
-    // useEffect( () => {
-    //   if (nowValue === "cus")
-    // } , [nowValue] )
+    const navigate = useNavigate();
 
     useEffect(() => {
       const observer = new IntersectionObserver(onIntersaction);
@@ -62,10 +60,13 @@ const MyResponses = forwardRef(
         ) : (
           <>
             {responsesArr.map((e, i) => {
+              dispatch(setResponse(e))
+              const buttonFunction = () => {
+                dispatch(setAdvertisement(e.advertisement))
+                navigate(`/confirm/${e.advertisement.id}/${e.id}`)
+              }
               return (
                 <ResponseSuspense
-                  viewsNumber={viewsNumber}
-                  setViewsNumber={setViewsNumber}
                   func={buttonFunction}
                   index={i}
                   buttonText={"МОЙ ОТКЛИК"}
@@ -82,11 +83,11 @@ const MyResponses = forwardRef(
           <MyLoader
             ref={elementRef}
             style={{ height: "90px", marginLeft: "-16px" }}
+
           />
         )}
       </div>
     );
-  }
-);
+  };
 
 export default MyResponses;

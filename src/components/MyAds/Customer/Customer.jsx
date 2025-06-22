@@ -8,9 +8,9 @@ const Customer = ({fl , photo, link, id, onImageClick}) => {
 
     const openTelegrmaLink = useCallback( () => {
         if (link && link !== '-1' ){
-            window.Telegram.WebApp.openTelegramLink(
-                "https://t.me/" + link
-              );
+              window.Telegram.WebApp.openTelegramLink(
+                  "https://t.me/" + link
+                );
         }
         else{
             window.Telegram.WebApp
@@ -23,11 +23,9 @@ const Customer = ({fl , photo, link, id, onImageClick}) => {
             } , (buttonId) => {
         
               if (buttonId === "save" || buttonId === null) {
-                console.log("Ok");
                 
+ 
               }
-        
-        
             } )
         }
 

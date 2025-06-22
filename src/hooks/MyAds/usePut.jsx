@@ -1,16 +1,18 @@
 import  { useCallback } from 'react';
 import { putMyTask } from '../../store/information';
 import sortFiles from '../../functions/sortFiles';
+import { useDispatch } from 'react-redux';
 
-const usePut = ({details, setSecondPage, setDetails, dispatch , setDetailsShow}) => {
-    const putTask = useCallback( () => {
+const usePut = ({details}) => {
+  const dispatch = useDispatch();
+    const putTask = useCallback( async () => {
+
         let myFormData = new FormData();
-        myFormData.append('title' , String(details.taskName))
-        myFormData.append('description' , String(details.taskDescription))
+        myFormData.append('title' , String(details?.taskName))
+        myFormData.append('description' , String(details?.taskDescription))
         myFormData.append("deadline" , String(1))
-        myFormData.append("price" , String(details.tonValue) )
-        myFormData.append("startTime" , details.time.start)
-        myFormData.append("endTime" , details.time.end)
+        myFormData.append("startTime" , details?.time.start)
+        myFormData.append("endTime" , details?.time.end)
   
         let files = sortFiles(details.photosNames ,  details.photos)
         
@@ -21,12 +23,9 @@ const usePut = ({details, setSecondPage, setDetails, dispatch , setDetailsShow})
             myFormData.append(`addFiles` , files.addedArr[i] )
           }
   
-      dispatch(putMyTask([myFormData, details.id , details]))
-  
-      setSecondPage( (value) => ({...value , task : {...details}}) )
-      setDetailsShow(false)
+      return await dispatch(putMyTask([myFormData, details.id , details]))
       
-    } , [details, setSecondPage, dispatch, setDetailsShow] ) 
+    } , [details, dispatch] ) 
     return putTask
 };
 

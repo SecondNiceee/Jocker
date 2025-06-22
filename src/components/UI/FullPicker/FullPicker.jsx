@@ -1,4 +1,4 @@
-import React, { memo, useEffect, useMemo, useRef } from "react";
+import { memo, useEffect, useMemo, useRef } from "react";
 import cl from "./FullPicker.module.css";
 import Text from "../../Text/Text";
 const FullPicker = ({
@@ -62,15 +62,6 @@ const FullPicker = ({
           </>
         )
       })}
-
-
-      
-
-
-
-
-
-
 
     </div>
   );

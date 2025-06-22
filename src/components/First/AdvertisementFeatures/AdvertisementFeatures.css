@@ -1,0 +1,37 @@
+.features-container{
+   @apply flex gap-[6.67px] ml-[18px] mt-[13.33px];
+}
+.feature{
+    @apply flex py-[4.84px] px-[7.53px];
+    border-radius: 6.625px;
+}
+.urgent{
+    
+    background: rgba(255, 214, 10, 0.10);
+}
+.urgent-text{
+    color: #FFD60A;
+}
+
+.warrent{
+    background: rgba(53, 202, 91, 0.10);
+}
+.warrent-text{
+    color: #35CA5B;
+}
+
+.outside{
+    background: rgba(150, 154, 159, 0.10);
+}
+.outside-text{
+    color: #969A9F;
+}
+
+.feature-text{
+    font-family: "SF Pro Display";
+    font-size: 12.046px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: 11.324px; /* 94.013% */
+    letter-spacing: 0.241px;
+}

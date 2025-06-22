@@ -10,6 +10,7 @@ import breakShare from "../../../functions/breakShare";
 import Text from "../../../components/Text/Text";
 import en from "../../../constants/language";
 import translation from "../../../functions/translate";
+import { useNavigate } from "react-router";
 
 
 const Reaction = ({
@@ -20,7 +21,10 @@ const Reaction = ({
   responce,
   writeButton = true,
   agree = false,
-  lastAds = false
+  lastAds = false,
+  setPhotos,
+  setPhotoIndex,
+  setSlideOpened
 }) => {
 
   const getAge = useCallback( (par) => {
@@ -90,6 +94,13 @@ const Reaction = ({
 } , [responce.user.link] )
 
 
+  const imageOnClick = (index) => () => {
+    setPhotos(responce.photos)
+    setPhotoIndex(index)
+    setSlideOpened(true)
+  }
+
+  const navigate = useNavigate();
 
   return (
     <>
@@ -105,8 +116,9 @@ const Reaction = ({
           <div className="reactions__images">
             {responce.photos.map((e, i) => (
               <img
+                onClick={imageOnClick(i)}
                 style={responce.photos.length === 1 ? { width: "100%" } : {}}
-                src={URL.createObjectURL(e)}
+                src={e}
                 alt=""
                 key={i}
               />
@@ -120,8 +132,9 @@ const Reaction = ({
           <img
             style={{objectFit : "cover"}}
             onClick={() => {
-              openAboutReactionFunc({ isActive: true, responce: responce });
+              navigate(`/Baidge/${responce.user.id}`)
             }}
+            
             className="icon"
             src={ responce.user.photo ? responce.user.photo.length > 0 ? responce.user.photo.split('https://').length === 2 ? responce.user.photo : `${process.env.REACT_APP_HOST}/${responce.user.id}/${responce.user.photo}` : userPhoto : userPhoto}
             alt=""
@@ -237,12 +250,6 @@ const Reaction = ({
             >
               Написать
             </MyButton>
-            {/* <svg style={{
-                strokeWidth : "1.67px",
-                stroke : "#2ea5ff"
-              }} width="18" height="21" viewBox="0 0 18 21" fill="none" xmlns="http://www.w3.org/2000/svg">
-  <path d="M14.0978 1.80176C15.8171 1.80176 16.247 3.18964 16.247 3.88358V19.2571C16.247 20.2179 15.4204 19.8976 14.0978 19.2571L9.46867 17.1752C9.46867 17.1752 9.08075 17.0151 8.64205 17.0151C8.20335 17.0151 7.81542 17.1752 7.81542 17.1752L3.18633 19.2571C1.86373 19.8976 1.03711 20.2179 1.03711 19.2571V3.88358C1.03711 2.21812 2.46992 1.80176 3.18633 1.80176H14.0978Z" stroke="#2EA5FF" strokeWidth="1.66667" />
-</svg> */}
             <FalseTie
               agree={agree}
               navigate={"responce"}

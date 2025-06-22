@@ -1,0 +1,7 @@
+.rating-icon{
+    @apply min-w-[115px] absolute bottom-[-10px] left-[50%] -translate-x-1/2;
+}
+
+.rating-icon__text{
+    @apply z-30 absolute -bottom-[11.5px] left-1/2 -translate-x-1/2 leading-[55px] font-sf-pro-display-700 text-[17px] text-[#21303F];
+}

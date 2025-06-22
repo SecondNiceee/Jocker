@@ -23,13 +23,14 @@ export const fetchTon = createAsyncThunk(
           }
           let one = await getCurrencies();
           let two = await getTonPrice();
-          return en ? two : one * two;
+          return {tonValue : en ? two : one * two, dollarValue : one};
     }
 )
 const ton = createSlice ({
     name : 'ton',
     initialState : {
         value : 0,
+        dollarValue : 0,
         status : null
     },
     reducers : {
@@ -38,7 +39,8 @@ const ton = createSlice ({
     extraReducers : builder => {
         builder.addCase( fetchTon.pending , (state) => {state.status = 'loading' })
         builder.addCase( fetchTon.fulfilled , (state , action) => {state.status = 'resolved'
-        state.value = action.payload } )
+        state.value = action.payload.tonValue;
+      state.dollarValue = action.payload.dollarValue } )
         builder.addCase (fetchTon.rejected , (state, action) => {state.status = 'erroe'} ) 
           }
     }

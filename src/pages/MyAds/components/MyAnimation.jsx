@@ -1,4 +1,4 @@
-import React, { memo } from "react";
+import { memo } from "react";
 import sad from "../../../animation/sadAnimation.json";
 import { useLottie } from "lottie-react";
 import Text from "../../../components/Text/Text";

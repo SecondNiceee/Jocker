@@ -4,18 +4,30 @@
     margin-top: 2px;
 }
 .First {
-  position: fixed;
-  overflow :scroll;
-  height: calc(100vh);
   display: flex;   
   transition: transform 0.4s;
   will-change: transform;
   overflow-x: hidden;
-  min-width: 100vw;
+  width: 100%;
+}
+
+body::-webkit-scrollbar {
+    display: none;
+}
+
+
+::-webkit-scrollbar {
+  width: 0;
+}
+::-webkit-scrollbar {
+    display: none;
+}
+/* Также можно применить к любому блоку с overflow */
+.scrollable-div::-webkit-scrollbar {
+    display: none;
 }
 
 .first-container{
-    min-height: calc(100vh);
     transition: 0.4s;
     display: flex;
 }
@@ -31,12 +43,8 @@
 }
 
 .first-wrapper{
-    height: max-content;
     display: flex;
-    transform: translateX(0%);
-    transition: transform 0.4s;
-    will-change: transform;
-    width: 100vw;
+    width: 100;
     margin-bottom: 96px;
 }
 .status{
@@ -72,7 +80,7 @@
     // height: calc(100vh);
     // overflow-y: scroll;
     transition: 0.5s;
-    min-width: 100vw;
+    min-width: 100%;
 }
 
 
@@ -115,7 +123,7 @@
 
 
 .FirstMain { 
-  width: calc(100vw - 32px);
+  width: 100%;
   margin-top: calc(17px);
   display: flex;
   overflow: hidden;
@@ -203,7 +211,7 @@
         }
     }
     .FirstMain__top {
-        margin-top: 17.33px;
+        margin-top: 15.33px;
         padding-left: 17px;
         padding-right: 19px;
         align-items: center;
@@ -219,14 +227,14 @@
         }
         p {
       /* Default text */
-      color: rgb(255, 255, 255);
-      font-family: "SF Pro Display";
-      font-size: 14.67px;
-      font-weight: 500;
-
-      letter-spacing: 0%;
-      text-align: left;
-      max-width: 237px;
+            color: #FFF;
+            font-family: "SF Pro Rounded 600";
+            font-size: 16px;
+            font-style: normal;
+            font-weight: 600;
+            line-height: 19.667px; /* 122.917% */
+            letter-spacing: 0.448px;
+            max-width: 237px;
         }
   }
   .circle{
@@ -290,13 +298,12 @@
         gap: 5px;
     }
     .FirstMain__price-up p{
-        color: rgba(255, 255, 255, 0.5);
+        color: #FFF;
         font-family: "SF Compact Rounded";
-        font-size: 23.33px;
+        font-size: 20.019px;
+        font-style: normal;
         font-weight: 500;
-        line-height: 28px;
-        letter-spacing: 0%;
-        text-align: left;
+        line-height: normal;
     }
     .FirstMain__price-up{
         opacity: 1;

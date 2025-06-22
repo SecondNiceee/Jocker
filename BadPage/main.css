@@ -3,6 +3,18 @@ body{
     padding: 0;
 }
 
+body::-webkit-scrollbar {
+  display: none;             /* Chrome, Safari и Opera */
+}
+
+::-webkit-scrollbar {
+  width: 0;
+}
+
+::-webkit-scrollbar {
+    display: none; 
+}
+
 .lottieAnimation{
     width: 200px;
     height: 200px;

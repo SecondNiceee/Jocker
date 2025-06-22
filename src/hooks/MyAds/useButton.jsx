@@ -24,7 +24,9 @@ export const useButton = ({
   writeFucntion,
   goBack,
   showDetails,
-  myAdOneAdvertisement
+  myAdOneAdvertisement,
+  isSliderOpened,
+  closeSlider
 }) => {
 
   const balance = useSelector(state => state.balance.value)
@@ -41,19 +43,12 @@ export const useButton = ({
 
 
 
-
-
-
-  
-
-
   useEffect(() => {
 
-    
+    if (!isSliderOpened){
+    MainButton.offClick(closeSlider);  // Емли слайдер закрыт , то отвязываем функцию закрытия
     if (!walletH){
 
-    
-      
       BackButton.show();
 
       if (isOpen.isActive) {
@@ -156,18 +151,22 @@ export const useButton = ({
           });
         }
       }
-  
-      BackButton.onClick(goBack);
     }
     else{
       menu.classList.add("appearAnimation")
       menu.classList.remove("disappearAnimation")
+    } } 
+    else{
+      MainButton.show();
+      MainButton.setText("Закрыть")
+      MainButton.onClick(closeSlider)
     }
+
     if (happyHold){
       MainButton.setText(translation("Перейти к заданию"))
     }
+    BackButton.onClick(goBack);
     
-
     return () => {
       MainButton.setParams({
         color: "#2ea5ff",

@@ -5,13 +5,15 @@ import { useSelector } from "react-redux";
 
 const AllReactions = ({
   setFilterBy,
-  openAboutReactionFunc,
   responces,
-  setOpen,
   filteredArray,
-  getMore
+  getMore,
+  setPhotos,
+  setPhotoIndex,
+  setSliderOpened
 }) => {
   const status = useSelector( state => state.responses.responsesByAStatus )
+
   return (
     <>
       {status === "pending" ? (
@@ -24,11 +26,12 @@ const AllReactions = ({
         />
       ) : (
         <ReactionBlock
+          setPhotoIndex={setPhotoIndex}
+          setPhotos={setPhotos}
+          setSlideOpened={setSliderOpened}
           getMore = {getMore}
           setFilterBy={setFilterBy}
-          openAboutReactionFunc={openAboutReactionFunc}
           responces={filteredArray}
-          setOpen={setOpen}
         />
       )}
     </>
