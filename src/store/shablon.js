@@ -1,7 +1,7 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
 import makeNameFiles from "../functions/makeNameFiles";
-import makeNewFile from "../functions/newMakeFile";
+import { USERID } from "../constants/tgStatic.config";
 export const deleteShablon = createAsyncThunk(
   "shablon/deleteShablon",
   async function(id){
@@ -57,7 +57,7 @@ export const postShablon = createAsyncThunk(
         let im = await axios.post(`${process.env.REACT_APP_HOST}/template` , data[0] , 
         {
           params : {
-            userId : window.Telegram.WebApp.initDataUnsafe.user.id
+            userId : USERID
           },
           headers: {
             "Content-Type" :'multipart/form-data',
@@ -90,8 +90,7 @@ export const fetchAllShablons = createAsyncThunk(
         let im = await axios.get(`${process.env.REACT_APP_HOST}/template/findByUser` , 
             {
                 params : {
-                    userId : window.Telegram.WebApp.initDataUnsafe.user.id 
-                    // userId : window.Telegram.WebApp.initDataUnsafe.user.id 
+                    userId : USERID
                 },
                 headers : {
                   "X-API-KEY-AUTH" : process.env.REACT_APP_API_KEY
@@ -106,7 +105,7 @@ export const fetchAllShablons = createAsyncThunk(
           
           let files = []
           if (e.photos){
-             files = await makeNewFile(e.folder, e.photos)
+             files = e.photos;
           }
               localShablons.push({
                   id : e.id,

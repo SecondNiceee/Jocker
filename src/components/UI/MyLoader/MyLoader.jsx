@@ -1,13 +1,12 @@
 import { Triangle } from "react-loader-spinner";
 import cl from "./MyLoader.module.css"
 import { forwardRef } from "react";
-const MyLoader = forwardRef(({text, ...props}, ref) => {
+const MyLoader = forwardRef(({text, className, ...props}, ref) => {
     return (
       <div
        {...props}
-        className={cl.main}
+        className={`${cl.main} ${className}`}
       >
-
             <div ref={ref} style={{
                 width : "1px",
                 height : "2000px",

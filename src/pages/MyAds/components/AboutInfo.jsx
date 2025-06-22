@@ -30,7 +30,7 @@ const AboutInfo = ({ responce, isTelesgramVisible = true }) => {
           },
           (buttonId) => {
             if (buttonId === "save" || buttonId === null) {
-              console.log("Ok");
+              
             }
           }
         );

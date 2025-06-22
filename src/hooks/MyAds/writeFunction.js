@@ -7,6 +7,7 @@ import { setStartResponse } from "../../store/responses";
 import axios from "axios";
 import { fetchUserInfo } from "../../store/telegramUserInfo";
 import { useMemo } from "react";
+import { USERID } from "../../constants/tgStatic.config";
 
 
 
@@ -16,14 +17,6 @@ function useWriteFucntion({walletH, buyPage, setBuyPage, happyHold, setOpen, isO
 }) {
 
 
-  // window.Telegram.WebApp.initDataUnsafe.user.id
-
-  // window.Telegram.WebApp.initDataUnsafe.user.id
-
-
-  //window.Telegram.WebApp.initDataUnsafe.user.id
-
-  //window.Telegram.WebApp.initDataUnsafe.user.id
 
   const serviceUs = useMemo( () => {
     return Number(myAdOneAdvertisement.tonValue) * 0.015 + 0.01
@@ -51,7 +44,6 @@ function useWriteFucntion({walletH, buyPage, setBuyPage, happyHold, setOpen, isO
         "X-API-KEY-AUTH" : process.env.REACT_APP_API_KEY
       }
     })
-    console.log("window.Telegram.WebApp.initDataUnsafe.user.id" ,secondPage.task.tonValue );
   
     
   }
@@ -82,7 +74,7 @@ function useWriteFucntion({walletH, buyPage, setBuyPage, happyHold, setOpen, isO
                 navigate('/Profile')
               }
               if (buttonId === "delete" || buttonId === null) {
-                console.log("Он отказался");
+
               }
             }
           );
@@ -91,7 +83,6 @@ function useWriteFucntion({walletH, buyPage, setBuyPage, happyHold, setOpen, isO
           if (!buyPage){
 
             setBuyPage(true)
-            console.log("Buy page стал true")
           }
           else{
             if (happyHold){
@@ -101,8 +92,6 @@ function useWriteFucntion({walletH, buyPage, setBuyPage, happyHold, setOpen, isO
                 // setSecondPage({ ...secondPage, isActive: false });
             }
             else{
-              console.log(balance)
-              console.log(secondPage.task.tonValue)
               if (Number(balance) < (rezult + serviceUs + service)){
   
                 setWalletH(true)
@@ -121,8 +110,7 @@ function useWriteFucntion({walletH, buyPage, setBuyPage, happyHold, setOpen, isO
                     },
                     (buttonId) => {
                       if (buttonId === "save" || buttonId === null) {
-                        console.log("ок");
-                        
+                    
                       }
                     }
                   );
@@ -140,7 +128,7 @@ function useWriteFucntion({walletH, buyPage, setBuyPage, happyHold, setOpen, isO
                     },
                     (buttonId) => {
                       if (buttonId === "save") {
-                          hold(window.Telegram.WebApp.initDataUnsafe.user.id, String(  rezult.toFixed(6) ) ,  service.toFixed(6), serviceUs.toFixed(6)  ).then(value => {
+                          hold(USERID, String(  rezult.toFixed(6) ) ,  service.toFixed(6), serviceUs.toFixed(6)  ).then(value => {
                           window.Telegram.WebApp.HapticFeedback.notificationOccurred("success");
                           dispatch(setStartTask(myAdOneAdvertisement.id)).then(value =>
                           dispatch(setStartResponse([myAdOneResponse , myAdOneAdvertisement]))
@@ -157,21 +145,10 @@ function useWriteFucntion({walletH, buyPage, setBuyPage, happyHold, setOpen, isO
                         }).catch(value => {
                           console.log(value);
                           alert(translation("Холд не прошел. Отправте в поддержку следующее сообщение"))
-                          alert(JSON.stringify(value))
-                          
-                        } )
-    
-    
-    
-                         
-
-                          // MainButton.setText(translation("Перейти к заданию"))
-      
+                          alert(JSON.stringify(value))                    
+                        } )  
                       }
-                      if (buttonId === "delete" || buttonId === null) {
-                        console.log("Он отказался");
-                        console.log("Да это так");
-                        
+                      if (buttonId === "delete" || buttonId === null) {                        
                       }
                     }
                   );

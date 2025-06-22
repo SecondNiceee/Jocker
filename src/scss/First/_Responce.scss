@@ -1,19 +1,14 @@
 .responce-wrapper{
     // overflow-y: scroll;
-    min-width: 100vw;
-    width: 100vw;
-    padding-bottom: 60px;
+    padding-bottom: 16px;
     padding-top: 18px;
     padding-left: 16px;
     padding-right: 16px;
-    position: fixed;
-    left: 100vw;
-    height: calc(100vh);
     top: 0;
     overflow-y: auto;
-    transform: translateX(100%);
     // height: calc(100vh);
-    z-index: 100000;
+    left: 0;
+    width: 100%;
     transition: 0.4s;
     background-color: #18222d;;
     will-change: transform;

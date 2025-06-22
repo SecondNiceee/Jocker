@@ -1,4 +1,4 @@
-import React, { memo, useMemo } from "react";
+import { memo, useMemo } from "react";
 import FullPicker from "../../../components/UI/FullPicker/FullPicker";
 import ModalChoicer from "../../../components/UI/ModalChoicer/ModalChoicer";
 import { useSelector } from "react-redux";

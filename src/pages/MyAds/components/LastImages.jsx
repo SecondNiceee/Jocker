@@ -6,7 +6,7 @@ const LastImages = ({images}) => {
         <div className="last-images">
           {images.map( e  => {
             return (
-              <img src={URL.createObjectURL(e)} alt="" />
+              <img src={e} alt="" />
             )
           })}
         </div>

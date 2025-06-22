@@ -57,15 +57,14 @@
 }
 .FirstMain__top p{
     /* Default text */
-    color: rgb(255, 255, 255);
-    font-family: "SF Pro Display";
-    font-size: calc(44px * 0.325);
-    font-weight: 500;
-    line-height: calc(53px * 0.32) ;
-    letter-spacing: 0%;
-    text-align: left;
-    max-width: calc(730px * 0.32);
-    margin-right: auto;
+    color: #FFF;
+    font-family: "SF Pro Rounded 600";
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: 19.667px; /* 122.917% */
+    letter-spacing: 0.448px;
+    max-width: 237px;
 }
 .circle{
     min-width: calc(84px * 0.32);
@@ -162,10 +161,6 @@
     flex-direction: column;
     transition: 0.5s
 }
-.FirstMenu.hidden{
-    left: -100%;
-}
-
 
 .FirstMenu .FirstMenu__top{
     display: flex;

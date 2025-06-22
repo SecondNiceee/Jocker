@@ -1,115 +1,171 @@
-import React, { memo, useEffect, useRef, useState } from 'react';
-import './TextAboutMe.css'
-import Text from '../../Text/Text';
-import translation from '../../../functions/translate';
-const TextAboutMe = ( { aboutU , darkSide, className, textareaClassName, ...props } ) => {
-    const [hideAboutMe, setHideAboutMe] = useState({
-      isActive : false,
-      show : false
-    })
-    const [empty , setEmpy] = useState(false)
-    const areaRef = useRef(null)
-    const refTwo = useRef(null)
+import { memo, useEffect, useRef, useState } from "react"
+import "./TextAboutMe.css"
+import Text from "../../Text/Text"
+import translation from "../../../functions/translate"
 
+const TextAboutMe = ({
+  aboutU,
+  darkSide = false,
+  className = {},
+  textareaClassName = {},
+  buttonClassNames = {},
+  ...props
+}) => {
+  const [isExpanded, setIsExpanded] = useState(false)
+  const [showReadMore, setShowReadMore] = useState(false)
+  const [isEmpty, setIsEmpty] = useState(false)
+  const [truncatedText, setTruncatedText] = useState("")
 
+  const textRef = useRef(null)
+  const measureRef = useRef(null)
 
-  useEffect( () => {
-    refTwo.current.value = aboutU
-    if (refTwo.current.scrollHeight > 140){
-      if (!hideAboutMe.show){
+  // Функция для обрезания текста до 3 строк с учетом многоточия
+  const truncateTextToThreeLines = (text) => {
+    if (!measureRef.current || !text) return text
 
-        setHideAboutMe((value) => ({...value, isActive : true}) )
-        areaRef.current.style.height = "136px"
-        let localAboutMe = aboutU;
-        while (refTwo.current.scrollHeight > 140){
-          
-          let localAboutMeArr = localAboutMe.split(' ')
-          localAboutMe = localAboutMeArr.slice(0 , localAboutMeArr.length - 1).join(' ')
-          refTwo.current.value = localAboutMe
-        
+    const element = measureRef.current
+
+    // Измеряем высоту одной строки
+    element.textContent = "A"
+    const singleLineHeight = element.scrollHeight
+
+    // Проверяем полный текст
+    element.textContent = text
+    const fullHeight = element.scrollHeight
+
+    // Если текст помещается в 3 строки, возвращаем как есть
+    if (fullHeight <= singleLineHeight * 3.2) {
+      return text
+    }
+
+    // Бинарный поиск с учетом многоточия
+    let left = 0
+    let right = text.length
+    let bestFit = ""
+
+    while (left <= right) {
+      const mid = Math.floor((left + right) / 2)
+
+      // Обрезаем текст и сразу добавляем многоточие
+      let testText = text.substring(0, mid).trim()
+
+      // Убираем последнее слово, если оно обрезано посередине
+      const words = testText.split(" ")
+      if (words.length > 1 && mid < text.length) {
+        // Проверяем, не обрезали ли мы слово посередине
+        const lastWord = words[words.length - 1]
+        const fullWordInOriginal = text.substring(mid - lastWord.length, mid + 10).split(" ")[0]
+
+        if (lastWord !== fullWordInOriginal) {
+          // Слово обрезано, убираем его
+          testText = words.slice(0, -1).join(" ")
         }
-        areaRef.current.value = localAboutMe + '...'
       }
-      else{
-        refTwo.current.value = aboutU
-        if (aboutU === ''){
-          refTwo.current.value = translation("Пользователь ничего не написал о себе")
-          areaRef.current.value = translation("Пользователь ничего не написал о себе")
-          setEmpy(true)
-        }
-        else{
-          areaRef.current.value = aboutU
-        }
 
+      testText += "..."
+
+      element.textContent = testText
+      const testHeight = element.scrollHeight
+
+      if (testHeight <= singleLineHeight * 3.2) {
+        bestFit = testText
+        left = mid + 1
+      } else {
+        right = mid - 1
       }
     }
-    else{
-      areaRef.current.style.borderRadius = "10px"
-      if (aboutU === ''){
-        setEmpy(true)
-          refTwo.current.value = translation("Пользователь ничего не написал о себе")
-          areaRef.current.value = translation("Пользователь ничего не написал о себе")
-      }
-      else{
-        areaRef.current.value = aboutU
-      }
+
+    return bestFit
+  }
+
+  useEffect(() => {
+    if (!aboutU || aboutU.trim() === "") {
+      setIsEmpty(true)
+      setShowReadMore(false)
+      setTruncatedText("")
+      return
     }
-    areaRef.current.style.height = (refTwo.current.scrollHeight).toString() + 'px'
-  } , [hideAboutMe.show, aboutU ] )
 
-    return (
-        <div {...props} className="ur__town">
-          
-          {darkSide 
-          ? <div className="background" style={hideAboutMe 
-            ? {display : 'block'}
-            : {display : 'none'}
-          }></div> 
-          : "" }
+    setIsEmpty(false)
 
+    setTimeout(() => {
+      if (measureRef.current && textRef.current) {
+        measureRef.current.style.width = `${textRef.current.offsetWidth - 16}px`
 
-          
-<textarea
-            ref={refTwo}
+        const truncated = truncateTextToThreeLines(aboutU)
+        setTruncatedText(truncated)
+        setShowReadMore(truncated !== aboutU)
+        setIsExpanded(false)
+      }
+    }, 100)
+  }, [aboutU])
 
-            readOnly={true}
-            spellCheck={false}
-            style={{
-              height : "42.8px",
-              width : "100%",
-              overflowY : "scroll",
-              position : 'absolute',
-              opacity : '0',
-              left : 0,
-              top : 0
-            }}
-            className= {textareaClassName ? ["about__u-text" , textareaClassName].join(' ') : "about__u-text"}
-          />
+  const displayText = isEmpty ? translation("Пользователь ничего не написал о себе") : aboutU
 
-          <textarea
-            ref={areaRef}
-            style={empty ? {opacity : 0.5} : {}}
-            readOnly={true}
-            spellCheck={false}
-            className={textareaClassName ? ["about__u-text" , textareaClassName].join(' ') : "about__u-text"}
-          />
+  let currentText
+  if (isEmpty) {
+    currentText = displayText
+  } else if (isExpanded) {
+    currentText = aboutU
+  } else {
+    currentText = truncatedText
+  }
 
-          
+  const handleToggle = () => {
+    setIsExpanded(!isExpanded)
+  }
 
-          <div style={hideAboutMe.isActive 
-        ? {display : 'flex'}
-        : {display : 'none'}} 
-          className="also" 
-          onClick={() => {  
+  return (
+    <div {...props} className={`ur__town ${className || ""}`}>
+      {darkSide && <div className="background" style={{ display: showReadMore ? "block" : "none" }} />}
 
-                    setHideAboutMe({...hideAboutMe, show : !hideAboutMe.show})
-          }}>
-            <Text>
-              {hideAboutMe.show ? 'Скрыть' : 'Развернуть'}
-            </Text>
-          </div>
+      <div
+        ref={measureRef}
+        className={`about__u-text ${textareaClassName || ""}`}
+        style={{
+          position: "absolute",
+          visibility: "hidden",
+          height: "auto",
+          whiteSpace: "pre-wrap",
+          wordWrap: "break-word",
+          lineHeight: "21px",
+          top: "-9999px",
+          left: "-9999px",
+          padding: "8px",
+        }}
+      />
+
+      <div
+        ref={textRef}
+        className={`about__u-text ${textareaClassName || ""}`}
+        style={{
+          opacity: isEmpty ? 0.5 : 1,
+          whiteSpace: "pre-wrap",
+          wordWrap: "break-word",
+          lineHeight: "21px",
+          minHeight: "21px",
+          transition: "all 0.3s ease",
+          borderRadius : showReadMore ? "10px 10px 6px 6px" : "10px"
+        }}
+      >
+        {currentText}
+      </div>
+
+      {showReadMore && (
+        <div
+          className={`also ${buttonClassNames || ""}`}
+          onClick={handleToggle}
+          style={{
+            display: "flex",
+            cursor: "pointer",
+            marginTop: "5px",
+          }}
+        >
+          <Text>{isExpanded ? "Скрыть" : "Читать далее"}</Text>
         </div>
-    );
-};
+      )}
+    </div>
+  )
+}
 
-export default memo(TextAboutMe);
+export default memo(TextAboutMe)

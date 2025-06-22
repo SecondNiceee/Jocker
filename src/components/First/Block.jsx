@@ -1,80 +1,112 @@
-import React, { memo, useMemo } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { memo, useMemo } from "react";
+import { useDispatch } from "react-redux";
 
 import Photos from "./FirstMain/Photos";
 import MyAdsTop from "./FirstMain/MyAdsTop";
 import FirstMainTop from "./FirstMain/FirstMainTop";
 import FirstMainMiddle from "./FirstMain/FirstMainMiddle";
 import MainBottom from "./FirstMain/MainBottom";
+import AdvertisementFeatures from "./AdvertisementFeatures/AdvertisementFeatures";
 
 const Block = ({
   className,
-  taskName,
-  time,
   end = false,
-
-  setDetailsActive,
   isButton,
-  photos,
   isMyAds,
   deleteFunction,
   myAdsFunc,
   isResponce,
   isWatched,
   index,
-  id,
-  tonValue,
   task,
   agree = false,
-  responseCounter,
-  viewsNumber,
-  category,
-  endTime,
-  singleTime,
   whichOne,
-  status,
-  showStatus = false
+  showStatus = false,
+  setPhotoIndex,
+  setPhotos,
+  setSliderOpened,
+  isFirst,
+  setDetailsActive
 }) => {
   const dispatch = useDispatch();
-  const tonConstant = useSelector((state) => state.ton.value);
 
-  const timing = useMemo( () => {
-    if (!end){
-      return time
-    }
-    else{
-      if (whichOne === "startOnly"){
-        return {end : singleTime}
-      }
-      else{
-        return {end : endTime}
+
+  const timing = useMemo(() => {
+    if (!end) {
+      return task.time;
+    } else {
+      if (whichOne === "startOnly") {
+        return { end: task.singleTime };
+      } else {
+        return { end: task.endTime };
       }
     }
-  } , [end, endTime, singleTime, time, whichOne] )
+  }, [end, task.endTime, task.singleTime, task.time, whichOne]);
 
-  
+  console.log(task);
+
+  const isFirstDetailsPhotos = (!isMyAds && !isResponce && !isButton) || isFirst // Фотки принадлежат подробнее в первом  первой страничке
+
   return (
     <>
-      {photos && (
+    
         <div
           className={
             className ? ["First__block", className].join(" ") : "First__block"
           }
         >
-          <Photos photos={photos} />
+          <Photos
+            end = {end}
+            isResponse = {isResponce}
+            isFirstDetailsPhotos = {isFirstDetailsPhotos}
+            setPhotoIndex={setPhotoIndex}
+            setPhotos={setPhotos}
+            setSliderOpened={setSliderOpened}
+            photos={task.photos}
+          />
 
-          <MyAdsTop showStatus = {showStatus} status = {status} isMyAds={isMyAds} isResponce={isResponce} viewsNumber={viewsNumber} responseCounter={responseCounter} />
+          <AdvertisementFeatures />
 
-          <FirstMainTop isMyAds={isMyAds} category={category} isWatched={isWatched} taskName={taskName} id={id}  end={end} />
+          <MyAdsTop
+            showStatus={showStatus}
+            status={task.status}
+            isMyAds={isMyAds}
+            isResponce={isResponce}
+            viewsNumber={task.viewsNumber}
+            responseCounter={task.responseCounter}
+          />
 
-          <FirstMainMiddle  time={timing} />
+          <FirstMainTop
+            className={"FirstMain__top"}
+            isMyAds={isMyAds}
+            category={task.category}
+            isWatched={isWatched}
+            taskName={task.taskName}
+            id={task.id}
+            end={end}
+          />
 
-        <MainBottom 
-          {...{tonConstant, tonValue, isMyAds, myAdsFunc, isButton, end, id, agree, task, isResponce, setDetailsActive,index, dispatch,deleteFunction}}
-            />
+          <FirstMainMiddle time={timing} />
+
+          <MainBottom
+            {...{
+              tonValue  : task.tonValue,
+              isMyAds,
+              myAdsFunc,
+              isButton,
+              end,
+              id : task.id,
+              agree,
+              task,
+              isResponce,
+              index,
+              dispatch,
+              deleteFunction,
+              setDetailsActive
+            }}
+          />
         </div>
-      ) 
-    }
+      
     </>
   );
 };

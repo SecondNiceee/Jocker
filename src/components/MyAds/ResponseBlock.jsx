@@ -1,13 +1,13 @@
-import React, { memo, useMemo } from "react";
+import { memo, useMemo } from "react";
 import Pallete from "../UI/Pallete/Pallete";
-import ShareIcon from "../UI/ShareIcon/ShareIcon";
 import FalseTie from "../UI/FalseTie/FalseTie";
 import { useSelector } from "react-redux";
 import MyButton from "../UI/MyButton/MyButton";
 import formatDate from "../../functions/makeDate";
 import Text from "../Text/Text";
 import en from "../../constants/language";
-import RealTon from "../../images/icons/RealTon.svg";
+import { shareFunction } from "../../functions/shareFunction";
+import ShareIcon from "../UI/ShareIcon/ShareIcon";
 
 
 const textPrice = en ? 'USD' : "RUB"
@@ -27,13 +27,19 @@ const ResponseBlock = ({
   index,
   isWatched,
   category,
+  showStatus = false,
+  setPhotoIndex,
+  setPhotos,
+  setSlideOpened,
+  isForSliderOpened, // перемнная для понимания, что нужно делать при нажатии на фотки
   ...props
 }) => {
+
   const tonConstant = useSelector((state) => state.ton.value);
 
   const watchingValue = useMemo(() => {
     if (isWatched === "") {
-      return "Не просмотрено";
+    return "Не просмотрено";
     }
     if (isWatched === "watched") {
       return "Просмотрено";
@@ -60,6 +66,19 @@ const ResponseBlock = ({
     }
   }, [isWatched]);
 
+
+
+  const onClickImage = (id) => () => {
+    if (isForSliderOpened){
+      setPhotoIndex(id)
+      setPhotos(photos)
+      setSlideActive(true)
+    }
+    else{
+      func(index)
+    }
+  }
+
   return (
     <>
       {photos !== undefined ? (
@@ -74,15 +93,9 @@ const ResponseBlock = ({
               {photos.map((e, i) => {
                 return (
                   <img
-                    onClick={() => {
-                      setSlideActive({
-                        isActive: true,
-                        index: i,
-                        photos: photos,
-                      });
-                    }}
                     key={i}
-                    src={URL.createObjectURL(e)}
+                    src={e}
+                    onClick={onClickImage(i)}
                     style={
                       photos.length === 1
                         ? {
@@ -112,7 +125,7 @@ const ResponseBlock = ({
             <Pallete category={category} />
             <Text>{taskName}</Text>
             <ShareIcon
-              onClick={ShareIcon(id)}
+              onClick={shareFunction(id)}
               className="share__icon"
             />
           </div>
@@ -125,7 +138,7 @@ const ResponseBlock = ({
             <div className="FirstMain__bottom-left">
               <div className="FirstMain__price-up">
                 <p>{tonValue} TON</p>
-                <img src={RealTon} alt="" />
+                <img src={"/images/icons/RealTon.svg"} alt="" />
               </div>
               <div className="FirstMain__price-bottom">
                 <p>
@@ -151,8 +164,9 @@ const ResponseBlock = ({
       ) : (
         <div></div>
       )}
+
     </>
-  );
+  )
 };
 
 export default memo(ResponseBlock);

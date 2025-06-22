@@ -9,7 +9,7 @@ import MainButton from "../../constants/MainButton";
 import { useDispatch, useSelector } from "react-redux";
 import { CSSTransition } from "react-transition-group";
 import ModalInput from "../../components/UI/ModalInput/ModalInput";
-import ChoiceCategory from "../AdCreatingOne/ChoiceCategory/ChoiceCategory";
+import ChoiceCategory from "../AdCreatingOne/ui/components/ChoiceCategory/ChoiceCategory";
 import { putCard } from "../../store/telegramUserInfo";
 import sortFiles from "../../functions/sortFiles";
 import Text from "../../components/Text/Text";
@@ -39,13 +39,8 @@ const ChangeCards = ({save, setCardsOpen, setAboutU, index, card, aboutU }) => {
 
     cardStart =  Object.assign({}, card);
   } , [card])
-
   window.Telegram.WebApp.disableVerticalSwipes();
-  
   const [cardsSetting, setCardsSetting] = useState(Object.assign({}, card));
-
-
-  console.log(cardsSetting)
   const dispatch = useDispatch();
   const [errors, setErrors] = useState({
     nameError: false,
@@ -122,7 +117,6 @@ const ChangeCards = ({save, setCardsOpen, setAboutU, index, card, aboutU }) => {
 
       if (!modalActive && !isCategoryChoiceOpen){
         if (compare2Objects(cardsSetting, card)){
-          console.log("Я тут")
           MainButton.setParams({
             is_active: false, //неизвесетно
             color: "#2f2f2f",
@@ -130,7 +124,6 @@ const ChangeCards = ({save, setCardsOpen, setAboutU, index, card, aboutU }) => {
           });
         }
         else{
-          console.log("Сравнение не сработало")
           MainButton.setParams({
             color: "#2ea5ff",
             text_color: "#ffffff",
@@ -197,7 +190,6 @@ const ChangeCards = ({save, setCardsOpen, setAboutU, index, card, aboutU }) => {
       myFormData.append("behance" , String(localCardSetting.behanceLink.trim()))
       myFormData.append("dribble" , String(localCardSetting.dribbbleLink.trim()))
       myFormData.append("dropFile" , String(localCardSetting.dropfileLink.trim()))
-      
       let files = sortFiles(cardsSetting.photosNames , cardsSetting.photos)
       files.addedArr.forEach((e,i) => {
         myFormData.append(`addFiles` , e)
@@ -206,12 +198,6 @@ const ChangeCards = ({save, setCardsOpen, setAboutU, index, card, aboutU }) => {
         myFormData.append(`deleteFiles[${i}]` , e)
       })
       dispatch(putCard([myFormData, localCardSetting.id, cardsSetting]))
-      // localCardSetting.photos.forEach(e => {
-      //   myFormData.append('photos' , e)
-      // })
-
-      // dispatch(changeCards({ id: index, card: localCardSetting }));
-      // document.documentElement.style.overflow = "auto";
       setCardsOpen(false);
     }
     else{

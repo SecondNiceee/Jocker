@@ -1,0 +1,114 @@
+.left-right{
+    padding: 0px 16px;
+    padding-top: 20px;
+    min-width: 100vw;
+    height: calc(100vh);
+    overflow-y: scroll;
+    position: relative;
+    z-index: 999;
+    padding-bottom: 97px;
+    position: fixed;
+    left: 0;
+    top: 0;
+    background-color: rgb(24, 34, 45);
+    transition:  transform 0.3s;
+    width: 100%;
+    transform: translateX(100%);
+}
+.left-right-enter{
+    transform: translateX(0%);
+}
+.left-right-enter-active{
+    transform: translateX(0%);
+
+}
+.left-right-enter-done{
+    transform: translateX(0%);
+
+}
+.left-right-exit-active{
+    transform: translateX(100%);
+    transition:  transform .3s;
+}
+.left-right-exit-done{
+    transform: translateX(100%);
+    transition:  transform .3s;
+}
+
+
+
+.left-right1{
+    padding: 0px 16px;
+    padding-top: 20px;
+    min-width: 100vw;
+    height: calc(100vh);
+    overflow-y: scroll;
+    position: relative;
+    z-index: 999;
+    padding-bottom: 97px;
+    position: fixed;
+    left: 0;
+    top: 0;
+    background-color: rgb(24, 34, 45);
+    transition:  transform 0.3s;
+    width: 100%;
+    transform: translateX(100%);
+}
+.left-right1-enter{
+    transform: translateX(0%);
+}
+.left-right1-enter-active{
+    transform: translateX(0%);
+
+}
+.left-right1-enter-done{
+    transform: translateX(0%);
+
+}
+.left-right-exit-active{
+    transform: translateX(100%);
+    transition:  transform .3s;
+}
+.left-right1-exit-done{
+    transform: translateX(100%);
+    transition:  transform .3s;
+}
+
+
+
+.left-right1{
+    padding: 0px 16px;
+    padding-top: 20px;
+    min-width: 100vw;
+    height: calc(100vh);
+    overflow-y: scroll;
+    position: relative;
+    z-index: 999;
+    padding-bottom: 97px;
+    position: fixed;
+    left: 0;
+    top: 0;
+    background-color: rgb(24, 34, 45);
+    transition:  transform 0.3s;
+    width: 100%;
+    transform: translateX(100%);
+}
+.left-right1-enter{
+    transform: translateX(0%);
+}
+.left-right1-enter-active{
+    transform: translateX(0%);
+
+}
+.left-right1-enter-done{
+    transform: translateX(0%);
+
+}
+.left-right-exit-active{
+    transform: translateX(100%);
+    transition:  transform .3s;
+}
+.left-right1-exit-done{
+    transform: translateX(100%);
+    transition:  transform .3s;
+}

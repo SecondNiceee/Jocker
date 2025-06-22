@@ -29,27 +29,27 @@
     transform: translateX(0%);
   }
   50%{
-    transform: translateX(calc(-100vw - 10px));
+    transform: translateX(calc(-100% - 10px));
   }
   100%{
-    transform: translateX(-100vw);
+    transform: translateX(-100%);
   }
 }
 @keyframes stepTwo{
   0%{
-    transform: translateX(-100vw);
+    transform: translateX(-100%);
   }
   50%{
-    transform: translateX(calc(-200vw - 10px));
+    transform: translateX(calc(-200% - 10px));
   }
   100%{
-    transform: translateX(-200vw);
+    transform: translateX(-200%);
   }
 }
 
 @keyframes oneBack{
   0%{
-    transform: translateX(-100vw);
+    transform: translateX(-100%);
   }
   50%{
     transform: translateX(calc(10px));
@@ -61,13 +61,13 @@
 
 @keyframes twoBack{
   0%{
-    transform: translateX(-200vw);
+    transform: translateX(-200%);
   }
   50%{
-    transform: translateX(calc(-100vw + 10px));
+    transform: translateX(calc(-100% + 10px));
   }
   100%{
-    transform: translateX(-100vw);
+    transform: translateX(-100%);
   }
 }
 
@@ -287,11 +287,10 @@
 
 
 .adCreatingThree-wrapper{
-  min-width: 100vw;
+  min-width: 100%;
 }
 .AdCreating__container{
   padding-bottom: 76px;
-  min-height: calc(100vh);
   display: flex;
   will-change: transform;
 }

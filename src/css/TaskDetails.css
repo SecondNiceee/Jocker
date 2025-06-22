@@ -1,15 +1,11 @@
 .TaskDetails {
   position: absolute;
   left: 0px;
-  transform: translateX(110%);
   top: 0;
   z-index: 10;
   width: 100%;
   background: rgb(24, 34, 45);
   padding: 20.552px 17.4912px;
-  -webkit-transition: 0.45s;
-  transition: transform 0.45s;
-  will-change: transform;
   height: calc(100vh);
 }
 .TaskDetails.active {

@@ -1,32 +1,32 @@
 .about__u-text{
     font-family: "SF Pro Display 400";
     font-weight: 400;
-    font-size: 16px;
-    line-height: 117%;
-    letter-spacing: 0.01em;
+    font-size: 17.33px;
+    line-height: 21px;
+    letter-spacing: 0.173px;
+    min-height: 37px;
     color: white;
     text-align: left;
     outline: none;
-    background-color: #242c37;
+    background-color: #20303f;
     overflow-y: hidden;
-
+    resize: none;
     border-radius: 10px 10px 6px 6px;
-    padding: 12px 16px;
-
+    padding: 10px 16px;
 }
-.also{
+.ur__town .also{
     display: flex;
     align-items: center;
     justify-content: center;
     border-radius: 6px 6px 10px 10px;
     width: 100%;
-    height: 43px;
-    background: #20303f;
+    margin-top: 5px;
+    height: 44.33px;
+    background: #1A2F42;
     border: none;
-
-
+    cursor: pointer;
 }
-.also p{
+.ur__town .also p{
     font-family: "SF Pro Display";
     font-weight: 500;
     font-size: 17px;

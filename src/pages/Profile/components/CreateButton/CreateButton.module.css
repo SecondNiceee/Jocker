@@ -6,6 +6,7 @@
   align-items: center;
   gap: 7px;
   background-color: #2ea5ff;
+  cursor: pointer;
 }
 .container p {
   font-family: "SF Pro Display 600";

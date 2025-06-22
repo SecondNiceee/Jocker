@@ -10,16 +10,8 @@ const CardsArray = ({deleteFunction , cards ,setChangeActive  , setIndex }) => {
             <Case
               deleteFunction={() => {
                 deleteFunction(i, e);
-
-                // index = i
-                // setAboutU({...aboutULocal , cards : [...aboutU.cards.filter((e , i) => {
-                //   return i !== index
-                // })]})
-                // dispatch(deleteCard(index))
-                // dispatch(deleteServerCard(e.id))
               }}
               changeFunction={() => {
-                // document.documentElement.style.overflow = "hidden";
                 setChangeActive(true);
                 setIndex(i);
               }}

@@ -17,4 +17,46 @@
 }
 .textContainer p span {
   color: #62bbff;
+}
+
+.createButton {
+  position: relative;
+  overflow: hidden;
+}
+
+@keyframes changeColor {
+  0% {
+    opacity: 1;
+    left: -300px;
+  }
+  90% {
+    left: 120%;
+    opacity: 1;
+  }
+  92% {
+    left: 120%;
+    opacity: 0;
+  }
+  98% {
+    opacity: 0;
+    left: -300px;
+  }
+  100% {
+    opacity: 0;
+    left: -300px;
+  }
+}
+.animation {
+  opacity: 0;
+  transform: rotate(90deg);
+  scale: 1.1;
+  transition: left 0.4s ease-in-out;
+  top: 0;
+  left: -100px;
+  position: absolute;
+  border-radius: 100%;
+  /* fill: #52deff; */
+  scale: 2;
+  filter: blur(10px);
+  animation: changeColor 1.7s infinite both;
 }/*# sourceMappingURL=PayBlock.module.css.map */

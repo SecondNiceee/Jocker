@@ -3,12 +3,14 @@ function sortFiles(photosNames , files){
     let removedArr = []
     let addedArr = []
     for (let fileName of photosNames ){
-        if (!files.find(e => e.name === fileName)){
-          removedArr.push(fileName)
-        }
-    }
+
+          if (!files.includes(fileName)){
+            removedArr.push(fileName)
+          }
+      }
+       
     for (let file of files){
-      if (file.name.includes('nick')){
+      if (file instanceof File){
         addedArr.push(file)
       }
     }

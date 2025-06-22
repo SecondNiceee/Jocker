@@ -1,28 +1,50 @@
+import { useNavigate } from "react-router-dom";
+import { compareTwoObject } from "./compareTwoObject";
 
-import { useNavigate } from 'react-router-dom';
-import { compareTwoObject } from './compareTwoObject';
+const useBack = ({
+  walletH,
+  happyHold,
+  setOpen,
+  isOpen,
+  setBuyPage,
+  setHappyHold,
+  buyPage,
+  oneCards,
+  setOneCard,
+  openAboutReaction,
+  details,
+  detailsTwo,
+  setDetailsTwo,
+  setPageValueTwo,
+  secondPage,
+  setPageValueOne,
+  setSecondPage,
+  lastAdsTwo,
+  setLastAdsTwo,
+  myResponse,
+  setMyResponse,
+  save,
+  setOpenAboutReaction,
+  setShowDetails,
+  showDetails,
+  myAdOneAdvertisement,
+  isSliderOpened,
+  setSliderOpened
+}) => {
+  const navigate = useNavigate();
 
-const useBack = ({walletH, happyHold, setOpen, isOpen, setBuyPage, setHappyHold, buyPage, oneCards, setOneCard, openAboutReaction, details, detailsTwo, setDetailsTwo, setPageValueTwo,secondPage,  setPageValueOne, setSecondPage, lastAdsTwo, setLastAdsTwo, myResponse, setMyResponse, save, setOpenAboutReaction , setShowDetails , showDetails, myAdOneAdvertisement}) => {
-    const navigate = useNavigate()
-
-
-    function goBack() {
-        if (!walletH){
-    
-        
-        if (happyHold){
+  function goBack() {
+    if (!isSliderOpened){
+      if (!walletH) {
+        if (happyHold) {
           setOpen({ ...isOpen, isActive: false });
-          setBuyPage(false)
-          setHappyHold(false)
+          setBuyPage(false);
+          setHappyHold(false);
           // setSecondPage({ ...secondPage, isActive: false });
-        }
-        else{
-    
-          if (buyPage){
-            setBuyPage(false)
-          }
-          else{
-    
+        } else {
+          if (buyPage) {
+            setBuyPage(false);
+          } else {
             if (oneCards.isOpen) {
               setOneCard((value) => ({ ...value, isOpen: false }));
             } else {
@@ -32,17 +54,17 @@ const useBack = ({walletH, happyHold, setOpen, isOpen, setBuyPage, setHappyHold,
                     setDetailsTwo((value) => ({ ...value, isOpen: false }));
                   } else {
                     if (isOpen.isActive) {
-                      setPageValueTwo(false)
+                      setPageValueTwo(false);
                       // isPageValueTwo = false
                       setOpen({ ...isOpen, isActive: false });
                     } else {
                       if (secondPage.isActive) {
-                        setPageValueOne(false)
+                        setPageValueOne(false);
                         setSecondPage((value) => ({ ...value, isActive: false }));
                         // isPageValueOne = false
                       } else {
                         // if (history[history.length - 1] === '/AdCreating'){
-      
+  
                         //   navigate();
                         // }
                         // else{
@@ -52,7 +74,10 @@ const useBack = ({walletH, happyHold, setOpen, isOpen, setBuyPage, setHappyHold,
                           setLastAdsTwo((value) => ({ ...value, isOpen: false }));
                         } else {
                           if (myResponse.isOpen) {
-                            setMyResponse((value) => ({ ...value, isOpen: false }));
+                            setMyResponse((value) => ({
+                              ...value,
+                              isOpen: false,
+                            }));
                           } else {
                             navigate("/");
                           }
@@ -61,13 +86,16 @@ const useBack = ({walletH, happyHold, setOpen, isOpen, setBuyPage, setHappyHold,
                     }
                   }
                 } else {
-                  if (!compareTwoObject(myAdOneAdvertisement, {...details, myAds : undefined})){
+                  if (
+                    !compareTwoObject(myAdOneAdvertisement, {
+                      ...details,
+                      myAds: undefined,
+                    })
+                  ) {
                     save();
+                  } else {
+                    setShowDetails(false);
                   }
-                  else{
-                    setShowDetails(false)
-                  }
-                  
                 }
               } else {
                 setOpenAboutReaction({ ...openAboutReaction, isActive: false });
@@ -76,8 +104,12 @@ const useBack = ({walletH, happyHold, setOpen, isOpen, setBuyPage, setHappyHold,
           }
         }
       }
-      }
-      return goBack
+    }
+    else{
+      setSliderOpened(false)
+    }
+  }
+  return goBack;
 };
 
 export default useBack;

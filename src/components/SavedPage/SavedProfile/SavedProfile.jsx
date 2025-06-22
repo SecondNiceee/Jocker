@@ -1,4 +1,4 @@
-import React, { memo, useEffect, useState } from 'react';
+import { memo, useEffect, useState } from 'react';
 import cl from './SavedProfile.module.css'
 import AboutInfo from '../../../pages/MyAds/components/AboutInfo';
 import AboutMain from '../../../pages/MyAds/components/AboutMain';
@@ -6,7 +6,6 @@ import Compact from '../../UI/Compact/Compact';
 import Stage from '../../UI/Stage/Stage';
 import MyLoader from '../../UI/MyLoader/MyLoader';
 import ExampleWorks from '../../../pages/MyAds/components/ExampleWorks';
-import makeNewFile from '../../../functions/newMakeFile';
 import AboutTop from '../../../pages/MyAds/components/AboutTop';
 import axios from 'axios';
 const SavedProfile = ({responce, openFunc}) => {
@@ -31,7 +30,7 @@ const SavedProfile = ({responce, openFunc}) => {
           
           for (let e of allCards.data){
   
-            let files = await makeNewFile(e.folder , e.photos)
+            let files = e.photos
             localCards.push({
                 id : e.id,
                 title : e.title,
@@ -50,7 +49,7 @@ const SavedProfile = ({responce, openFunc}) => {
         }
         catch(e){
           window.Telegram.WebApp.showAlert(e)
-          console.log(e)
+          console.warn(e)
         }
   
   

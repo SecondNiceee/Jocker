@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import AdCreateFunc from "../../components/UI/AdCreateFunc/AdCreateFunc";
 import GreyText from "../../components/UI/GreyText/GreyText";
@@ -47,9 +47,6 @@ const AllShablons = () => {
 
   const shablonsArr = useSelector((state) => state.shablon.shablonsArr);
 
-  console.log('====================================');
-  console.log(shablonsArr);
-  console.log('====================================');
   const [mistakes, setMistakes] = useState( {
     name : false,
     text : false
@@ -126,8 +123,6 @@ const AllShablons = () => {
   );
 
 
-  
-
   const save = useCallback( (put) => {
     const myFormData = new FormData()
     myFormData.append("name" , String(shablon.name.trim()) )
@@ -201,8 +196,6 @@ const AllShablons = () => {
       setShablonShow( (value) => ({...value , isActive : false}) )
     }
   } , [check, save, shablon, putShablonState, setShablonShow] )
-
-
 
   useEffect(() => {
     function back() {

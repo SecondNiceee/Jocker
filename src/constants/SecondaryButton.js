@@ -1,0 +1,1 @@
+export const SecondatyButton = window.Telegram.WebApp.SecondaryButton;

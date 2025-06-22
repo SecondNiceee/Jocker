@@ -1,5 +1,4 @@
 function compareTwoObject(a1, a2) {
-    console.log(a1 , a2)
     if (JSON.stringify({...a1 , myAds : true}) !== JSON.stringify({...a2 , myAds : true})) {
       return false;
     }

@@ -1,5 +1,3 @@
-import React from 'react';
-import icon from '../../../images/icons/icon.svg';
 import LastTopCenter from './LastTopCenter';
 import LastLeftArr from './LastLeftArr';
 import { memo } from 'react';

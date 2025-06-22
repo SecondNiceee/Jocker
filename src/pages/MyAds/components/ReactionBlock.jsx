@@ -6,10 +6,11 @@ const values = ["all", "withCompletedTasks", "withCards"];
 const names = ["Все", "С выполненными заданиями", "С примерами работ"].map(e => translation(e));
 const ReactionBlock = ({
   setFilterBy,
-  setOpen,
   responces,
-  openAboutReactionFunc,
-  getMore
+  getMore,
+  setPhotos,
+  setPhotoIndex,
+  setSlideOpened
 }) => {
   //451
   return (
@@ -17,13 +18,14 @@ const ReactionBlock = ({
        
 
       <Responses
+        setPhotos = {setPhotos}
+        setPhotoIndex = {setPhotoIndex}
+        setSlideOpened = {setSlideOpened}
         getMore = {getMore}
         setFilterBy={setFilterBy}
         values={values}
         names={names}
         responces={responces}
-        openAboutReactionFunc={openAboutReactionFunc}
-        setOpen={setOpen}
       />
       
     </div>

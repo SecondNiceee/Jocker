@@ -7,8 +7,6 @@ import formatDate from "../../functions/makeDate";
 import BlockSpinner from "../UI/BlockSpinner/BlockSpinner";
 import Text from "../Text/Text";
 import en from "../../constants/language";
-import RealTon from "../../images/icons/RealTon.svg"
-import translation from "../../functions/translate";
 import { shareFunction } from "../../functions/shareFunction";
 
 const textPrice = en ? 'USD' : "RUB"
@@ -66,12 +64,12 @@ const MyFirstBlock = ({
           }
         >
           {photos.length ? (
-            <div className="first__photos">
+            <div onClick={() => myAdsFunc()} className="first__photos">
               {photos.map((e, i) => {
                 return (
                   <img
                     key={i}
-                    src={URL.createObjectURL(e)}
+                    src={e}
                     style={
                       photos.length === 1
                         ? {
@@ -146,7 +144,7 @@ const MyFirstBlock = ({
             <div className="FirstMain__bottom-left">
               <div className="FirstMain__price-up">
                 <p>{tonValue} TON</p>
-                <img src={RealTon} alt="" />
+                <img src={"/images/icons/RealTon.svg"} alt="" />
               </div>
               <div className="FirstMain__price-bottom">
                 <p>

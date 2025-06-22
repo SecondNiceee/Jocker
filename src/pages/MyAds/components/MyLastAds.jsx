@@ -6,23 +6,12 @@ import formatDate from "../../../functions/makeDate";
 import Text from "../../../components/Text/Text";
 import MainButton from "../../../constants/MainButton";
 const MyLastAds = ({
-
   openAboutReactionFunc,
-
-  responce
+  responce,
+  setPhotoIndex,
+  setPhotos,
+  setSlideOpened,
 }) => {
-
-
-  // useEffect( () => {
-  //   if (responce.isWatched !== "watched" && responce.isWatched !== "inProcess"){
-  //     dispatch(postResponse(responce.id))
-  //   }
-  //   // eslint-disable-next-line
-  // } , [] )
-
-
-
-
   return (
     <div
       style={MainButton.isVisible ? {paddingBottom : "74px"} : {paddingBottom : "97px"} } 
@@ -31,7 +20,7 @@ const MyLastAds = ({
 
       {/* <LastTop name = {name} photo = {photo} stage = {stage} openAboutReactionFunc={openAboutReactionFunc} /> */}
 
-      <Reaction writeButton = {false} blue = {true}   openAboutReactionFunc = {openAboutReactionFunc} put={true} responce={responce} />
+      <Reaction setPhotoIndex={setPhotoIndex} setPhotos={setPhotos} setSlideOpened={setSlideOpened} writeButton = {false} blue = {true}   openAboutReactionFunc = {openAboutReactionFunc} put={true} responce={responce} />
       
       {/* <LastImages images = {images} /> */}
       

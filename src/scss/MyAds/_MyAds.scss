@@ -257,7 +257,7 @@
 .PickerContent{
     will-change: transform;
     position: static;
-    min-width: calc(200vw);
+    min-width: calc(200% + 64px);
     display: flex;
     transition: 0.4s;
 
@@ -280,7 +280,9 @@
     flex-direction: column;
     height: calc(calc(100vh) - 252px);
     justify-content: center;
-    width: calc(100vw - 32px);
+    width: calc(100% - 32px);
+    margin-left: auto;
+    margin-right: auto;
 }
 .animation-text{
     font-family: "SF Compact Rounded";

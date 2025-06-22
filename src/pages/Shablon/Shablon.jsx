@@ -22,7 +22,7 @@ const Shablon = ({shablon, setShablon, setActive, put, isExitShow, exitText, mis
   useEffect( () => {
     function forward(){
       let myFormData = new FormData()
-      // myFormData.append("userId" ,  window.Telegram.WebApp.initDataUnsafe.user.id )
+      
       myFormData.append("name" , String(localShablon.name.trim()) )
       myFormData.append("text" , String(localShablon.text.trim()))
       if (put){

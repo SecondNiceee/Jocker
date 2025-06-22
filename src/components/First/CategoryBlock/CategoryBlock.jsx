@@ -1,7 +1,7 @@
 import React, { useCallback, useRef } from "react";
 import cl from "./CategoryBlock.module.css";
 import Text from "../../Text/Text";
-const CategoryBlock = ({ name, value , func, ...props }) => {
+const CategoryBlock = ({ name, value, isActive = true, func, ...props }) => {
 
   const myRef = useRef(null)
   const clickHandler = useCallback( (e) => {
@@ -16,8 +16,10 @@ const CategoryBlock = ({ name, value , func, ...props }) => {
 
 
   return (
-    <div style={{lineHeight : 0}} ref={myRef} onTouchStart={clickHandler} onTouchEnd={touchEnd} onClick={() => {
+    <div style={{lineHeight : 0, opacity : !isActive ? "0.5" : "1" }} ref={myRef} onTouchStart={clickHandler} onTouchEnd={touchEnd} onClick={() => {
+      if (isActive){
         func()
+      }
     }} {...props}  className={cl.wrapper}>
       <div className={cl.left}>
         <Text className={cl.name}>{name}</Text>

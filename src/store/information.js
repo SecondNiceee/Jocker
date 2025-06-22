@@ -1,7 +1,6 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
-
-import makeNewFile from "../functions/newMakeFile";
+import { USERID } from "../constants/tgStatic.config";
 
 export const addWatch = createAsyncThunk(
   "information/addWatch",
@@ -33,7 +32,7 @@ export const deleteAd = createAsyncThunk(
     try {
       await axios.delete(`${process.env.REACT_APP_HOST}/advertisement`, {
         params: {
-          id: id,
+          id: String(id),
         },
         headers : {
           "X-API-KEY-AUTH" : process.env.REACT_APP_API_KEY
@@ -48,8 +47,8 @@ export const deleteAd = createAsyncThunk(
 export const putMyTask = createAsyncThunk(
   "inforation/putMyTask",
   async function (data) {
-    console.log("ЭТО ПОСТ")
     try {
+      console.log(data);
       let answ = await axios.put(
         `${process.env.REACT_APP_HOST}/advertisement`,
         data[0],
@@ -61,29 +60,19 @@ export const putMyTask = createAsyncThunk(
             "Content-Type": "multipart/form-data",
             "Access-Control-Allow-Origin": "*",
             "X-API-KEY-AUTH" : process.env.REACT_APP_API_KEY
-            
           },
         }
       );
       let localTask = data[2];
-      let changedFiles = [];
+      localTask.photos = answ.data.photos;
 
-      for (let i = 0; i < localTask.photos.length; i++) {
-        let file = localTask.photos[i];
-        let blob = file.slice(0, file.size, "image/png");
-        let newFile = new File([blob], answ.data.photos[i], {
-          type: "image/png",
-        });
-        changedFiles.push(newFile);
-      }
-      localTask.photos = changedFiles;
-      localTask.photosNames = answ.data.photos;
+      console.log(localTask);
+      
 
       return {...localTask , myAds : true};
     } catch (e) {
       console.warn(e);
     }
-
     return false;
   }
 );
@@ -94,13 +83,14 @@ export const postMyTask = createAsyncThunk(
 
       for (let i = 0 ; i < 1; i++){
         try{
-          console.log("Создание задания")
-          await axios.post(`${process.env.REACT_APP_HOST}/advertisement`, arr[0], {
+          console.warn(arr)
+          const resp = await axios.post(`${process.env.REACT_APP_HOST}/advertisement`, arr[0], {
             headers: {
               "Content-Type" :'multipart/form-data',
               "X-API-KEY-AUTH" : process.env.REACT_APP_API_KEY
             },
           });
+          console.warn(resp);
         }
         catch(e){
           window.Telegram.WebApp.showAlert("Задание не было создано. Попробуйте позже")
@@ -108,75 +98,6 @@ export const postMyTask = createAsyncThunk(
           console.log(e)
         }
       }
-
-
-
-      // let tasks = [];
-      // let task = await axios.get(
-      //   `${process.env.REACT_APP_HOST}/advertisement/findByUser`,
-      //   {
-      //     params: {
-      //       page: 1,
-      //       userId: window.Telegram.WebApp.initDataUnsafe.user.id,
-      //       limit: 4,
-      //       // userId : window.Telegram.WebApp.initDataUnsafe.user.id
-      //     },
-      //     headers: {
-      //       "Content-Type": "multipart/form-data",
-      //       "Access-Control-Allow-Origin": "*",
-      //       "X-API-KEY-AUTH" : process.env.REACT_APP_API_KEY
-      //     },
-      //   }
-      // );
-
-
-      // if (task.data.length === 0) {
-      //   return [];
-      // } else {
-      //   for (let order of task.data) {
-      //     let files = await makeNewFile(order.folder, order.photos);
-      //     let responseCounter = await axios.get(`${process.env.REACT_APP_HOST}/response/countByAdvertisement` , {
-      //       params : {
-      //         "advertisementId" : order.id
-      //       },
-      //       headers : {
-      //         "X-API-KEY-AUTH" : process.env.REACT_APP_API_KEY
-      //       }
-      //     })
-      //     tasks.push({
-      //       id: order.id,
-      //       taskName: order.title,
-      //       executionPlace: "Можно выполнить удаленно",
-      //       time: {
-      //         start: new Date(order.startTime),
-      //         end: new Date(order.endTime),
-      //       },
-      //       tonValue: order.price,
-      //       taskDescription: order.description,
-      //       photos: files,
-      //       photosNames: order.photos,
-      //       rate: "5",
-      //       isActive: true,
-      //       creationTime: order.createdAt,
-      //       viewsNumber: order.views,
-      //       removedFiles: [],
-      //       addedFiles: [],
-      //       status: order.status,
-      //       user : order.user,
-      //       responseCounter : responseCounter.data,
-      //       category : order.category.id
-      //     });
-      //   }
-      //   return tasks;
-      // }
-
-
-
-    // } catch (e) {
-    //   alert(e)
-    //   alert("Произошла непредвиденная ошибка. Пожалуйста, попробуйте позже");
-    //   console.log(e);
-    // }
 
     return true;
   }
@@ -215,25 +136,21 @@ export const fetchMyOrders = createAsyncThunk(
         {
           params: {
             page: page,
-            userId: window.Telegram.WebApp.initDataUnsafe.user.id,
+            userId: USERID,
             limit: 1,
-            // userId : window.Telegram.WebApp.initDataUnsafe.user.id
           },
           headers: {
             "Content-Type": "multipart/form-data",
             "Access-Control-Allow-Origin": "*",
             "X-API-KEY-AUTH" : process.env.REACT_APP_API_KEY
-
           },
         }
       );
-
-
       if (task.data.length === 0) {
         return [];
       } else {
         for (let order of task.data) {
-          let files = await makeNewFile(order.folder, order.photos);
+          let files = order.photos;
           let responseCounter = await axios.get(`${process.env.REACT_APP_HOST}/response/countByAdvertisement` , {
             params : {
               "advertisementId" : order.id,
@@ -250,7 +167,8 @@ export const fetchMyOrders = createAsyncThunk(
               start: new Date(order.startTime),
               end: new Date(order.endTime),
             },
-            tonValue: order.price,
+            tonValue: order.tonPrice,
+            rubleValue : order.price,
             taskDescription: order.description,
             photos: files,
             photosNames: order.photos,
@@ -261,7 +179,6 @@ export const fetchMyOrders = createAsyncThunk(
             removedFiles: [],
             addedFiles: [],
             status: order.status,
-            user : order.user,
             responseCounter : responseCounter.data,
             category : order.category.id
           });
@@ -273,6 +190,7 @@ export const fetchMyOrders = createAsyncThunk(
     }
   }
 );
+
 
 export const fetchTasksInformation = createAsyncThunk(
   "information/fetchTasksInformation",
@@ -286,13 +204,12 @@ export const fetchTasksInformation = createAsyncThunk(
     // }
     let tasks = [];
     let task;
-    
     try {
       task = await axios.get(
         `${process.env.REACT_APP_HOST}/advertisement/findAll`,
         {
           params: {
-            limit: 2,
+            limit: 10,
             page: par,
           },
           headers : {
@@ -300,21 +217,17 @@ export const fetchTasksInformation = createAsyncThunk(
           }
         }
       );
-      console.log('====================================');
-      console.log(task);
-      console.log('====================================');
+      console.warn(task.data);
     } catch (e) {
       alert("Сейчас идет обновление, пожалуйста перезайдите через минуту")
       console.log(e);
     }
-
     if (task.data.length === 0) {
       return [];
-    } else {
+    } else {   
       try {
         for (let order of task.data) {
           let one = new Date(order.startTime);
-
           let two;
           if (order.endTime) {
             two = new Date(order.endTime);
@@ -322,7 +235,7 @@ export const fetchTasksInformation = createAsyncThunk(
             two = "";
           }
 
-          let files = await makeNewFile(order.folder, order.photos);
+          let files = order.photos;
 
           let imTwo = await axios.get(
             `${process.env.REACT_APP_HOST}/advertisement/findCount`,
@@ -339,12 +252,11 @@ export const fetchTasksInformation = createAsyncThunk(
           const newUser = {...order.user}
           try{
             if (newUser.photo.includes('http')){
-              const response = await axios.get(newUser.photo)
+              await axios.get(newUser.photo)
             }
           }
           catch{
             try{
-              console.log("photo update")
             const responce = await axios.put(`${process.env.REACT_APP_HOST}/user/photo`, {}, {
               params : {
                 userId : newUser.id
@@ -360,12 +272,15 @@ export const fetchTasksInformation = createAsyncThunk(
           }
           }
 
+          console.log(order);
+
           tasks.push({
             id: order.id,
             taskName: order.title,
             executionPlace: "Можно выполнить удаленно",
             time: { start: one, end: two },
-            tonValue: order.price,
+            tonValue: order.tonPrice,
+            rubleValue : order.price,
             taskDescription: order.description,
             photos: files,
             photosName: order.photos,
@@ -380,7 +295,7 @@ export const fetchTasksInformation = createAsyncThunk(
             user: newUser,
             createNumber : imTwo.data,
             category : order.category.id,
-            subCategory : order.subCategory[0].id
+            subCategory : order.subCategory.id
           });
         }
 
@@ -400,6 +315,13 @@ const information = createSlice({
     postTaskStatus: null,
     putTaskStatus: null,
     ordersIds : [],
+    advertisement : null,
+    response : null,
+    detailsAdvertisement : null,
+    baidgeUser : null,
+    baidgeCard : null,
+    myLocalResponses : [],
+    tasksPage : 1,
     taskInformation: {
       category: { name: "", value: "" },
       subCategory: "Выбрать",
@@ -408,6 +330,7 @@ const information = createSlice({
       photos: [],
       budget: 0,
       tonValue: 0,
+      rubleValue : 0,
       startTime: "",
       endTime: "",
       singleTime: "",
@@ -422,6 +345,28 @@ const information = createSlice({
     myPaginationArray: [],
   },
   reducers: {
+    addMyLocalResponses(state, action){
+      state.myLocalResponses.push(action.payload)
+    },
+    setPage( state, action ){
+      state.tasksPage = action.payload
+    },
+    setCard(state, action){
+      state.baidgeCard = action.payload;
+    },
+    setUser(state, action){
+      state.baidgeUser = action.payload;
+    },
+    setDetailsAdvertisement(state,action){
+      state.detailsAdvertisement = action.payload;
+    },
+    setAdvertisement(state,action){
+      console.log(action.payload);
+      state.advertisement = action.payload
+    },
+    setResponse(state, action){
+      state.response = action.payload
+    },
     clearMyOrders(state,action){
       state.myAdsArray = []
       state.ordersIds = []
@@ -440,7 +385,6 @@ const information = createSlice({
 
     changeStatus(state, action) {
       state.orderStatus = action.payload;
-      state.orderInformations = [];
     },
     clearTasks(state){
       state.orderInformations = [];
@@ -468,6 +412,7 @@ const information = createSlice({
           myAd.taskName = changedAd.taskName;
           myAd.taskDescription = changedAd.taskDescription;
           myAd.tonValue = changedAd.tonValue;
+          myAd.rubleValue = changedAd.rubleValue;
           myAd.time = { start: changedAd.time.start, end: changedAd.time.end };
         }
         return myAd;
@@ -536,6 +481,20 @@ const information = createSlice({
     });
     builder.addCase(putMyTask.fulfilled, (state, action) => {
       state.putTaskStatus = "complete";
+      state.advertisement = action.payload;
+      state.myAdsArray = [...state.myAdsArray.map( (order) => {
+        if (order.id === action.payload.id){
+          return action.payload
+        }
+        return order;
+      } )]
+      state.orderInformations = [...state.orderInformations.map((order) => {
+        if (order.id === action.payload.id){
+          console.warn(action.payload);
+          return {order, ...action.payload}
+        }
+        return order;
+      } )]
 
       state.myAdsArray = state.myAdsArray.map((e) => {
         if (e.id === action.payload.id) {
@@ -552,6 +511,7 @@ const information = createSlice({
       state.myAdsArray = state.myAdsArray.filter(
         (e) => e.id !== action.payload
       );
+      state.orderInformations = state.orderInformations.filter((e) => e.id !== action.payload);
     });
   },
 });
@@ -564,6 +524,13 @@ export const {
   addResponce,
   changeStatus,
   getMoreMyAds,
-  clearTasks
+  clearTasks,
+  setAdvertisement,
+  setResponse,
+  setDetailsAdvertisement,
+  setUser,
+  setCard,
+  setPage,
+  addMyLocalResponses
 } = information.actions;
 export default information.reducer;

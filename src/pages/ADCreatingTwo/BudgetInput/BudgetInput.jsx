@@ -29,7 +29,6 @@ const BudgetInput = ({
 
   function format(strPar) {
     const newStr = strPar.replace('.' , ',')
-    console.log(newStr)
     const one = newStr.split(',')[0]
     const two = newStr.split(',')[1]
     if (two){

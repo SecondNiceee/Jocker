@@ -1,20 +1,17 @@
-import React, { memo, useMemo } from 'react';
+import { memo, useMemo } from 'react';
 import cl from './Pallete.module.css'
-import PalleteImg from '../../../images/icons/TrulyDesign.svg'
-import ItSvg from "../../../images/icons/IT.svg"
-import MoreSvg from "../../../images/icons/More.svg"
 const Pallete = ({className , category}) => {
     const imageSrc = useMemo( () => {
         switch (category){
             case 1 : 
-                return MoreSvg
+                return "/images/icons/More.svg"
             case 2:
-                return PalleteImg
+                return "/images/icons/TrulyDesign.svg"
             default :
-                return ItSvg
+                return "/images/icons/IT.svg"
 
         }
-    } , [category]  )
+    } , [category]  );
     return (
         <div style={category === 2 ? {transform : "translateY(1px)"} : {}} className = {className ? [cl.Pallete , className].join(' ') : cl.Pallete}>
             <img src = {imageSrc} alt="" />

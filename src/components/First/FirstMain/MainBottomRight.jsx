@@ -1,4 +1,4 @@
-import React, { memo } from "react";
+import  { memo } from "react";
 import QOne from "./QOne";
 import QTwo from "./QTwo";
 import QThree from "./QThree";
@@ -19,7 +19,6 @@ const MainBottomRight = ({
   deleteFunction
 }) => {
 
-  
   return (
     <div className="FirstMain__bottom-right">
       <QOne isMyAds={isMyAds} myAdsFunc={myAdsFunc} isButton={isButton} />
@@ -35,16 +34,16 @@ const MainBottomRight = ({
       />
 
       <QThree
+        setDetailsActive = {setDetailsActive}
         isMyAds={isMyAds}
         isButton={isButton}
         isResponce={isResponce}
-        setDetailsActive={setDetailsActive}
         index={index}
         dispatch={dispatch}
         id={id}
       />
 
-      <QFour isResponce={isResponce} deleteFunction={deleteFunction} isButton={isButton} setDetailsActive={setDetailsActive} />
+      <QFour id = {id} isResponce={isResponce} deleteFunction={deleteFunction} isButton={isButton} setDetailsActive={setDetailsActive} />
     </div>
   );
 };

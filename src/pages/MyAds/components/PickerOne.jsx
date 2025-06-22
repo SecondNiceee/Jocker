@@ -1,4 +1,4 @@
-import React, { forwardRef,  useEffect,  useMemo, useRef } from 'react';
+import {useEffect,  useMemo, useRef } from 'react';
 
 import MyResponses from './MyResponses';
 import MyLoader from '../../../components/UI/MyLoader/MyLoader';
@@ -6,22 +6,12 @@ import {  useDispatch, useSelector } from 'react-redux';
 import { clearResponses, fetchResponses } from '../../../store/responses';
 
 
-const PickerOne = forwardRef(({responsesArr, buttonFunction,  oneValue ,  nowValue, viewsNumber, setViewsNumber } , ref) => {
-
-
-
-    console.warn(responsesArr)
-
-
-
+const PickerOne = ({responsesArr, oneValue }) => {
 
     const interRef = useRef(null)
-
   
     const responsesStatus = useSelector(state => state.responses.status)
   
-   
-
     const text = useMemo( () => {
         switch (oneValue){
             case "all":
@@ -55,22 +45,26 @@ const PickerOne = forwardRef(({responsesArr, buttonFunction,  oneValue ,  nowVal
 
     return (
 
+        <>
+            <div style={{
+                alignSelf : "flex-start"
+            }} className="picker__block">
+                {(responsesStatus === "complete" || responsesStatus === "all") ? 
+                
+                <MyResponses  text = {text}  responsesArr = {responsesArr}  />
+                :
+                <MyLoader style = {{height : "60vh" , transform : "translateX(-16px)"}}/> 
+                }
+                <div ref={interRef} className="intersection-block">
 
-        <div ref={ref} style={{
-            alignSelf : "flex-start"
-        }} className="picker__block">
-            {(responsesStatus === "complete" || responsesStatus === "all") ? 
-            
-            <MyResponses text = {text} nowValue = {nowValue}  viewsNumber = {viewsNumber} setViewsNumber = {setViewsNumber} responsesArr = {responsesArr} buttonFunction = {buttonFunction} />
-            :
-            <MyLoader style = {{height : "60vh" , transform : "translateX(-16px)"}}/> 
-             }
-             <div ref={interRef} className="intersection-block">
+                </div>
+                
+        </div>
 
-             </div>
-      </div>
+                             
+        </>
 
     );
-} );
+} 
 
 export default PickerOne;
