@@ -9,7 +9,7 @@ const FirstMainTop = ({isMyAds , className, category, isWatched, taskName, id, e
 
   return (
     <div
-      className={"FirstMain__top"}
+      className={`FirstMain__top ${className}`}
       style={isMyAds ? { marginTop: "13px" } : {}}
     >
       <Pallete category={category} />

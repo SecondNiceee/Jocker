@@ -1,9 +1,7 @@
-import { lazy, useEffect, Suspense, useRef, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { useLocation, useNavigate } from "react-router-dom";
+import { lazy, useEffect, Suspense, useState} from "react";
+import { useDispatch } from "react-redux";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import { AnimatePresence } from "framer-motion";
-import axios from "axios";
 
 import "./css/Main.css";
 import "./css/Fonts.css";
@@ -22,11 +20,7 @@ import { fetchTon } from "./store/ton";
 import { fetchUserInfo } from "./store/telegramUserInfo/thunks/fetchUserInfo";
 import { Triangle } from "react-loader-spinner";
 import { getCategorys, getSubCategorys } from "./store/categorys";
-import { fetchAllShablons } from "./store/shablon";
 
-import { fetchAllIds } from "./store/saves";
-
-import { getBalance } from "./store/balance";
 import FirstDetails from "./components/First/FirstDetails/FirstDetails";
 import ShowMyResponse from "./components/MyAds/ShowMyResponse/ShowMyResponse";
 import ChangeAdvertisement from "./pages/ChangeAdvertisement/ChangeAdvertisement";
@@ -45,7 +39,7 @@ import ChoiceSubCategory from "./pages/AdCreatingOne/ui/components/ChoiceCategor
 const NewChangeCard = lazy( () => import('./pages/NewChangeCard/NewChangeCard') )
 const HappyPage = lazy(() => import("./pages/HappyHold/HappyPage"));
 const   First = lazy(() => import("./pages/First/First"));
-const AdCreating = lazy(() => import("./pages/AdCreating"));
+const AdCreating = lazy(() => import("./pages/AdCreating/AdCreating"));
 const NewProfile = lazy(() => import("./pages/Profile/NewProfile"));
 const Balance = lazy(() => import("./pages/Balance"));
 const MyAds = lazy(() => import("./pages/MyAds/MyAds"));
@@ -61,8 +55,6 @@ const BaidgeCreating = lazy(() =>
 const NewCardsPage = lazy( () => import("./pages/NewCardsPage/NewCardsPage") )
 
 const StatisticPage = lazy( () => import("./pages/StatisticPage/StatisticPage") )
-
-
 
 export const API_KEY = process.env.REACT_APP_API_KEY;
 
@@ -92,66 +84,56 @@ const MyLoader = () => {
 };
 
 const AnimatedSwitch = () => {
-  const location = useLocation();
-  const isMenuActive = useSelector((state) => state.menuSlice.value);
+  // const navigate = useNavigate();
 
-  const menuRef = useRef(null);
-  const navigate = useNavigate();
+  // const congratulate = useSelector(
+  //   (state) => state.telegramUserInfo.congratulate
+  // );
 
-  const congratulate = useSelector(
-    (state) => state.telegramUserInfo.congratulate
-  );
-  const userId = useSelector((state) => state.telegramUserInfo.id);
+  // const [showCongradulate, setShowCongradulate] = useState(true);
 
-  const [showCongradulate, setShowCongradulate] = useState(true);
+  // useEffect(() => {
+  //   if (congratulate && congratulate.length > 0 && showCongradulate) {
+  //     navigate("/HappyPage");
+  //   }
+  // }, [congratulate, navigate, showCongradulate]);
 
-  useEffect(() => {
-    if (congratulate && congratulate.length > 0 && showCongradulate) {
-      navigate("/HappyPage");
-    }
-  }, [congratulate, navigate, showCongradulate]);
 
-  useEffect(() => {
-  window.history.scrollRestoration = 'manual';
-  }, []);
+  // useEffect(() => {
+  //   async function makeUserVisit(params) {
+  //     try {
+  //       await axios.put(
+  //         `${process.env.REACT_APP_HOST}/user/visit`,
+  //         {},
+  //         {
+  //           params: {
+  //             userId: String(userId),
+  //           },
+  //           headers: {
+  //             "X-API-KEY-AUTH": process.env.REACT_APP_API_KEY,
+  //           },
+  //         }
+  //       );
+  //     } catch (e) {
+  //       console.warn(e);
+  //     }
+  //   }
+  //   if (userId) {
+  //     makeUserVisit();
+  //   }
+  // }, [userId]);
 
-  useEffect(() => {
-    async function makeUserVisit(params) {
-      try {
-        await axios.put(
-          `${process.env.REACT_APP_HOST}/user/visit`,
-          {},
-          {
-            params: {
-              userId: String(userId),
-            },
-            headers: {
-              "X-API-KEY-AUTH": process.env.REACT_APP_API_KEY,
-            },
-          }
-        );
-      } catch (e) {
-        console.warn(e);
-      }
-    }
-    if (userId) {
-      makeUserVisit();
-    }
-  }, [userId]);
 
   return (
     <>
-      <FirstMenu ref={menuRef} />
+      <FirstMenu />
+
       <div
-        className="container"
+        className="container overflow-y-hidden"
       >
-        <div
-          style={isMenuActive ? { opacity: "0.6" } : { maxWidth: "0px" }}
-          className="black"
-        ></div>
 
         <AnimatePresence>
-          <Routes location={location} key={location.pathname}>
+          <Routes >
             <Route element = {<AppLayout />}>
             
               <Route
@@ -173,9 +155,7 @@ const AnimatedSwitch = () => {
               <Route
                 path="/changeCard/:id"
                 element={
-                  <Suspense fallback={<MyLoader />}>
                     <NewChangeCard isNewCard={false} />
-                  </Suspense>
                 }
               />
 
@@ -411,11 +391,11 @@ const AnimatedSwitch = () => {
                 element={
                   <Suspense fallback={<MyLoader />}>
                     <HappyPage
-                      setShowCongradulate={setShowCongradulate}
-                      congradulate={congratulate}
-                      task={
-                        congratulate ? congratulate[congratulate.length - 1] : []
-                      }
+                      // setShowCongradulate={setShowCongradulate}
+                      // congradulate={congratulate}
+                      // task={
+                      //   congratulate ? congratulate[congratulate.length - 1] : []
+                      // }
                     />
                   </Suspense>
                 }
@@ -461,7 +441,6 @@ function App() {
     window.Telegram.WebApp.setBackgroundColor("#18222d");
     window.Telegram.WebApp.expand();
     window.Telegram.WebApp.ready(); 
-    window.Telegram.WebApp.expand();
     window.Telegram.WebApp.disableVerticalSwipes();
     try{
       if (isIphone()){
@@ -479,7 +458,7 @@ function App() {
 
   const dispatch = useDispatch();
 
-  const address = useSelector((state) => state.telegramUserInfo.address);
+  // const address = useSelector((state) => state.telegramUserInfo.address);
 
   window.Telegram.WebApp.ready();
 
@@ -490,17 +469,19 @@ function App() {
     dispatch(fetchUserInfo());
     dispatch(getCategorys());
     dispatch(getSubCategorys());
-    dispatch(fetchAllShablons());
-    dispatch(fetchAllIds());
+    // dispatch(fetchCommonRating());
+    // dispatch(fetchRatingByProfession())
+    // dispatch(fetchAllShablons());
+    // dispatch(fetchAllIds());
     // dispatch(fetchAllValues());
   }, [dispatch]);
 
 
-  useEffect(() => {
-    if (address) {
-      dispatch(getBalance({ userAddress: address }));
-    }
-  }, [address, dispatch]);
+  // useEffect(() => {
+  //   if (address) {
+  //     dispatch(getBalance({ userAddress: address }));
+  //   }
+  // }, [address, dispatch]);
 
   return (
     <BrowserRouter basename="/">

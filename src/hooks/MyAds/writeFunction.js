@@ -143,7 +143,6 @@ function useWriteFucntion({walletH, buyPage, setBuyPage, happyHold, setOpen, isO
                           MainButton.setText(translation("Перейти к заданию"))
       
                         }).catch(value => {
-                          console.log(value);
                           alert(translation("Холд не прошел. Отправте в поддержку следующее сообщение"))
                           alert(JSON.stringify(value))                    
                         } )  

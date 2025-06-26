@@ -3,7 +3,6 @@ import { USERID } from "../../../constants/tgStatic.config";
 import { useSelector } from "react-redux";
 
 const useIsMyResponse = ({detailsAdertisement}) => {
-  console.log(detailsAdertisement);
   const myLocalResponses = useSelector((state) => state.information.myLocalResponses);
       const isMyResponse = useMemo( () => {
         if (detailsAdertisement){
@@ -26,7 +25,6 @@ const useIsMyResponse = ({detailsAdertisement}) => {
       },[detailsAdertisement ] )
 
       const isMyTask = useMemo( () => {
-        console.log(detailsAdertisement);
         if (detailsAdertisement){
             if (String(detailsAdertisement.user.id) === String(USERID)){
               return true

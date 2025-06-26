@@ -1,6 +1,7 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
 import { USERID } from "../constants/tgStatic.config";
+import { formatUserFromApi } from "../functions/api/formatUserFromApi";
 
 export const addWatch = createAsyncThunk(
   "information/addWatch",
@@ -48,7 +49,6 @@ export const putMyTask = createAsyncThunk(
   "inforation/putMyTask",
   async function (data) {
     try {
-      console.log(data);
       let answ = await axios.put(
         `${process.env.REACT_APP_HOST}/advertisement`,
         data[0],
@@ -66,9 +66,6 @@ export const putMyTask = createAsyncThunk(
       let localTask = data[2];
       localTask.photos = answ.data.photos;
 
-      console.log(localTask);
-      
-
       return {...localTask , myAds : true};
     } catch (e) {
       console.warn(e);
@@ -83,14 +80,12 @@ export const postMyTask = createAsyncThunk(
 
       for (let i = 0 ; i < 1; i++){
         try{
-          console.warn(arr)
-          const resp = await axios.post(`${process.env.REACT_APP_HOST}/advertisement`, arr[0], {
+          await axios.post(`${process.env.REACT_APP_HOST}/advertisement`, arr[0], {
             headers: {
               "Content-Type" :'multipart/form-data',
               "X-API-KEY-AUTH" : process.env.REACT_APP_API_KEY
             },
           });
-          console.warn(resp);
         }
         catch(e){
           window.Telegram.WebApp.showAlert("Задание не было создано. Попробуйте позже")
@@ -127,7 +122,6 @@ export const setStartTask = createAsyncThunk(
 
 export const fetchMyOrders = createAsyncThunk(
   "information/fetchMyOrders",
-
   async function (page) {
     try {
       let tasks = [];
@@ -160,6 +154,9 @@ export const fetchMyOrders = createAsyncThunk(
             }
           })
           tasks.push({
+            isOutSide : order.isOutSide,
+            isUrgently : order.isUrgently,
+            isWarranty : order.isWarranty,
             id: order.id,
             taskName: order.title,
             executionPlace: "Можно выполнить удаленно",
@@ -167,6 +164,7 @@ export const fetchMyOrders = createAsyncThunk(
               start: new Date(order.startTime),
               end: new Date(order.endTime),
             },
+            outSideButtonUrl : order.outSideButtonUrl,
             tonValue: order.tonPrice,
             rubleValue : order.price,
             taskDescription: order.description,
@@ -217,7 +215,6 @@ export const fetchTasksInformation = createAsyncThunk(
           }
         }
       );
-      console.warn(task.data);
     } catch (e) {
       alert("Сейчас идет обновление, пожалуйста перезайдите через минуту")
       console.log(e);
@@ -250,31 +247,16 @@ export const fetchTasksInformation = createAsyncThunk(
           );
 
           const newUser = {...order.user}
-          try{
-            if (newUser.photo.includes('http')){
-              await axios.get(newUser.photo)
-            }
-          }
-          catch{
-            try{
-            const responce = await axios.put(`${process.env.REACT_APP_HOST}/user/photo`, {}, {
-              params : {
-                userId : newUser.id
-              },
-              headers : {
-                "X-API-KEY-AUTH" : process.env.REACT_APP_API_KEY
-              }
-            })
-            newUser.photo = responce.data
-          }
-          catch(e){ 
-            newUser.photo = ""
-          }
-          }
 
-          console.log(order);
+          // checkUserPhoto(newUser);
+
+          const rezultUser = formatUserFromApi(newUser);
 
           tasks.push({
+            outSideButtonUrl : order.outSideButtonUrl,
+            isOutSide : order.isOutSide,
+            isUrgently : order.isUrgently,
+            isWarranty : order.isWarranty,
             id: order.id,
             taskName: order.title,
             executionPlace: "Можно выполнить удаленно",
@@ -292,13 +274,12 @@ export const fetchTasksInformation = createAsyncThunk(
             viewsNumber: order.views,
             responces: order.responses,
             status: order.status,
-            user: newUser,
+            user: rezultUser,
             createNumber : imTwo.data,
             category : order.category.id,
             subCategory : order.subCategory.id
           });
         }
-
       } catch (e) {
         console.warn(e);
       }
@@ -338,9 +319,7 @@ const information = createSlice({
       time: { start: null, end: null },
 
     },
-
     orderInformations: [],
-
     myAdsArray: [],
     myPaginationArray: [],
   },
@@ -361,7 +340,6 @@ const information = createSlice({
       state.detailsAdvertisement = action.payload;
     },
     setAdvertisement(state,action){
-      console.log(action.payload);
       state.advertisement = action.payload
     },
     setResponse(state, action){
@@ -388,13 +366,13 @@ const information = createSlice({
     },
     clearTasks(state){
       state.orderInformations = [];
+      state.tasksPage = 1
     },
     addResponce(state, action) {
       state.orderInformations = state.orderInformations.map((e) => {
         if (e.id === action.payload[0]) {
           e.responces.push(action.payload[1]);
         }
-        console.log(e);
         return e;
       });
     },
@@ -490,7 +468,6 @@ const information = createSlice({
       } )]
       state.orderInformations = [...state.orderInformations.map((order) => {
         if (order.id === action.payload.id){
-          console.warn(action.payload);
           return {order, ...action.payload}
         }
         return order;
@@ -531,6 +508,6 @@ export const {
   setUser,
   setCard,
   setPage,
-  addMyLocalResponses
+  addMyLocalResponses,
 } = information.actions;
 export default information.reducer;

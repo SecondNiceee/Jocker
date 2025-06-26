@@ -5,6 +5,7 @@ import en from "../constants/language";
 export const fetchTon = createAsyncThunk(
     'ton/fetchTon',
     async function () {
+      try{
         async function getCurrencies() { // Полуение долларов
             const response = await fetch(
               "https://www.cbr-xml-daily.ru/daily_json.js"
@@ -21,9 +22,13 @@ export const fetchTon = createAsyncThunk(
             const data = await response.json();
             return data.market_data.current_price.usd;
           }
-          let one = await getCurrencies();
-          let two = await getTonPrice();
+          let one = await getCurrencies().then().catch( (error) => console.warn(error) );
+          let two = await getTonPrice().then().catch( (error) => console.warn(error));
           return {tonValue : en ? two : one * two, dollarValue : one};
+      }
+      catch(e){
+        return {tonValue : 230, dollarValue : 80}
+      }
     }
 )
 const ton = createSlice ({

@@ -3,7 +3,6 @@ import getYearWord from "../../../functions/getYearWord";
 
 const useGetProfileStatistics = ({userConfig }) => {
     
-    console.log(userConfig)
     return [
         {
             title : "Позиция в общем рейтинге",

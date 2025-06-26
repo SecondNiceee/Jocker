@@ -1,11 +1,8 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
-
 import translation from "../functions/translate";
 import en from "../constants/language";
-import makeNewUser from "../functions/makeNewUser";
 import { USERID } from "../constants/tgStatic.config";
-
 
 
 export const fetchResponseByAdvertisement = createAsyncThunk(
@@ -24,7 +21,9 @@ export const fetchResponseByAdvertisement = createAsyncThunk(
               }
             }
           );
+          
           let responces = im.data;
+
           for (let i = 0; i < responces.length; i++) {
             let photos = [];
     
@@ -43,9 +42,19 @@ export const fetchResponseByAdvertisement = createAsyncThunk(
     
             responces[i].photos = photos;
             responces[i].advertisement = task
-            responces[i].user.cardsNumber = b.data
+            responces[i].user.cardsNumber = b.data;
             
-    
+            // if (responces[i].user.profession){
+            //     try{
+            //         const {commonRating, ratingByProfession} = await fetchUserRating(responces[i].user);
+            //         responces[i].user.commonRating = commonRating;
+            //         responces[i].user.ratingByProfession = ratingByProfession;
+            //     }
+            //     catch(e){
+            //         console.warn("Не удалось найти рейтинг ")
+            //     }
+            // }
+            
             try {
               let imTwo = await axios.get(
                 `${process.env.REACT_APP_HOST}/advertisement/findCount`,
@@ -194,7 +203,6 @@ export const fetchResponses = createAsyncThunk(
     async function (par){
         try{
 
-        
         let im = await axios.get(`${process.env.REACT_APP_HOST}/response/findByUser` , {
             params : {
                 "userId" : USERID,
@@ -207,13 +215,9 @@ export const fetchResponses = createAsyncThunk(
               }
         })
 
-
-
-
         let localResponses = im.data
 
-        let me = par[0]
-        
+        let me = par[0]        
 
         for (let i = 0; i < localResponses.length; i++){
 
@@ -296,9 +300,9 @@ export const fetchResponses = createAsyncThunk(
                 createNumber : advertisementCrateNumber.data,
                 responces : advertisement.responses
             }
-            const newUser = await makeNewUser(advertisementError)
+            // const newUser = await makeNewUser(advertisementError)
             
-            localResponses[i].advertisement = {...advertisementError, user : newUser}
+            localResponses[i].advertisement = {...advertisementError}
 
             console.warn(localResponses[i].advertisement)
 

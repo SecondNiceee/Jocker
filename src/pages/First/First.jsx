@@ -1,13 +1,11 @@
 import {
-  useCallback,
   useEffect,
-  useRef,
   useState,
 } from "react";
 import { motion } from "framer-motion";
 import "../MyAds/MyAds.css";
 import AllTasks from "./AllTasks";
-import {useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import { useFilteredArr } from "../../hooks/useFilteredArr";
 import CssTransitionSlider from "../../components/UI/PhotosSlider/CssTransitionSlider";
 import useBlockInputs from "../../hooks/useBlockInputs";
@@ -21,39 +19,13 @@ import { hideMainButtonGarant } from "../../functions/hideButtonGarant";
 import { useAddPageHistory } from "../../hooks/useAddPageHistory";
 
 const First = () => {
-
-  const firstRef = useRef(null);
-
-useEffect(() => {
-  const timer = setTimeout(async () => {
-    await hideMainButtonGarant();
-  }, 200);
-  return () => clearTimeout(timer);
-}, []);
-
-  useAddHistory();
-
-  useEffect( () => {
-    menuController.showMenu();
-    menuController.raiseMenu();
-    BackButton.hide();
-  }, [] )
-
   const ordersInformation = useSelector(
     (state) => state.information.orderInformations
   );
-
   const filters = useSelector(state => state.filters.advertisementsFilters);
-
   const [filterBy, setFilterBy] = useState("");
-
   const filteredArr = useFilteredArr(ordersInformation, filterBy);
-
-  const secFilteredArray = useFilteredArray({ filteredArr, filters });
-
-  const me = useSelector( (state) => state.telegramUserInfo );
-  console.warn(me);
-
+  const filteredOrders = useFilteredArray({ filteredArr, filters });
   const {
     isSliderOpened,
     photoIndex,
@@ -62,55 +34,39 @@ useEffect(() => {
     setPhotos,
     setSlideOpened,
   } = useSlider();
-
+  useAddHistory();
   useAddPageHistory();
-
-  const forwardFunction = useCallback( () => {
-    if (isSliderOpened){
-        setSlideOpened(false);
-    }
-    else{
-      console.log("Другая логика")
-    }
-  }, [isSliderOpened,setSlideOpened] )
-
-  const backFunction = useCallback( () => {
-    if (isSliderOpened){
-      setSlideOpened(false);
-    }
-  }, [isSliderOpened, setSlideOpened] )
-
-  useEffect( () => {
-    BackButton.onClick(backFunction);
-    if(isSliderOpened){
-      BackButton.show();
-    }
-    else{
-      BackButton.hide();
-    }
-    return() => {
-      BackButton.offClick(backFunction)
-    }
-  }, [isSliderOpened, backFunction] )
-
-  useEffect( () => {
-    if (isSliderOpened){
-      MainButton.show();
-      MainButton.setText('Закрыть')
-    }
-    else{
-      MainButton.hide();
-    }
-  }, [isSliderOpened, forwardFunction] )
-
   useBlockInputs();
 
+
+
+  useEffect(() => {
+    const timer = setTimeout(hideMainButtonGarant, 200);
+    return () => clearTimeout(timer);
+  }, []);
+  useEffect(() => {
+    menuController.showMenu();
+    menuController.raiseMenu();
+    BackButton.hide();
+  }, []);
+  useEffect(() => {
+    const backHandler = () => isSliderOpened && setSlideOpened(false);
+    BackButton.onClick(backHandler);
+    isSliderOpened ? BackButton.show() : BackButton.hide();
+    return () => BackButton.offClick(backHandler);
+  }, [isSliderOpened, setSlideOpened]);
+  useEffect(() => {
+    if (isSliderOpened) {
+      MainButton.show();
+      MainButton.setText("Закрыть");
+    } else {
+      MainButton.hide();
+    }
+  }, [isSliderOpened]);
   return (
     <>
       <div className="first-container">
         <motion.div
-          // style={style}
-          ref={firstRef}
           id="First"
           className="First"
           initial={{ opacity: 0 }}
@@ -120,19 +76,17 @@ useEffect(() => {
         >
           <div className="first-wrapper">
             <AllTasks
-              setPhotos = {setPhotos}
-              setPhotoIndex = {setPhotoIndex}
-              setSlideActive = {setSlideOpened}
+              setPhotos={setPhotos}
+              setPhotoIndex={setPhotoIndex}
+              setSlideActive={setSlideOpened}
               filters={filters}
               filterBy={filterBy}
               setFilterBy={setFilterBy}
-              ordersInformation={secFilteredArray}
+              ordersInformation={filteredOrders}
             />
           </div>
-
         </motion.div>
       </div>
-
       <CssTransitionSlider
         blockerAll={true}
         blockerId={""}

@@ -1,0 +1,42 @@
+.topConatiner{
+    padding: 3.17px 4px;
+    border-radius: 5px;
+}
+.topText{
+    color: #21303F;
+    font-family: "SF Pro Display 700";
+    font-size: 9.955px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: 11.991px; /* 120.455% */
+}
+.topOneCommon{
+    background: linear-gradient(225deg, #F1C6DD -116.46%, #C1A4E8 -74.12%, #B8E2FB -43.87%, #F2EFE8 -1.53%, #F9DCDD 28.72%, #E1C1E5 52.91%, #BDAFE3 71.06%, #C7EDEB 101.3%, #E7F5EB 134.57%, #F2F0E7 158.77%, #DDC1E1 185.99%), linear-gradient(90deg, #FFD60A 3.33%, #FFE870 73.33%, #FFD60A 96.67%), #FFDB27;
+}
+.topTwoCommon{
+    background: linear-gradient(219deg, #FDFFFE -21.77%, #7ABBAC 13.92%, #B1FFEF 38.75%, #8AD2C3 62.03%, #CFFEF4 94.62%, #6CA196 121%, #35544E 133.42%), linear-gradient(0deg, #000 0%, #000 100%), linear-gradient(90deg, #FFD60A 3.33%, #FFE870 73.33%, #FFD60A 96.67%), #FFDB27;
+    background-blend-mode: normal, hue, normal, normal;
+}
+.topThreeCommon{
+    background: linear-gradient(50deg, #CD4339 -2.05%, #EF984D 25.18%, #F8DE53 48.78%, #F1A54E 74.19%, #C34037 105.05%), linear-gradient(0deg, #FF6200 0%, #FF6200 100%), linear-gradient(90deg, #FFD60A 3.33%, #FFE870 73.33%, #FFD60A 96.67%), #FFDB27;
+}
+.commonAll{
+    background: linear-gradient(235deg, #7A96AC -11.09%, #EAEFF3 16.11%, #C2D4E1 35.75%, #FFF 62.96%, #D4DEE5 82.6%, #ABBDC8 108.29%, #BCCAD7 132.47%), linear-gradient(215deg, #1D8C21 -42.77%, #7BFB80 18.94%, #E9FCE7 61.36%, #51F74E 105.72%, #44D441 150.07%), linear-gradient(0deg, #000 0%, #000 100%), rgba(255, 255, 255, 0.10);
+}
+.topOneNitche{
+    background: linear-gradient(90deg, #FFD60A 3.33%, #FFE870 73.33%, #FFD60A 96.67%), #FFDB27;
+}
+.topTwoNitche{
+    background: linear-gradient(0deg, #000 0%, #000 100%), linear-gradient(90deg, #FFD60A 3.33%, #FFE870 73.33%, #FFD60A 96.67%), #FFDB27;
+    background-blend-mode: hue, normal, normal;
+}
+.topThreeNitche{
+    background: linear-gradient(0deg, #FF6200 0%, #FF6200 100%), linear-gradient(90deg, #FFD60A 3.33%, #FFE870 73.33%, #FFD60A 96.67%), #FFDB27;
+    background-blend-mode: color, normal, normal;
+}
+.nitcheAll{
+    background-color: rgba(255, 255, 255, 0.1);
+}
+.nitcheAllText{
+    color : rgba(255, 255, 255, 0.5);
+}

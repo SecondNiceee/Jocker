@@ -19,8 +19,6 @@ const Feedbacks = () => {
         const feedbacks = await fetchFeedBacksByUserId(userId);
         setUserInfo({...user, feedbacks});
     }, [userId] )
-    console.log(userConfig);
-    console.log(userInfo);
     useEffect( () => {
         if (!userConfig){
             fetchUserWithFeedbacks();

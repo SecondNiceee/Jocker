@@ -21,15 +21,9 @@ export const putCard = createAsyncThunk(
                 }
             )
             let photos = []
-            data[2].photos.forEach((e, i) => {
-                let blob = e.slice(0 , e.size, "image/png")
-                let newFile = new File([blob], im.data.photos[i], {type: 'image/png'});
-                photos.push(newFile)
-             })
-             console.warn(data[2]);
-             console.warn(im.data);
              let localCard = {
                 ...data[2],
+                watches : im.data.watches,
                 photosNames : im.data.photos,
                 photos : photos,
                 id : im.data.id

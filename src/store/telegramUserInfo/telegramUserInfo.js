@@ -5,9 +5,8 @@ import { likeUser } from "./thunks/likeUser";
 import { fetchUserInfo } from "./thunks/fetchUserInfo";
 import { postCard } from "./thunks/postCard";
 import { putCard } from "./thunks/putCard";
-import { fetchCommonRating } from "./thunks/fetchCommonRating";
-import { fetchRatingByProfession } from "./thunks/fetchRatingByProfession";
 import { fetchFeedBacks } from "./thunks/fetchFeedbacks";
+import { fetchMyAdditionalUserInfo } from "./thunks/fetchAdditionalUserInfo";
 
 const telegramUserInfo = createSlice({
   name: "telegramUserInfo",
@@ -38,9 +37,10 @@ const telegramUserInfo = createSlice({
     commonRating : null,
     feedbacks : null,
     userLikes : [],
+    additionalInfoStatus : "idle",
     profile : {
         about : "",
-        stage : 0,
+        stage : null,
         cards : [
         ]
     },
@@ -63,6 +63,8 @@ const telegramUserInfo = createSlice({
 },
   
   extraReducers: (builder) => {
+
+
     builder.addCase(fetchFeedBacks.fulfilled, (state, action) => {
         state.feedbacks = action.payload;
     })
@@ -82,6 +84,15 @@ const telegramUserInfo = createSlice({
         state.userLikes.push({id : null, user : {id : action.payload}})
     });
 
+    builder.addCase(fetchMyAdditionalUserInfo.pending, (state, action) => {
+        state.additionalInfoStatus = "pending";
+    })
+
+    builder.addCase(fetchMyAdditionalUserInfo.fulfilled, (state, action) => {
+
+        return {...state, ...action.payload};
+    })
+
 
     builder.addCase(likeUser.rejected, (state, action) => {
         console.warn(action.error);
@@ -90,12 +101,6 @@ const telegramUserInfo = createSlice({
     builder.addCase(fetchUserInfo.pending, (state) => {
       state.status = "loading";
     });
-    builder.addCase(fetchCommonRating.fulfilled, (state, action) => {
-        state.commonRating = action.payload;
-    })
-    builder.addCase(fetchRatingByProfession.fulfilled, (state, action) => {
-        state.ratingByProfession = action.payload;
-    })
     builder.addCase(fetchUserInfo.fulfilled, (state, action) => {
       console.warn({...state.profile , about : action.payload.about, stage : action.payload.stage === null ? '0' : action.payload.stage});
       state.lastTransaction = action.payload.lastTransaction

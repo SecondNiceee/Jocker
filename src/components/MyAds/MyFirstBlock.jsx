@@ -73,7 +73,7 @@ const MyFirstBlock = ({
                     style={
                       photos.length === 1
                         ? {
-                            width: "calc(100% - 3.67px)",
+                            width: "calc(100%)",
                           }
                         : {}
                     }

@@ -7,13 +7,11 @@ import {isEqual} from "lodash";
 class MainButtonController{
     mainButton = MainButton
     async forwardFunction({errors, save}){
-        console.log("Го")
         if (errors.links.isError){
             showAllert("Ваши некоторые ссылки невалидны")
         }
         else{
             try {
-                console.log("Ухожу в save")
                 save()
                 } catch (error) {
                 console.error('Ошибка при сохранении карточки:', error);

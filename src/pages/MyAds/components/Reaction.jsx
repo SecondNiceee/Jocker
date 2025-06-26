@@ -1,121 +1,55 @@
-import React, { memo, useCallback } from "react";
+import { memo } from "react";
 
-import share from "../../../images/icons/Share.svg";
 
 import "./../MyAds.css";
-import FalseTie from "../../../components/UI/FalseTie/FalseTie";
-import MyButton from "../../../components/UI/MyButton/MyButton";
-import userPhoto from "../../../images/userPhoto/user.png"
-import breakShare from "../../../functions/breakShare";
-import Text from "../../../components/Text/Text";
-import en from "../../../constants/language";
-import translation from "../../../functions/translate";
-import { useNavigate } from "react-router";
-
+import UserIcon from "../../../components/UI/UserIcon/UserIcon";
+import RatingText from "../../../components/UI/RatingText/RatingText";
 
 const Reaction = ({
-  blue = false,
   setOpen,
-  put,
-  openAboutReactionFunc,
   responce,
-  writeButton = true,
-  agree = false,
-  lastAds = false,
   setPhotos,
   setPhotoIndex,
-  setSlideOpened
+  setSlideOpened,
 }) => {
 
-  const getAge = useCallback( (par) => {
-    if (en){
-      if (Number(par) === 1){
-        return "year"
-      }
-      else{
-        return "years"
-      }
-    }
-    else{
-      let numb = Number(String(par).slice(String(par).length - 1 , String(par).length))
-      if ( Number(par) > 10 && Number(par) < 20){
-        return "лет"
-      }
-      else{
-  
-          if (numb > 1 && numb < 5){
-            return `года`
-          }
-          else{
-            if(numb === 1){
-              return `год`
-            }
-            else{
-              return "лет"
-            }
-          }
-        }
-      
-      
-      /// какая - то логика лет 
-    }
-  } , []  )
 
-
-  
-  console.log(responce)
-
-
-  const openTelegrmaLink = useCallback( () => {
-    if (responce.user.link && responce.user.link !== "-1" ){
-        window.Telegram.WebApp.openTelegramLink(
-            "https://t.me/" + responce.user.link
-          );
-    }
-    else{
-        window.Telegram.WebApp
-        .showPopup({
-          title: translation("Упс"),
-          message: "Похоже, у пользователя закрытый профиль",
-          buttons: [
-            { id: "save", type: "default", text: "Понятно" },
-          ],
-        } , (buttonId) => {
-    
-          if (buttonId === "save" || buttonId === null) {
-            console.log("Ok");
-            
-          }
-    
-    
-        } )
-    }
-
-} , [responce.user.link] )
-
+  // const openTelegrmaLink = useCallback(() => {
+  //   if (responce.user.link && responce.user.link !== "-1") {
+  //     window.Telegram.WebApp.openTelegramLink(
+  //       "https://t.me/" + responce.user.link
+  //     );
+  //   } else {
+  //     window.Telegram.WebApp.showPopup(
+  //       {
+  //         title: translation("Упс"),
+  //         message: "Похоже, у пользователя закрытый профиль",
+  //         buttons: [{ id: "save", type: "default", text: "Понятно" }],
+  //       },
+  //       (buttonId) => {
+  //         if (buttonId === "save" || buttonId === null) {
+  //           console.log("Ok");
+  //         }
+  //       }
+  //     );
+  //   }
+  // }, [responce.user.link]);
 
   const imageOnClick = (index) => () => {
-    setPhotos(responce.photos)
-    setPhotoIndex(index)
-    setSlideOpened(true)
-  }
+    setPhotos(responce.photos);
+    setPhotoIndex(index);
+    setSlideOpened(true);
+  };
 
-  const navigate = useNavigate();
 
   return (
-    <>
-      <div
-        className="reaction"
-        style={
-          (responce.isWatched === "inProcess" || responce.isWatched === "completed")  && writeButton
-            ? { border: "1.67px solid #2ea5ff" }
-            : {}
-        }
-      >
+    <div onClick={setOpen} className="flex rounded-[10px_10px_13.33px_13.33px] flex-col bg-card">
+
         {responce.photos.length > 0 ? (
-          <div className="reactions__images">
+          <div className="flex gap-[6px] overflow-x-scroll rounded-[6.667px] mt-[3.67px] mr-[3.67px] ml-[3.67px]">
             {responce.photos.map((e, i) => (
               <img
+                className="min-w-[183px] max-h-[134px] object-cover rounded-[6.667px]"
                 onClick={imageOnClick(i)}
                 style={responce.photos.length === 1 ? { width: "100%" } : {}}
                 src={e}
@@ -127,139 +61,20 @@ const Reaction = ({
         ) : (
           <></>
         )}
-
-        <div className="reaction__middle">
-          <img
-            style={{objectFit : "cover"}}
-            onClick={() => {
-              navigate(`/Baidge/${responce.user.id}`)
-            }}
-            
-            className="icon"
-            src={ responce.user.photo ? responce.user.photo.length > 0 ? responce.user.photo.split('https://').length === 2 ? responce.user.photo : `${process.env.REACT_APP_HOST}/${responce.user.id}/${responce.user.photo}` : userPhoto : userPhoto}
-            alt=""
-          />
-          <div
-            onClick={() => {
-              openAboutReactionFunc({ isActive: true, responce: responce });
-            }}
-            className="reaction__middle-midle"
-          >
-            <Text
-              className="reaction__userName"
-              style={
-                blue
-                  ? {
-                      textDecoration: "underline",
-                      color: "#2ea5ff",
-                      textUnderlineOffset: "2px",
-                    }
-                  : {}
-              }
-            >
-              {  responce.user.fl.length > 9 ? responce.user.fl.slice(0,9) + '...' : responce.user.fl}
-            </Text>
-            <div className="reaction__rates">
-              {/* <img src={star} alt="" /> */}
-              <div className="rates__text">
-                {/* <Text><span>4</span></Text>
-                                  <Text>◦</Text>
-                                  <Text>158 отзывов</Text>
-                                  <Text>◦</Text> */}
-                <Text>Стаж </Text>
-
-                <p>
-                  {responce.user.stage === null ? "0" : responce.user.stage} 
-                </p>
-                <p>{getAge(responce.user.stage)}</p>
-              </div>
-            </div>
-          </div>
-          
-          { (responce.isWatched === "inProcess" && writeButton && !lastAds) &&           <div className="blue-circle">
-            <svg
-            className="commit-icon"
-              width="16"
-              height="15"
-              viewBox="0 0 16 15"
-              fill="none"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <path
-                d="M1.21484 8.14672L3.67722 10.4449L10.141 4.41211M14.4501 4.55575L7.98639 10.5886L7.2169 9.87039"
-                stroke="#2EA5FF"
-                strokeWidth="1.33333"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              />
-            </svg>
-          </div>}
-
-
-          {put ? (
-            <div className="right">
-
-              <MyButton
-                hard = {true}
-                style = {writeButton ? {} : {display : "none"}}
-                onClick={openTelegrmaLink}
-              >
-                Написать
-              </MyButton>
-
-              <FalseTie
-                agree={agree}
-                navigate={"responce"}
-                task={responce}
-                id={responce.id}
-              />
-              <div className="circle" onClick={breakShare}  style={{opacity : 0.5}}>
-                <img className="shareImage" src={share} alt="" />
-              </div>
-            </div>
-          ) : (
-            <div onClick={breakShare}  className="circle" style={(responce.isWatched === "inProcess" && writeButton && !lastAds) ? {marginLeft : "8px" , opacity : 0.5} : {opacity : 0.5}}>
-              <img  className="shareImage" src={share} alt="" />
-            </div>
-          )}
+      <div className="flex gap-[10.33px] mb-[12px] ml-[19px] mr-[16px] mt-[12px] items-center">
+        <UserIcon small={true} user={responce.user} />
+        <div className="flex flex-col gap-[2.33px]">
+          <header className="flex items-center gap-[5px]">
+            <p className="text-white font-sf-pro-display leading-[18.311px] text-[17.33px]">
+              {responce.user.fl}
+            </p>
+            <RatingText user={responce.user} />
+          </header>
+          <p className="text-[#B5CED9] font-sf-pro-display-400 text-[14.667px] leading-[17.667px]">{responce?.user?.profession?.profession}</p>
         </div>
-        {put ? (
-          <div
-            style={{
-              marginBottom: "18px",
-            }}
-          ></div>
-        ) : (
-          <div className="reactions__bottom">
-            <MyButton
-            blue = {false}
-              onClick={() => {
-                setOpen({
-                  isActive: true,
-                  responce: responce,
-                });
-              }}
-              className="bottom__one"
-            >
-              подробнее
-            </MyButton>
-            <MyButton
-              hard = {true}
-              className="bottom__two"
-              onClick={openTelegrmaLink}
-            >
-              Написать
-            </MyButton>
-            <FalseTie
-              agree={agree}
-              navigate={"responce"}
-              task={responce}
-              id={responce.id}
-            />
-          </div>
-        )}
+        <img className="ml-auto"  src={"/images/newProfile/leftArrow.svg"} alt="" />
       </div>
-    </>
+    </div>
   );
 };
 

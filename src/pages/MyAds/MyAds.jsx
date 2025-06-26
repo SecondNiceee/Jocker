@@ -10,14 +10,16 @@ import { USERID } from "../../constants/tgStatic.config";
 import useBlockInputs from "../../hooks/useBlockInputs";
 import useNavigateBack from "../../hooks/useNavigateBack";
 import MainButton from "../../constants/MainButton";
+import menuController from "../../functions/menuController";
 
 
 const MyAds = () => {
+
   const [valueOne , setValueOne] = useState("all")
 
   const [valueTwo , setValueTwo] = useState("all")
 
-  const responsesArr = useSelector((state) => state.responses.responses);
+  const responsesArr = useSelector((state) => state.responses.responses)
 
   const sortedResponses = useMemo( () => {
     let copy = [...responsesArr]
@@ -46,6 +48,12 @@ const MyAds = () => {
 
 
   const myAdsArray = useSelector((state) => state.information.myAdsArray);
+
+  useEffect( () => {
+    menuController.showMenu();
+    menuController.raiseMenu();
+  }, [] )
+
 
   const filteredArray = useMemo( () => {
     switch (valueTwo){
@@ -91,14 +99,12 @@ const MyAds = () => {
           }
         }
       );
-      console.log(imOne.data);
       const advertisemetCount = imTwo.data
       const responseCount = imOne.data
       if (pagesHistory[pagesHistory.length - 1] === "/AdCreating"){
         setNowKey("customer")
       }
       else{
-        console.log(advertisemetCount, responseCount);
         if (advertisemetCount < responseCount){
           setNowKey("freelancer")
         

@@ -44,12 +44,10 @@ const FirstBlock = ({
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const setDetailsActive = () => {
-    navigate(`/FirstDetails/${id}`);
+    navigate(`/FirstDetails/${task.id}`);
     dispatch(setDetailsAdvertisement(task));
     dispatch(addWatch(task.id));
   };
-
-
 
   return (
     <Block

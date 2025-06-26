@@ -12,11 +12,9 @@ export class BackButtonController{
             links : []
         })
         if (isCloseSrazy){
-            console.log("Вызов вызор этого G")
             window.history.back();
         }
         else{
-            console.log("Вызов другого G")
             window.Telegram.WebApp.showPopup(
                 {
                   title: "Сохранить?",

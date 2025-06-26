@@ -7,6 +7,7 @@ import { softVibration } from '../../../../../functions/softVibration';
 import { useNavigate } from 'react-router';
 import { useDispatch, useSelector } from 'react-redux';
 import { setAdvertisementFilters } from '../../../../../store/filters';
+import DevelopmentMainButton from '../../../../../components/UI/DevelopmentMainButton/DevelopmentMainButton';
 const FirstChoiceSubCategory = ({ ...props}) => {
 
 
@@ -68,9 +69,6 @@ const FirstChoiceSubCategory = ({ ...props}) => {
 
     const subCategorysPar = useSelector((state) => state.categorys.subCategory);
 
-    console.log(subCategorysPar);
-    console.log(subCategorysFilters)
-
     const subCategorys = useMemo(() => {
       if (subCategorysPar){
         let copy = subCategorysPar.filter(e => e.category.id === subCategorysFilters.category.id && e.subCategory !== "Другое")
@@ -122,9 +120,7 @@ const FirstChoiceSubCategory = ({ ...props}) => {
 
     return (
       <div className={cl.ChoiceCategory} {...props}>
-        <div onClick={buttonHandler} className="fixed left-1/2 top-1/2 rounded p-2 border-black border-solid border-2 cursor-pointer">
-          MAIN BUTTON
-        </div>
+        <DevelopmentMainButton />
         <p className="mt-[13px] ml-[17px] font-sf-pro-display-400 font-extralight text-[13px] tracking-[0.02em] text-[#84898f] uppercase mb-[9px]">ПОДКАТЕГОРИИ</p>
         <div className="flex rounded-[10px] bg-[#21303f] flex-col pt-[13px] pl-[16px] pr-[16px]">
             <p onClick={() => {clickAll()}} className="font-sf-pro-text-400 cursor-pointer tracking-[-0.04em] leading-[17.33px] text-[17px] text-[#2ea6ff]">Выбрать всё</p>

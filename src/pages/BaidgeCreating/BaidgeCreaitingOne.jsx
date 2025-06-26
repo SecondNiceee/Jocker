@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo } from 'react';
+import React, { useEffect, useMemo, useRef } from 'react';
 import Text from '../../components/Text/Text';
 import Cap from '../../components/UI/Cap/Cap';
 import DescriptionAndPhoto from '../../components/UI/DescriptionAndPhoto/DescriptionAndPhoto';
@@ -9,8 +9,12 @@ import BaidgeCategoryChoicer from './ui/BaidgeCategoryChoicer';
 import BaidgeSubCategoryChoiser from './ui/BaidgeSubCategoryChoiser';
 import useBlockInputs from '../../hooks/useBlockInputs';
 import MyLoader from '../../components/UI/MyLoader/MyLoader';
+import SmallInput from '../../components/UI/SmallInput/SmallInput';
+import Compact from '../../components/UI/Compact/Compact';
+import { useStageInputController } from './hooks/useStageInputController';
+import { formateAgeString } from '../../functions/formateAgeString';
 
-const BaidgeCreaitingOne = ({setDescription, description, setCategoryOpen, isCategoryOpen, categoryInformation, setCategoryInformation, isProfessionOpened, setProfessionOpened}) => {
+const BaidgeCreaitingOne = ({setDescription, setStage, stage, description, setCategoryOpen, isCategoryOpen, categoryInformation, setCategoryInformation, isProfessionOpened, setProfessionOpened}) => {
 
     const categorys = useSelector((state) => state.categorys.category)
 
@@ -18,9 +22,19 @@ const BaidgeCreaitingOne = ({setDescription, description, setCategoryOpen, isCat
 
     useBlockInputs();
 
+    const {onBlurFunc, onFocusFunc, setValueFunc} = useStageInputController({setStage, stage});
+
+    const isStageFormated = useRef(false);
+    useEffect( () => {
+      if (!isStageFormated.current){
+        if (stage !== null){
+          setStage(formateAgeString(String(stage)))
+          isStageFormated.current = true
+        }
+      }
+    }, [stage, setStage] )
 
     const sortedProfessions = useMemo( () => {
-      console.log(professions);
       if (!professions || !categoryInformation?.category){
         return []
       }
@@ -31,7 +45,7 @@ const BaidgeCreaitingOne = ({setDescription, description, setCategoryOpen, isCat
         setCategoryInformation((value) => ({...value, profession : sortedProfessions[0]}))
     } , [categoryInformation.category, sortedProfessions, setCategoryInformation] )
 
-    if (!categoryInformation.category || !professions || !categoryInformation.profession.id){
+    if (!categoryInformation.category || !professions || !categoryInformation?.profession?.id){
       return (<div className='h-screen w-screen min-h-screen'>
         <MyLoader />
       </div>) 
@@ -43,6 +57,20 @@ const BaidgeCreaitingOne = ({setDescription, description, setCategoryOpen, isCat
                 <Text className = {"font-sf-pro-display-600 text-[20px] font-semibold text-white"}> Бейдж исполнителя </Text>{" "}
             </Cap>
             <BaidgeCategories setProfessionOpen={setProfessionOpened} setCatagoryChoiceOpen={setCategoryOpen} className={"mt-[18px]"} down='Профессия' categoryInformation={categoryInformation} />
+            <Compact title={"Стаж работы"} className={"compact-block"}>
+              <SmallInput
+                mistakeText={"Стаж должен быть меньше 40 лет!"}
+                mistake={stage > 40}
+                id="numberInput"
+                maxLength={2}
+                onBlur={onBlurFunc}
+                onFocus={onFocusFunc}
+                inputMode="numeric"
+                // type = "number"
+                value={stage === null ? "0" : stage}
+                setValue={setValueFunc}
+              />
+            </Compact>
             <DescriptionAndPhoto className={"mt-[18px]"} titleStyles={{
                 color : "#DAF5FE"
             }} textTitle={"Краткое резюме"} textPlaceholder={"Краткое резюме"} setText={setDescription} isFileInput = {false} text={description} />

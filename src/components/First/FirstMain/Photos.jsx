@@ -6,7 +6,7 @@ setSliderOpened, }) => {
     const style = useMemo( () => {
         if (photos?.length === 1){
             return {
-                width: "calc(100% - 3.67px)",
+                width: "calc(100%)",
                 marginLeft: "auto",
                 marginRight: "auto",
               }

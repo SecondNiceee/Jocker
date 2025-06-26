@@ -35,31 +35,6 @@ export const getAdvertisementById = async (id) => {
     }
   );
 
-  const newUser = { ...order.user };
-
-  try {
-    if (newUser.photo.includes("http")) {
-      await axios.get(newUser.photo);
-    }
-  } catch {
-    try {
-      const responce = await axios.put(
-        `${process.env.REACT_APP_HOST}/user/photo`,
-        {},
-        {
-          params: {
-            userId: newUser.id,
-          },
-          headers: {
-            "X-API-KEY-AUTH": process.env.REACT_APP_API_KEY,
-          },
-        }
-      );
-      newUser.photo = responce.data;
-    } catch (e) {
-      newUser.photo = "";
-    }
-  }
 
   const formattedTask = {
     
@@ -80,7 +55,7 @@ export const getAdvertisementById = async (id) => {
     viewsNumber: order.views,
     responces: order.responses,
     status: order.status,
-    user: newUser,
+    user: order.user,
     createNumber: imTwo.data,
     category: order.category.id,
     subCategory: order.subCategory.id,

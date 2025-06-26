@@ -2,7 +2,6 @@ import axios from "axios";
 import { formatUserFromApi } from "./formatUserFromApi";
 
 export const getUserWithoutCards = async (id) => {
-    try{
         const user = await axios.get(`${process.env.REACT_APP_HOST}/user/findOne`, {
             params: {
               id: id,
@@ -12,8 +11,5 @@ export const getUserWithoutCards = async (id) => {
             }
           });          
           return formatUserFromApi(user.data, []);
-    }
-    catch(e){
-        console.warn(e);
-    }
+        
 }

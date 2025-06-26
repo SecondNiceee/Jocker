@@ -4,9 +4,6 @@ import { USERID } from "../../../constants/tgStatic.config";
 export const postCard = createAsyncThunk(
     "telegramUserInfo/postUserInfo",
     async function (data){
-        console.warn(data);
-
-        alert("Привет")
         try{
             let im = await axios.post(`${process.env.REACT_APP_HOST}/card` , data[0] , 
                 {
@@ -20,19 +17,11 @@ export const postCard = createAsyncThunk(
                       },
                 }
              )
-             let photos = []
-             data[2].photos.forEach((e, i) => {
-                let blob = e.slice(0 , e.size, "image/png")
-                let newFile = new File([blob], im.data.photos[i], {type: 'image/png'});
-                photos.push(newFile)
-
-             })
-             console.warn(im.data);
             let localCard = {
                 ...data[2],
                 createdAt : im.data.createdAt,
                 photosNames : im.data.photos,
-                photos : photos,
+                photos : im.data.photos,
                 id : im.data.id
             }
             return localCard

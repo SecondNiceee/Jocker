@@ -60,9 +60,10 @@ const MyResponses =
         ) : (
           <>
             {responsesArr.map((e, i) => {
-              dispatch(setResponse(e))
+              
               const buttonFunction = () => {
                 dispatch(setAdvertisement(e.advertisement))
+                dispatch(setResponse(e))
                 navigate(`/confirm/${e.advertisement.id}/${e.id}`)
               }
               return (

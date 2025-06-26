@@ -73,16 +73,7 @@ const AdsContainer = ({ valueTwo, myAdsArray}) => {
                 );
               })}
 
-              { (orderStatus !== "all")  &&  <MyLoader   style = {{ height : "200px" , marginLeft : "-16px"}} />}
-              { (orderStatus !== "all")  &&  <div ref={elementRef} style={{
-                width : "1px",
-                height : "2000px",
-                position : "absolute",
-                bottom : "0px",
-                opacity : "0",
-                left : "150vw",
-                zIndex : -1
-            }} className="catch_block"></div>}
+              { (orderStatus !== "all")  &&  <MyLoader ref={elementRef}   style = {{ height : "200px" }} />}
             </div>
         }
       </>

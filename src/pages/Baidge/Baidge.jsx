@@ -23,9 +23,6 @@ const Baidge = ({isExternal = false}) => {
     menuController.showMenu();
     menuController.raiseMenu();
   }, [] );
-
-  console.log(me);
-
   useEffect(() => {
     if (isExternal){
       findUserById(baidgeId).then( (user) => {setUserInfo(user)} ).catch( () => {
@@ -74,7 +71,6 @@ const Baidge = ({isExternal = false}) => {
   }
   return (
     <>
-      {/* <button onClick={fowardFunction} className="fixed left-1/2 bottom-1/3 z-[1000]">MAIN BUTTON</button> */}
       {userInfo.profession ? (
         <BaidgeWithProfile
           urlParametr={id}

@@ -9,16 +9,10 @@ import Links from "./Links";
 import TextAboutMe from "../../../components/UI/AboutMeText/TextAboutMe";
 import useNavigateBack from "../../../hooks/useNavigateBack";
 import useGetBaidgeOprionsConfig from "../hooks/useGetBaidgeOprionsConfig";
-import { apiRating } from "../../../functions/api/ApiRating";
-import { getCounterOfResponses } from "../../../functions/api/getCounterOfResponses";
-import { getRatingByProfession } from "../../../functions/api/getRatingByProfession";
-import { getCommonRating } from "../../../functions/api/getCommonRating";
-import { fetchCommonRating } from "../../../store/telegramUserInfo/thunks/fetchCommonRating";
-import { fetchCounterOfResponses } from "../../../store/telegramUserInfo/thunks/fetchCounterOfResponses";
-import { fetchRatingByProfession } from "../../../store/telegramUserInfo/thunks/fetchRatingByProfession";
-import { fetchFeedBacks } from "../../../store/telegramUserInfo/thunks/fetchFeedbacks";
-import { fetchFeedBacksByUserId } from "../../../functions/api/fetchFeedbacksByUserId";
 import useScrollTop from "../../../hooks/useScrollTop";
+import menuController from "../../../functions/menuController";
+import { fetchMyAdditionalUserInfo } from "../../../store/telegramUserInfo/thunks/fetchAdditionalUserInfo";
+import { fetchAdditionalUserInfo } from "../../../functions/api/fetchAdditionalUserInfo";
 
 const BaidgeWithProfile = ({ userInfo, className, setUserInfo, urlParametr}) => {
 
@@ -58,58 +52,36 @@ const BaidgeWithProfile = ({ userInfo, className, setUserInfo, urlParametr}) => 
       setGotenUserInfo : setUserInfo
     });
   };
+
   const ratingLoaded = useRef(false);
-
-
-
   useEffect( () => {
-      async function fetchAdditionalUserInfo(params) {
-        let commonRating = null;
-        let responsesCounter = null;
-        let ratingByProfession = null;
-        let feedbacks = null;
-        await apiRating.getByUserId(userInfo.id).then((rate) => {
-          commonRating = rate
-        } ).catch(err => console.warn(err))
-        await getCounterOfResponses(userInfo.id).then( (counter) =>  {
-          responsesCounter = counter;
-        })
-        await getRatingByProfession(userInfo).then( (rating) => {
-          ratingByProfession = rating;
-        } )
-        await getCommonRating(userInfo.id).then( (rate) => {
-          commonRating = rate;
-        } )
-        await fetchFeedBacksByUserId(userInfo.id).then(feedbacksData => {
-          feedbacks = feedbacksData;
-        })
-        console.warn({commonRating, responsesCounter, ratingByProfession, feedbacks});
-        return {commonRating, responsesCounter, ratingByProfession, feedbacks}
-      } 
       if (userInfo){
         if (!ratingLoaded.current){
           if (userInfo.id === me.id){
-            if (!userInfo.commonRating){
-              dispatch(fetchCommonRating())
-            }
-            if (!userInfo.responsesCounter){
-              dispatch(fetchCounterOfResponses());
-            }
-            if (!userInfo.ratingByProfession){
-              dispatch(fetchRatingByProfession());
-            }
-            if (!userInfo.feedbacks){
-              dispatch(fetchFeedBacks());
-            }
+              dispatch(fetchMyAdditionalUserInfo(
+                {
+                  isCounterOfResponses : !userInfo.responsesCounter,
+                  isCommonRating : !userInfo.commonRating,
+                  isRatingByProfession : !userInfo.ratingByProfession
+                }
+              ))
           }
           else{
-              fetchAdditionalUserInfo().then( (info) => setUserInfo((value) => ({...value, ...info})) )
+              fetchAdditionalUserInfo({isCommonRating : true, isRatingByProfession : true}, userInfo).then( (info) => {
+                setUserInfo((value) => ({...value, ...info}))
+              }  )
           }
         }
         ratingLoaded.current = true;
       }
 
   } , [userInfo, setUserInfo, me.id, dispatch])
+
+
+  useEffect( () => {
+    menuController.showMenu();
+    menuController.raiseMenu();
+  }, [] )
 
   return (
     <>
@@ -168,7 +140,7 @@ const BaidgeWithProfile = ({ userInfo, className, setUserInfo, urlParametr}) => 
           <p className="ml-[17px] leading-4 text-[13px] uppercase font-sf-pro-display-400 tracking-wider">
             ССЫЛКИ
           </p>
-          <Links isFirstMyLink={true} links={[userInfo.link, ...userInfo.links.slice(1)]} />
+          <Links user={userInfo} isFirstMyLink={true} links={userInfo.links} />
         </div>
       </div>
       {/* <CssTransitionNewChangeCard

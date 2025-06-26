@@ -20,6 +20,7 @@ body::-webkit-scrollbar {
     height: 200px;
 }
 .container{
+    overflow-y: scroll;
     margin: auto;
     background: rgb(24, 34, 45);
     display: flex;

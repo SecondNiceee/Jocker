@@ -5,7 +5,6 @@ import { USERID } from "../../constants/tgStatic.config";
 const messageOne = translation("📣 Вы получили отклик на задачу «");
 const messageTwo = translation("» от ");
 export const createResponse = async ({responce, responseAdvertisement, responseUser}) => {
-    alert(JSON.stringify(responce));
     let myFormData = new FormData();
     myFormData.append("information", String(responce.text));
     myFormData.append("userId", String(USERID));
@@ -21,8 +20,8 @@ export const createResponse = async ({responce, responseAdvertisement, responseU
           myFormData,
           {
             params: {
-              advertisementId: responseAdvertisement.id,
-              userId: responseUser.id,
+              advertisementId: String(responseAdvertisement.id),
+              userId: String(responseUser.id),
             },
             headers: {
               "X-API-KEY-AUTH": process.env.REACT_APP_API_KEY,
@@ -33,7 +32,7 @@ export const createResponse = async ({responce, responseAdvertisement, responseU
       try {
         await axios.get(process.env.REACT_APP_HOST + "/user/sendMessage", {
           params: {
-            chatId: responseAdvertisement.user.chatId,
+            chatId: String(responseAdvertisement.user.id),
             text:
               messageOne +
               responseAdvertisement.taskName.bold() +

@@ -30,7 +30,7 @@ import useStartControllerMainButton from "./hooks/useStartControllerMainButton";
 import useProfileStyle from "./hooks/useProfileStyle";
 import useDeleteCardFunction from "./hooks/useDeleteCardFunction";
 import useYearAdittionInputs from "./hooks/useYearAdittionInputs";
-import { useStageInputController } from "./hooks/useStageInputController";
+import { useStageInputController } from "../BaidgeCreating/hooks/useStageInputController";
 import useBackButton from "./hooks/useBackButton";
 import ProfileCup from "./components/ProfileCup/ProfileCup";
 

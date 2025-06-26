@@ -47,6 +47,7 @@ const MyReaction = ({
         >
           <img
             onClick={() => {
+              
               navigate(`/Baidge/${responce.user.id}`)
             }}
             className="icon"

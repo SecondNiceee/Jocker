@@ -12,8 +12,7 @@ import menuController from "../../functions/menuController";
 import { fetchUserInfo } from "../../store/telegramUserInfo/thunks/fetchUserInfo";
 import { putUserInfo } from "../../store/telegramUserInfo/thunks/putUserInfo";
 import useAddHistory from "../../hooks/useAddHistory";
-import { fetchCommonRating } from "../../store/telegramUserInfo/thunks/fetchCommonRating";
-import { fetchRatingByProfession } from "../../store/telegramUserInfo/thunks/fetchRatingByProfession";
+import { fetchMyAdditionalUserInfo } from "../../store/telegramUserInfo/thunks/fetchAdditionalUserInfo";
 
 const BaidgeCreating = ({isChanging = false}) => {
   const dispatch = useDispatch();
@@ -29,6 +28,8 @@ const BaidgeCreating = ({isChanging = false}) => {
 
   const me = useSelector( (state) => state.telegramUserInfo )
 
+  console.log(me);
+
   const [description, setDescription] = useState(me.profile.about ?? "");
 
   const taskInformation = {
@@ -43,6 +44,7 @@ const BaidgeCreating = ({isChanging = false}) => {
 
   const [links, setLinks] = useState(me.links ? (me.links.length === 0 ? [""] : me.links) : [""]);
 
+  const [stage, setStage] = useState(0);
 
   const [step, setStep] = useState(0);
 
@@ -109,19 +111,17 @@ const BaidgeCreating = ({isChanging = false}) => {
     baidgeButtonController.controlVisability({ errors, isCategoryOpen, isProfessionOpened, step });
   }, [errors, isCategoryOpen, isProfessionOpened, step]);
 
-  
 
   const postBaidge = async () => {
-        
         await dispatch(putUserInfo([{
             links : links.filter( (tag) => tag.length ),
             taggs : taggs.filter( (tag) => tag.length ),
             profession : categoryInformation.profession.id,
+            stage : typeof stage === "string" ? Number(stage.split(' ')[0]) : stage, 
             about : description
-        }])  )
+        }])  );
         await dispatch(fetchUserInfo())
-        await dispatch(fetchCommonRating());
-        await dispatch(fetchRatingByProfession());
+        await dispatch(fetchMyAdditionalUserInfo({isCommonRating : true, isRatingByProfession : true}));
 
         navigate("/Baidge")
   }
@@ -172,14 +172,15 @@ const BaidgeCreating = ({isChanging = false}) => {
   }
   return (
     <div
-      className={`flex min-w-[200vw] transition-transform duration-300 ${
+      className={`flex min-w-[100vw] overflow-x-hidden transition-transform duration-300 ${
         step === 0 ? "translate-x-0" : "-translate-x-[100vw]"
       }`}
     >
       <button className="fixed left-[100vw]" onClick={goFoward}>ГО</button>
       <button className="fixed left-[0vw]" onClick={goFoward}>ГО</button>
       <BaidgeCreaitingOne
-    
+        setStage={setStage}
+        stage={stage}
         categoryInformation={categoryInformation}
         isCategoryOpen={isCategoryOpen}
         isProfessionOpened={isProfessionOpened}
