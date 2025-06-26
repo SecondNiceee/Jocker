@@ -3,7 +3,7 @@ FROM node:18.16.0 as builder
 WORKDIR /app
 COPY package.json .
 COPY package-lock.json .
-RUN npm ci --force
+RUN npm i --force
 COPY . .
 RUN npm run build
 
