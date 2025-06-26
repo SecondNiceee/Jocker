@@ -25,6 +25,7 @@ jobs:
           docker push arsen00531/connect-frontend:latest
   build:
     # The type of runner that the job will run on
+    needs: build-and-push
     runs-on: ubuntu-latest
 
     # Steps represent a sequence of tasks that will be executed as part of the job
@@ -39,4 +40,4 @@ jobs:
         command_timeout: 20m
         script: |
           cd ~/server/connect-birga-backend/
-          make docker
+          make dockerFrontend
