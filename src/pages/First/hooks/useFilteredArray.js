@@ -10,6 +10,7 @@ const useFilteredArray = ({filteredArr, filters}) => {
     if (filters.category.id !== -1) {
       if (filters.subCategory !== null && subCategorysIds !== null) {
         return copy.filter((e) => {
+          console.log(e.category, filters.category )
           return (
             e.category === filters.category.id &&
             subCategorysIds.includes(e.subCategory) &&

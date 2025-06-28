@@ -4,7 +4,6 @@ import { Link, useLocation, useNavigate } from "react-router-dom";
 import userPhoto from '../../images/userPhoto/user.png'
 import Text from "../../components/Text/Text";
 import { setChanger } from "../../store/menuSlice";
-import { showAllert } from "../../functions/showAlert";
 
 const FirstMenu = () => {
 

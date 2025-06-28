@@ -1,29 +1,33 @@
-import { createSlice , createAsyncThunk } from "@reduxjs/toolkit";
+  import { createSlice , createAsyncThunk } from "@reduxjs/toolkit";
 import en from "../constants/language";
+import fetchWithTimeout from "../functions/api/fetchWithTimeout";
 
 
 export const fetchTon = createAsyncThunk(
     'ton/fetchTon',
     async function () {
       try{
-        async function getCurrencies() { // Полуение долларов
-            const response = await fetch(
-              "https://www.cbr-xml-daily.ru/daily_json.js"
+          async function getCurrencies() {
+            const response = await fetchWithTimeout(
+              "https://www.cbr-xml-daily.ru/daily_json.js ",
+              {},
+              1500
             );
             const data = await response.json();
-            const result = await data;
-            return result.Valute.USD.Value;
+            return data.Valute.USD.Value;
           }
-      
-          async function getTonPrice() { // получени цены ton (в долларах)
-            const response = await fetch(
-              "https://api.coingecko.com/api/v3/coins/the-open-network"
+
+          async function getTonPrice() {
+            const response = await fetchWithTimeout(
+              "https://api.coingecko.com/api/v3/coins/the-open-network ",
+              {},
+              1500
             );
             const data = await response.json();
             return data.market_data.current_price.usd;
           }
-          let one = await getCurrencies().then().catch( (error) => console.warn(error) );
-          let two = await getTonPrice().then().catch( (error) => console.warn(error));
+          let one = await getCurrencies()
+          let two = await getTonPrice()
           return {tonValue : en ? two : one * two, dollarValue : one};
       }
       catch(e){

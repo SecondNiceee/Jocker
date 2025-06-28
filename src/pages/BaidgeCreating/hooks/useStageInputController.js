@@ -8,7 +8,7 @@ export const useStageInputController = ({setStage, stage}) => {
   
       const onFocusFunc = useCallback((e) => {
         e.target.value = String(stage).split(" ")[0];
-      }, []);
+      }, [stage]);
     
       const setValueFunc = useCallback((e) => {
         if (!isNaN(e)) {
@@ -22,7 +22,7 @@ export const useStageInputController = ({setStage, stage}) => {
             }
           }
         }
-      }, [stage, setStage]);
+      }, [setStage]);
 
 
     return {onBlurFunc, onFocusFunc, setValueFunc}

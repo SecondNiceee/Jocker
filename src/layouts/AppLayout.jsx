@@ -3,7 +3,7 @@ import { isIphone } from "../functions/isIphone";
 
 
 const AppLayout = () => {
-    if (!process.env.NODE_ENV === "development"){
+    if (process.env.NODE_ENV !== "development"){
       if (!isIphone()){
           return <Outlet />    
       }

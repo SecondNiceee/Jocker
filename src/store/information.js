@@ -2,6 +2,7 @@ import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
 import { USERID } from "../constants/tgStatic.config";
 import { formatUserFromApi } from "../functions/api/formatUserFromApi";
+import { formateTaskFromApi } from "../functions/formtaTaskFromApi";
 
 export const addWatch = createAsyncThunk(
   "information/addWatch",
@@ -224,17 +225,7 @@ export const fetchTasksInformation = createAsyncThunk(
     } else {   
       try {
         for (let order of task.data) {
-          let one = new Date(order.startTime);
-          let two;
-          if (order.endTime) {
-            two = new Date(order.endTime);
-          } else {
-            two = "";
-          }
-
-          let files = order.photos;
-
-          let imTwo = await axios.get(
+          let numberOfResponses = (await axios.get(
             `${process.env.REACT_APP_HOST}/advertisement/findCount`,
             {
               params: {
@@ -244,7 +235,7 @@ export const fetchTasksInformation = createAsyncThunk(
                 "X-API-KEY-AUTH" : process.env.REACT_APP_API_KEY
               }
             }
-          );
+          )).data;
 
           const newUser = {...order.user}
 
@@ -252,33 +243,9 @@ export const fetchTasksInformation = createAsyncThunk(
 
           const rezultUser = formatUserFromApi(newUser);
 
-          tasks.push({
-            outSideButtonUrl : order.outSideButtonUrl,
-            isOutSide : order.isOutSide,
-            isUrgently : order.isUrgently,
-            isWarranty : order.isWarranty,
-            id: order.id,
-            taskName: order.title,
-            executionPlace: "Можно выполнить удаленно",
-            time: { start: one, end: two },
-            tonValue: order.tonPrice,
-            rubleValue : order.price,
-            taskDescription: order.description,
-            photos: files,
-            photosName: order.photos,
-            customerName: order.user.fl,
-            userPhoto: order.user.photo ? order.user.photo : "",
-            rate: "5",
-            isActive: true,
-            creationTime: order.createdAt,
-            viewsNumber: order.views,
-            responces: order.responses,
-            status: order.status,
-            user: rezultUser,
-            createNumber : imTwo.data,
-            category : order.category.id,
-            subCategory : order.subCategory.id
-          });
+          const formatedAdvertisement = formateTaskFromApi(order, numberOfResponses, rezultUser);
+
+          tasks.push(formatedAdvertisement);
         }
       } catch (e) {
         console.warn(e);

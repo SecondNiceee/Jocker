@@ -172,7 +172,7 @@ const BaidgeCreating = ({isChanging = false}) => {
   }
   return (
     <div
-      className={`flex min-w-[100vw] overflow-x-hidden transition-transform duration-300 ${
+      className={`flex min-w-[100vw] transition-transform duration-300 ${
         step === 0 ? "translate-x-0" : "-translate-x-[100vw]"
       }`}
     >
