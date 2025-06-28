@@ -1,21 +1,17 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import axios from "axios";
 import makeNewFile from "../functions/newMakeFile";
 import { USERID } from "../constants/tgStatic.config";
+import $api from "../http";
 
 export const deleteCard = createAsyncThunk(
     "deleteCard" ,
     async function(id){
         try{
-            await axios.delete(`${process.env.REACT_APP_HOST}/user/savedCard`, {
+            await $api.delete(`${process.env.REACT_APP_HOST}/user/savedCard`, {
                 params:{
                     "userId" : USERID,
                     "cardId" : id
                 },
-                headers : {
-                    "X-API-KEY-AUTH" : process.env.REACT_APP_API_KEY
-                  }
-
             } )
             return id
         }
@@ -30,13 +26,9 @@ export const addCard = createAsyncThunk(
     async function (par){
         console.log(par)
         try{
-            await axios.post(`${process.env.REACT_APP_HOST}/card/save` , {
+            await $api.post(`${process.env.REACT_APP_HOST}/card/save` , {
                 "userId" : Number(USERID),
                 "cardId" : Number(par[0])
-            },{
-                headers : {
-                    "X-API-KEY-AUTH" : process.env.REACT_APP_API_KEY
-                  }
             })
             return par[0]
         }
@@ -50,12 +42,12 @@ export const deleteResponce = createAsyncThunk(
     "deleteReponce",
     async function(id){
         try{
-            await axios.delete(`${process.env.REACT_APP_HOST}/user/savedResponse` , { params : {
+            await $api.delete(`${process.env.REACT_APP_HOST}/user/savedResponse`, { 
+                params : {
                 "responseId" : id,
                 "userId" : USERID
-            },         headers : {
-                "X-API-KEY-AUTH" : process.env.REACT_APP_API_KEY
-              } })
+                }
+            })
 
             return id
         }
@@ -69,39 +61,26 @@ export const addResponce = createAsyncThunk(
     "addResponce",
     async function(par){
         try{
-            await axios.post(`${process.env.REACT_APP_HOST}/response/save`, {
+            await $api.post(`${process.env.REACT_APP_HOST}/response/save`, {
                     "responseId" : par[0],
                     "userId" : USERID
-            }, {
-                headers : {
-                    "X-API-KEY-AUTH" : process.env.REACT_APP_API_KEY
-                  }
             })
 
-             await axios.get(`${process.env.REACT_APP_HOST}/user/findOne` , {
+             await $api.get(`${process.env.REACT_APP_HOST}/user/findOne` , {
                 params : {
                     "id" : par[1].user.id
                 },
-                headers : {
-                    "X-API-KEY-AUTH" : process.env.REACT_APP_API_KEY
-                  }
             })
 
-             await axios.get(`${process.env.REACT_APP_HOST}/advertisement/findCount` , {
+             await $api.get(`${process.env.REACT_APP_HOST}/advertisement/findCount` , {
                 params : {
                     "userId" : par[1].user.id
                 },
-                headers : {
-                    "X-API-KEY-AUTH" : process.env.REACT_APP_API_KEY
-                  }
             })
-            await axios.get(`${process.env.REACT_APP_HOST}/user/findOne` , {
+            await $api.get(`${process.env.REACT_APP_HOST}/user/findOne` , {
                 params : {
                     "id" : USERID
                 },
-                headers : {
-                    "X-API-KEY-AUTH" : process.env.REACT_APP_API_KEY
-                  }
             })
             // rez.user = responseUser.data
             // rez.createNumber = crateNumber.data
@@ -119,14 +98,11 @@ export const deleteAdvertisement = createAsyncThunk(
     "deleteAdvertisement" , 
     async function(id){
         try{
-            await axios.delete(`${process.env.REACT_APP_HOST}/user/savedAdvertisement` , {
+            await $api.delete(`${process.env.REACT_APP_HOST}/user/savedAdvertisement` , {
                 params : {
                     "advertisementId" : id,
                     "userId" : USERID
                 },
-                headers : {
-                    "X-API-KEY-AUTH" : process.env.REACT_APP_API_KEY
-                  }
             })
             return id
         }
@@ -139,31 +115,21 @@ export const addAdvertisment = createAsyncThunk(
     "addAdvertisement",
     async function(par){
         try{
-             await axios.post(`${process.env.REACT_APP_HOST}/advertisement/save` , {
+             await $api.post(`${process.env.REACT_APP_HOST}/advertisement/save` , {
                 "advertisementId" : par[0],
                 "userId" : USERID
-            }, {
-                headers : {
-                    "X-API-KEY-AUTH" : process.env.REACT_APP_API_KEY
-                  }
             })
 
-            await axios.get(`${process.env.REACT_APP_HOST}/user/findOne` , {
+            await $api.get(`${process.env.REACT_APP_HOST}/user/findOne` , {
                 params : {
                     "id" : par[1].user.id
                 },
-                headers : {
-                    "X-API-KEY-AUTH" : process.env.REACT_APP_API_KEY
-                  }
             })
 
-            await axios.get(`${process.env.REACT_APP_HOST}/advertisement/findCount` , {
+            await $api.get(`${process.env.REACT_APP_HOST}/advertisement/findCount` , {
                 params : {
                     "userId" : par[1].user.id
                 },
-                headers : {
-                    "X-API-KEY-AUTH" : process.env.REACT_APP_API_KEY
-                  }
             })
 
             return par[0]
@@ -179,15 +145,12 @@ export const fetchSavedCards = createAsyncThunk(
     "fetchSavedCards",
     async function ([page]) {
         
-        let im = await axios.get(`${process.env.REACT_APP_HOST}/card/saved` , {
+        let im = await $api.get(`${process.env.REACT_APP_HOST}/card/saved` , {
             params : {
                 "userId" : USERID,
                 "page" : page,
                 limit : 4
             },
-            headers : {
-                "X-API-KEY-AUTH" : process.env.REACT_APP_API_KEY
-              }
         })
 
          let cards = im.data
@@ -220,15 +183,12 @@ export const fetchSavedCards = createAsyncThunk(
 export const fetchSavedResponses = createAsyncThunk(
     "fetchSavedResponses",
     async function ([page]) {
-        let imTwo = await axios.get(`${process.env.REACT_APP_HOST}/response/saved` , {
+        let imTwo = await $api.get(`${process.env.REACT_APP_HOST}/response/saved` , {
             params : {
                 "userId" : USERID,
                 limit : 4,
                 page : page
             },
-            headers : {
-                "X-API-KEY-AUTH" : process.env.REACT_APP_API_KEY
-              }
         })
 
 
@@ -246,21 +206,15 @@ export const fetchSavedResponses = createAsyncThunk(
             }
 
 
-            const responseUser = await axios.get(`${process.env.REACT_APP_HOST}/user/findOne` , {
+            const responseUser = await $api.get(`${process.env.REACT_APP_HOST}/user/findOne` , {
                 params : {
                     "id" : responces[i].user.id // тут
                 },
-                headers : {
-                    "X-API-KEY-AUTH" : process.env.REACT_APP_API_KEY
-                  }
             })
-            const advertisementUser = await axios.get(`${process.env.REACT_APP_HOST}/user/findOne` , {
+            const advertisementUser = await $api.get(`${process.env.REACT_APP_HOST}/user/findOne` , {
                 params : {
                     "id" : responces[i].advertisement.user.id
                 },
-                headers : {
-                    "X-API-KEY-AUTH" : process.env.REACT_APP_API_KEY
-                  }
             })
 
 
@@ -301,15 +255,12 @@ export const fetchSavedResponses = createAsyncThunk(
             }
     
             try {
-              let luo = await axios.get(
+              let luo = await $api.get(
                 `${process.env.REACT_APP_HOST}/advertisement/findCount`,
                 {
                   params: {
                     userId: responseUser.data.id,
                   },
-                  headers : {
-                    "X-API-KEY-AUTH" : process.env.REACT_APP_API_KEY
-                  }
                 }
               );
               responces[i].createNumber = luo.data;
@@ -331,15 +282,12 @@ export const fetchSavedResponses = createAsyncThunk(
 export const fetchSavedAdvertisements = createAsyncThunk(
     "fetchSavedAdvertisements",
     async function ([page]) {
-        let im = await axios.get(`${process.env.REACT_APP_HOST}/advertisement/saved` , {
+        let im = await $api.get(`${process.env.REACT_APP_HOST}/advertisement/saved` , {
             params : {
                 "userId" : USERID,
                 limit : 4,
                 page : page
             },
-            headers : {
-                "X-API-KEY-AUTH" : process.env.REACT_APP_API_KEY
-              }
         })
         let advertisements = im.data
         let trueAdvertisements = []
@@ -358,22 +306,16 @@ export const fetchSavedAdvertisements = createAsyncThunk(
             }
 
             let files = order.photos;
-            const advertisementUser = await axios.get(`${process.env.REACT_APP_HOST}/user/findOne` , {
+            const advertisementUser = await $api.get(`${process.env.REACT_APP_HOST}/user/findOne` , {
                 params : {
                     "id" : order.user.id
                 },
-                headers : {
-                    "X-API-KEY-AUTH" : process.env.REACT_APP_API_KEY
-                  }
             })
 
-            const advertisementCrateNumber = await axios.get(`${process.env.REACT_APP_HOST}/advertisement/findCount` , {
+            const advertisementCrateNumber = await $api.get(`${process.env.REACT_APP_HOST}/advertisement/findCount` , {
                 params : {
                     "userId" : order.user.id
                 },
-                headers : {
-                    "X-API-KEY-AUTH" : process.env.REACT_APP_API_KEY
-                  }
             })
 
             trueAdvertisements.push(
@@ -419,29 +361,20 @@ export const fetchAllIds = createAsyncThunk(
     "fetchAllIds", 
     async function (params) {
         try{
-            let imOne = await await axios.get(`${process.env.REACT_APP_HOST}/category/subCategory` , {
+            let imOne = await await $api.get(`${process.env.REACT_APP_HOST}/category/subCategory` , {
                 params : {
                     "userId" : USERID
                 },
-                headers : {
-                    "X-API-KEY-AUTH" : process.env.REACT_APP_API_KEY
-                  }
             })
-            let imTwo = await axios.get(`${process.env.REACT_APP_HOST}/response/savedIds` , {
+            let imTwo = await $api.get(`${process.env.REACT_APP_HOST}/response/savedIds` , {
                 params : {
                     "userId" : USERID
                 },
-                headers : {
-                    "X-API-KEY-AUTH" : process.env.REACT_APP_API_KEY
-                  }
             })
-            let imThree = await axios.get(`${process.env.REACT_APP_HOST}/card/savedIds` , {
+            let imThree = await $api.get(`${process.env.REACT_APP_HOST}/card/savedIds` , {
                 params : {
                     "userId" : USERID
                 },
-                headers : {
-                    "X-API-KEY-AUTH" : process.env.REACT_APP_API_KEY
-                  }
             })
             return {
                 advertisement : imOne.data,
@@ -459,13 +392,10 @@ export const fetchAllValues = createAsyncThunk(
         try{
 
         
-        let im = await axios.get(`${process.env.REACT_APP_HOST}/advertisement/saved` , {
+        let im = await $api.get(`${process.env.REACT_APP_HOST}/advertisement/saved` , {
             params : {
                 "userId" : USERID
             },
-            headers : {
-                "X-API-KEY-AUTH" : process.env.REACT_APP_API_KEY
-              }
         })
         let advertisements = im.data.savedAdvertisements
         let trueAdvertisements = []
@@ -484,22 +414,16 @@ export const fetchAllValues = createAsyncThunk(
             }
 
             let files = order.photos;
-            const advertisementUser = await axios.get(`${process.env.REACT_APP_HOST}/user/findOne` , {
+            const advertisementUser = await $api.get(`${process.env.REACT_APP_HOST}/user/findOne` , {
                 params : {
                     "id" : order.user.id
                 },
-                headers : {
-                    "X-API-KEY-AUTH" : process.env.REACT_APP_API_KEY
-                  }
             })
 
-            const advertisementCrateNumber = await axios.get(`${process.env.REACT_APP_HOST}/advertisement/findCount` , {
+            const advertisementCrateNumber = await $api.get(`${process.env.REACT_APP_HOST}/advertisement/findCount` , {
                 params : {
                     "userId" : order.user.id
                 },
-                headers : {
-                    "X-API-KEY-AUTH" : process.env.REACT_APP_API_KEY
-                  }
             })
 
 
@@ -541,13 +465,10 @@ export const fetchAllValues = createAsyncThunk(
 
 
 
-        let imTwo = await axios.get(`${process.env.REACT_APP_HOST}/response/saved` , {
+        let imTwo = await $api.get(`${process.env.REACT_APP_HOST}/response/saved` , {
             params : {
                 "userId" : USERID
             },
-            headers : {
-                "X-API-KEY-AUTH" : process.env.REACT_APP_API_KEY
-              }
         })
 
         let responces = imTwo.data.savedResponses
@@ -562,21 +483,15 @@ export const fetchAllValues = createAsyncThunk(
             }
 
 
-            const responseUser = await axios.get(`${process.env.REACT_APP_HOST}/user/findOne`, {
+            const responseUser = await $api.get(`${process.env.REACT_APP_HOST}/user/findOne`, {
                 params : {
                     "id" : USERID // тут
                 },
-                headers : {
-                    "X-API-KEY-AUTH" : process.env.REACT_APP_API_KEY
-                  }
             })
-            const advertisementUser = await axios.get(`${process.env.REACT_APP_HOST}/user/findOne` , {
+            const advertisementUser = await $api.get(`${process.env.REACT_APP_HOST}/user/findOne` , {
                 params : {
                     "id" : responces[i].advertisement.user.id
                 },
-                headers : {
-                    "X-API-KEY-AUTH" : process.env.REACT_APP_API_KEY
-                  }
             })
 
 
@@ -617,15 +532,12 @@ export const fetchAllValues = createAsyncThunk(
             }
     
             try {
-              let luo = await axios.get(
+              let luo = await $api.get(
                 `${process.env.REACT_APP_HOST}/advertisement/findCount`,
                 {
                   params: {
                     userId: imTwo.data.id,
                   },
-                  headers : {
-                    "X-API-KEY-AUTH" : process.env.REACT_APP_API_KEY
-                  }
                 }
               );
               responces[i].createNumber = luo.data;
@@ -638,13 +550,10 @@ export const fetchAllValues = createAsyncThunk(
           }
         
 
-        im = await axios.get(`${process.env.REACT_APP_HOST}/card/saved` , {
+        im = await $api.get(`${process.env.REACT_APP_HOST}/card/saved` , {
             params : {
                 "userId" : USERID
             },
-            headers : {
-                "X-API-KEY-AUTH" : process.env.REACT_APP_API_KEY
-              }
         })
 
 

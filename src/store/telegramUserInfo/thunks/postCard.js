@@ -1,11 +1,12 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
-import axios from "axios";
 import { USERID } from "../../../constants/tgStatic.config";
+import $api from "../../../http";
+
 export const postCard = createAsyncThunk(
     "telegramUserInfo/postUserInfo",
     async function (data){
         try{
-            let im = await axios.post(`${process.env.REACT_APP_HOST}/card` , data[0] , 
+            let im = await $api.post(`${process.env.REACT_APP_HOST}/card` , data[0] , 
                 {
                     params : {
                         userId : Number(USERID),
@@ -13,7 +14,6 @@ export const postCard = createAsyncThunk(
                     headers: {
                         "Content-Type" :'multipart/form-data',
                         "Access-Control-Allow-Origin": "*",
-                        "X-API-KEY-AUTH" : process.env.REACT_APP_API_KEY
                       },
                 }
              )

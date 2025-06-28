@@ -7,7 +7,6 @@ import FirstDetails from "../../components/First/FirstDetails/FirstDetails";
 import Responce from "../First/Responce";
 import MainButton from "../../constants/MainButton";
 import BackButton from "../../constants/BackButton";
-import axios from "axios";
 import { addResponce } from "../../store/information";
 import SavedResponse from "../../components/SavedPage/SavedReponse/SavedResponse";
 import SavedProfile from "../../components/SavedPage/SavedProfile/SavedProfile";
@@ -20,6 +19,7 @@ import CssTransitionSlider from "../../components/UI/PhotosSlider/CssTransitionS
 import useSlider from "../../hooks/useSlider";
 import useBlockInputs from "../../hooks/useBlockInputs";
 import useApiFetch from "./hooks/useApiFetch";
+import $api from "../../http";
 
 const values = ["Заказы", "Отклики", "Кейсы"];
 const keys = ["advertisment", "responces", "cards"];
@@ -321,7 +321,7 @@ const SavedPage = () => {
         myFormData.append(`photos`, e);
       });
       try {
-        let im = await axios.post(
+        let im = await $api.post(
           "https://www.connectbirga.ru/response",
           myFormData,
           {
@@ -329,14 +329,11 @@ const SavedPage = () => {
               userId: userId,
               advertisementId: advertismetId,
             },
-            headers : {
-              "X-API-KEY-AUTH" : process.env.REACT_APP_API_KEY
-            }
           }
         );
         const messageOne = translation("📣 Вы получили отклик на задачу «")
         const messageTwo = translation("» от ")
-        await axios.get("https://www.connectbirga.ru/user/sendMessage", {
+        await $api.get("https://www.connectbirga.ru/user/sendMessage", {
           params: {
             chatId: im.data.user.chatId,
             text:
@@ -348,9 +345,6 @@ const SavedPage = () => {
               languageCode : en ? "en" : "ru"
             
           },
-          headers : {
-            "X-API-KEY-AUTH" : process.env.REACT_APP_API_KEY
-          }
         });
         dispatch(addResponce([savedTasks[details.id].id, im.data]));
       } catch (e) {

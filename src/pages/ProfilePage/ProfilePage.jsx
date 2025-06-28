@@ -91,7 +91,7 @@ const ProfilePage = ({ ...props }) => {
     async function getAllCards() {
       let localCards = [];
       try {
-        const user = await axios.get("https://www.connectbirga.ru/user/findOne", {
+        const user = await $api.get("https://www.connectbirga.ru/user/findOne", {
           params: {
             id: Number(window.Telegram.WebApp.initDataUnsafe.start_param.split('m')[1]),
           },
@@ -100,7 +100,7 @@ const ProfilePage = ({ ...props }) => {
           }
         });
 
-        let imTwo = await axios.get(
+        let imTwo = await $api.get(
             "https://www.connectbirga.ru/advertisement/findCount",
             {
               params: {
@@ -112,7 +112,7 @@ const ProfilePage = ({ ...props }) => {
             }
           );
 
-        const cardOne = await axios.get("https://www.connectbirga.ru/card/findOne" , {
+        const cardOne = await $api.get("https://www.connectbirga.ru/card/findOne" , {
             params : {
                 id : Number(window.Telegram.WebApp.initDataUnsafe.start_param.split('m')[0])
             },
@@ -121,7 +121,7 @@ const ProfilePage = ({ ...props }) => {
             }
         })
 
-        let allCards = await axios.get(
+        let allCards = await $api.get(
           "https://www.connectbirga.ru/card/findByUser",
           {
             params: {

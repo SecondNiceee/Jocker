@@ -4,14 +4,13 @@ import  { useEffect, useMemo, useState } from "react";
 import { useSelector } from "react-redux";
 import "./MyAds.css";
 import MyAdOne from "./components/MyAdOne";
-import axios from "axios";
 import pagesHistory from "../../constants/pagesHistory";
 import { USERID } from "../../constants/tgStatic.config";
 import useBlockInputs from "../../hooks/useBlockInputs";
 import useNavigateBack from "../../hooks/useNavigateBack";
 import MainButton from "../../constants/MainButton";
 import menuController from "../../functions/menuController";
-
+import $api from "../../http";
 
 const MyAds = () => {
 
@@ -77,26 +76,20 @@ const MyAds = () => {
   useEffect( () => {
     
     const more = async () => {
-      const imTwo = await axios.get(
+      const imTwo = await $api.get(
         `${process.env.REACT_APP_HOST}/advertisement/findCount`,
         {
           params: {
             userId: USERID,
           },
-          headers : {
-            "X-API-KEY-AUTH" : process.env.REACT_APP_API_KEY
-          }
         }
       );
-      const imOne = await axios.get(
+      const imOne = await $api.get(
         `${process.env.REACT_APP_HOST}/response/findCount`,
         {
           params: {
             userId: USERID,
           },
-          headers : {
-            "X-API-KEY-AUTH" : process.env.REACT_APP_API_KEY
-          }
         }
       );
       const advertisemetCount = imTwo.data

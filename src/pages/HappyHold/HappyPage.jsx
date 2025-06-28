@@ -5,9 +5,10 @@ import chemodan from "../../animation/boomstick.json"
 import MainButton from '../../constants/MainButton';
 import translation from '../../functions/translate';
 import { useNavigate } from 'react-router-dom';
-import axios from 'axios';
 import pagesHistory from '../../constants/pagesHistory';
 import { USERID } from '../../constants/tgStatic.config';
+import $api from '../../http';
+
 const HappyPage = ({task , congradulate, setShowCongradulate }) => {
     const navigate = useNavigate()
 
@@ -21,14 +22,11 @@ const HappyPage = ({task , congradulate, setShowCongradulate }) => {
         async function start(  ) {
             try{
 
-                 await axios.patch("https://www.connectbirga.ru/user", {},  {
+                 await $api.patch(`${process.env.REACT_APP_HOST}/user`, {},  {
                     params: {
                       congratulateId : congradulate[0].id ,
                       userId: USERID,
                     },
-                    headers : {
-                      "X-API-KEY-AUTH" : process.env.REACT_APP_API_KEY
-                    }
                   });
             }
             catch(e){

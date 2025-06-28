@@ -1,7 +1,8 @@
-import axios from "axios";
 import translation from "../translate";
 import en from "../../constants/language";
 import { USERID } from "../../constants/tgStatic.config";
+import $api from "../../http";
+
 const messageOne = translation("📣 Вы получили отклик на задачу «");
 const messageTwo = translation("» от ");
 export const createResponse = async ({responce, responseAdvertisement, responseUser}) => {
@@ -15,22 +16,19 @@ export const createResponse = async ({responce, responseAdvertisement, responseU
     try {
       let im;
       for (let i = 0; i < 1; i++) {
-        im = await axios.post(
-          process.env.REACT_APP_HOST + "/response",
+        im = await $api.post(
+          `${process.env.REACT_APP_HOST}/response`,
           myFormData,
           {
             params: {
               advertisementId: String(responseAdvertisement.id),
               userId: String(responseUser.id),
             },
-            headers: {
-              "X-API-KEY-AUTH": process.env.REACT_APP_API_KEY,
-            },
           }
         );
       }
       try {
-        await axios.get(process.env.REACT_APP_HOST + "/user/sendMessage", {
+        await $api.get(`${process.env.REACT_APP_HOST}/user/sendMessage`, {
           params: {
             chatId: String(responseAdvertisement.user.id),
             text:
@@ -44,9 +42,6 @@ export const createResponse = async ({responce, responseAdvertisement, responseU
               "&response=" +
               String(im.data.id),
             languageCode: en ? "en" : "ru",
-          },
-          headers: {
-            "X-API-KEY-AUTH": process.env.REACT_APP_API_KEY,
           },
         });
       } catch (e) {

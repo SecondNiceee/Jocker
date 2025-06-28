@@ -1,5 +1,5 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
-import axios from "axios";
+import $api from "../../../http";
 
 export const putCard = createAsyncThunk(
     "telegramUserInfo/putCard",
@@ -7,7 +7,7 @@ export const putCard = createAsyncThunk(
         console.warn(data[2]);
         try{
 
-            let im = await axios.put(`${process.env.REACT_APP_HOST}/card` , data[0] , 
+            let im = await $api.put(`${process.env.REACT_APP_HOST}/card` , data[0] , 
                 {
                     params : {
                         id : data[1],
@@ -15,8 +15,6 @@ export const putCard = createAsyncThunk(
                     headers: {
                         "Content-Type" :'multipart/form-data',
                         "Access-Contrsol-Allow-Origin": "*",
-                        "X-API-KEY-AUTH" : process.env.REACT_APP_API_KEY
-
                       },
                 }
             )

@@ -5,11 +5,11 @@ import AboutInfo from "./AboutInfo";
 import AboutMain from "./AboutMain";
 import ExampleWorks from "./ExampleWorks";
 import { memo } from "react";
-import axios from "axios";
 import MyLoader from "../../../components/UI/MyLoader/MyLoader";
 import Stage from "../../../components/UI/Stage/Stage";
 import Compact from "../../../components/UI/Compact/Compact";
 import MainButton from "../../../constants/MainButton";
+import $api from "../../../http";
 
 const AboutReaction = ({
   responce,
@@ -28,14 +28,11 @@ const AboutReaction = ({
     async function getAllCards() {
       let localCards = [];
       try {
-        let allCards = await axios.get(
+        let allCards = await $api.get(
           "https://www.connectbirga.ru/card/findByUser",
           {
             params: {
               userId: responce.user.id,
-            },
-            headers: {
-              "X-API-KEY-AUTH": process.env.REACT_APP_API_KEY,
             },
           }
         );

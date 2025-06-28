@@ -1,8 +1,8 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import axios from "axios";
 import { USERID } from "../constants/tgStatic.config";
 import { formatUserFromApi } from "../functions/api/formatUserFromApi";
 import { formateTaskFromApi } from "../functions/formtaTaskFromApi";
+import $api from "../http";
 
 export const addWatch = createAsyncThunk(
   "information/addWatch",
@@ -12,17 +12,15 @@ export const addWatch = createAsyncThunk(
         let myData = new FormData();
         myData.append("views", String(Number(advertisement.viewsNumber) + 1));
         
-        await axios.put(`${process.env.REACT_APP_HOST}/advertisement`, myData, {
+        await $api.put(`${process.env.REACT_APP_HOST}/advertisement`, myData, {
           params: {
             id: String(advertisement.id),
           },
           headers : {
             "Content-Type": "multipart/form-data",
-            "X-API-KEY-AUTH" : process.env.REACT_APP_API_KEY
           }
         });
       } catch (e) {
-        // alert(e)
         console.warn(e);
       }
     }
@@ -32,13 +30,10 @@ export const deleteAd = createAsyncThunk(
   "information/deleteMyAd",
   async function (id) {
     try {
-      await axios.delete(`${process.env.REACT_APP_HOST}/advertisement`, {
+      await $api.delete(`${process.env.REACT_APP_HOST}/advertisement`, {
         params: {
           id: String(id),
         },
-        headers : {
-          "X-API-KEY-AUTH" : process.env.REACT_APP_API_KEY
-        }
       });
       return id;
     } catch (e) {
@@ -50,7 +45,7 @@ export const putMyTask = createAsyncThunk(
   "inforation/putMyTask",
   async function (data) {
     try {
-      let answ = await axios.put(
+      let answ = await $api.put(
         `${process.env.REACT_APP_HOST}/advertisement`,
         data[0],
         {
@@ -60,7 +55,6 @@ export const putMyTask = createAsyncThunk(
           headers: {
             "Content-Type": "multipart/form-data",
             "Access-Control-Allow-Origin": "*",
-            "X-API-KEY-AUTH" : process.env.REACT_APP_API_KEY
           },
         }
       );
@@ -81,10 +75,9 @@ export const postMyTask = createAsyncThunk(
 
       for (let i = 0 ; i < 1; i++){
         try{
-          await axios.post(`${process.env.REACT_APP_HOST}/advertisement`, arr[0], {
+          await $api.post(`${process.env.REACT_APP_HOST}/advertisement`, arr[0], {
             headers: {
               "Content-Type" :'multipart/form-data',
-              "X-API-KEY-AUTH" : process.env.REACT_APP_API_KEY
             },
           });
         }
@@ -105,13 +98,10 @@ export const setStartTask = createAsyncThunk(
     try {
       let myData = new FormData();
       myData.append("status", "inProcess");
-      await axios.put(`${process.env.REACT_APP_HOST}/advertisement`, myData, {
+      await $api.put(`${process.env.REACT_APP_HOST}/advertisement`, myData, {
         params: {
           id: id,
         },
-        headers : {
-          "X-API-KEY-AUTH" : process.env.REACT_APP_API_KEY
-        }
       });
       return id;
     } catch (e) {
@@ -126,7 +116,7 @@ export const fetchMyOrders = createAsyncThunk(
   async function (page) {
     try {
       let tasks = [];
-      let task = await axios.get(
+      let task = await $api.get(
         `${process.env.REACT_APP_HOST}/advertisement/findByUser`,
         {
           params: {
@@ -137,7 +127,6 @@ export const fetchMyOrders = createAsyncThunk(
           headers: {
             "Content-Type": "multipart/form-data",
             "Access-Control-Allow-Origin": "*",
-            "X-API-KEY-AUTH" : process.env.REACT_APP_API_KEY
           },
         }
       );
@@ -146,13 +135,10 @@ export const fetchMyOrders = createAsyncThunk(
       } else {
         for (let order of task.data) {
           let files = order.photos;
-          let responseCounter = await axios.get(`${process.env.REACT_APP_HOST}/response/countByAdvertisement` , {
+          let responseCounter = await $api.get(`${process.env.REACT_APP_HOST}/response/countByAdvertisement` , {
             params : {
               "advertisementId" : order.id,
             },
-            headers : {
-              "X-API-KEY-AUTH" : process.env.REACT_APP_API_KEY
-            }
           })
           tasks.push({
             isOutSide : order.isOutSide,
@@ -204,16 +190,13 @@ export const fetchTasksInformation = createAsyncThunk(
     let tasks = [];
     let task;
     try {
-      task = await axios.get(
+      task = await $api.get(
         `${process.env.REACT_APP_HOST}/advertisement/findAll`,
         {
           params: {
             limit: 10,
             page: par,
           },
-          headers : {
-            "X-API-KEY-AUTH" : process.env.REACT_APP_API_KEY
-          }
         }
       );
     } catch (e) {
@@ -225,15 +208,12 @@ export const fetchTasksInformation = createAsyncThunk(
     } else {   
       try {
         for (let order of task.data) {
-          let numberOfResponses = (await axios.get(
+          let numberOfResponses = (await $api.get(
             `${process.env.REACT_APP_HOST}/advertisement/findCount`,
             {
               params: {
                 userId: order.user.id,
               },
-              headers : {
-                "X-API-KEY-AUTH" : process.env.REACT_APP_API_KEY
-              }
             }
           )).data;
 

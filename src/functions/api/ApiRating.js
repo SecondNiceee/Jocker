@@ -1,16 +1,15 @@
-import axios from "axios";
+import $api from "../../http";
 
 class ApiRating{
     async getByUserId(id){
         try{
-            const response = await axios.get(`${process.env.REACT_APP_HOST}/user/ratingOne`, {
+            const response = await $api.get(`${process.env.REACT_APP_HOST}/user/ratingOne`, {
                 params : {
                     userId : id
                 },
                 headers: {
                     "Content-Type" :'application/json',
-                    "X-API-KEY-AUTH" : process.env.REACT_APP_API_KEY,
-                    },
+                },
             })
             return response.data;
         }
