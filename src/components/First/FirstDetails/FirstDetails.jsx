@@ -150,7 +150,6 @@ const FirstDetails = ({
       enableColorAndActiveButton();
     };
   }, [isMyResponse, isSliderOpened, isMyTask, showButton]);
-
   const me = useSelector( (state) => state.telegramUserInfo )
   const goForward = useCallback(() => {
     if (isSliderOpened) {

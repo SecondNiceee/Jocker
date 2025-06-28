@@ -1,4 +1,4 @@
-import { formateTaskFromApi } from "../formtaTaskFromApi";
+import { formateTaskFromApi } from "../formateTaskFromApi";
 import $api from "../../http";
 
 export const getAdvertisementById = async (id) => {

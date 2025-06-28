@@ -1,7 +1,7 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { USERID } from "../constants/tgStatic.config";
 import { formatUserFromApi } from "../functions/api/formatUserFromApi";
-import { formateTaskFromApi } from "../functions/formtaTaskFromApi";
+import { formateTaskFromApi } from "../functions/formateTaskFromApi";
 import $api from "../http";
 
 export const addWatch = createAsyncThunk(
