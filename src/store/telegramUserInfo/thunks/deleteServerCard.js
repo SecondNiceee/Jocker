@@ -9,7 +9,8 @@ export const deleteServerCard = createAsyncThunk(
                     id : data
                 },
                 headers : {
-                    "X-API-KEY-AUTH" : process.env.REACT_APP_API_KEY
+                    "X-API-KEY-AUTH" : process.env.REACT_APP_API_KEY,
+                    "x-init-data": window.Telegram.WebApp.initData
                   }
             }
             )
