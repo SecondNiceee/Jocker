@@ -81,7 +81,6 @@ const MyFirstBlock = ({
                     alt=""
                   />
                 );
-                // return <img className='first__photo' src = {'https://www.connectbirga.ru/' + e} />
               })}
             </div>
           ) : (

@@ -31,7 +31,7 @@ function useWriteFucntion({walletH, buyPage, setBuyPage, happyHold, setOpen, isO
 
   
   async function hold(id, amount , service, serviceUs) {
-    await $api.get("https://www.connectbirga.ru/user/hold" , {
+    await $api.get(`${process.env.REACT_APP_HOST}/user/hold`, {
       params : {
         fromId : id,
         amount : amount,

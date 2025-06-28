@@ -56,8 +56,6 @@ const NewCardsPage = lazy( () => import("./pages/NewCardsPage/NewCardsPage") )
 
 const StatisticPage = lazy( () => import("./pages/StatisticPage/StatisticPage") )
 
-export const API_KEY = process.env.REACT_APP_API_KEY;
-
 const MyLoader = () => {
   return (
     <div

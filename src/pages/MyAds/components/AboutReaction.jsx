@@ -29,7 +29,7 @@ const AboutReaction = ({
       let localCards = [];
       try {
         let allCards = await $api.get(
-          "https://www.connectbirga.ru/card/findByUser",
+          `${process.env.REACT_APP_HOST}/card/findByUser`,
           {
             params: {
               userId: responce.user.id,

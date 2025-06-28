@@ -322,7 +322,7 @@ const SavedPage = () => {
       });
       try {
         let im = await $api.post(
-          "https://www.connectbirga.ru/response",
+          `${process.env.REACT_APP_HOST}/response`,
           myFormData,
           {
             params: {
@@ -333,7 +333,7 @@ const SavedPage = () => {
         );
         const messageOne = translation("📣 Вы получили отклик на задачу «")
         const messageTwo = translation("» от ")
-        await $api.get("https://www.connectbirga.ru/user/sendMessage", {
+        await $api.get(`${process.env.REACT_APP_HOST}/user/sendMessage`, {
           params: {
             chatId: im.data.user.chatId,
             text:
