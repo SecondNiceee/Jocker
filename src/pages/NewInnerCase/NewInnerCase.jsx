@@ -20,10 +20,10 @@ import CssTransitionSlider from '../../components/UI/PhotosSlider/CssTransitionS
 import { secondaryButtonController } from '../Baidge/controllers/SecondaryButtonController';
 import { SecondatyButton } from '../../constants/SecondaryButton';
 import { enableColorAndActiveButton } from '../../functions/enableColorAndActiveButton';
-import axios from 'axios';
 import formatViews from './utils/formatViews';
 import useAddHistory from '../../hooks/useAddHistory';
 import { getUserWithoutCards } from '../../functions/api/getUserWithoutCards';
+import $api from '../../http';
 
 const NewInnerCase = () => {
     const clickFunc = () => {
@@ -72,9 +72,6 @@ const NewInnerCase = () => {
                 params : {
                     id : casePar.id
                 },
-                headers: {
-            "X-API-KEY-AUTH": process.env.REACT_APP_API_KEY,
-          },
             })
         }
     }, [casePar] )
