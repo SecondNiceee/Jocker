@@ -5,7 +5,6 @@ export const fetchUserInfo = createAsyncThunk(
   "telegramUserInfo/fetchUserInfo",
   async function () {
     const user =  await findUserById(USERID);
-    console.warn(user);
     return user;
   }
 );

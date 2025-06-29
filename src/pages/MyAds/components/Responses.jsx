@@ -72,7 +72,6 @@ const Responses = ({
           {responces.map((e, i) => {
             const setOpen = () => {
               dispatch(setResponse(e));
-              console.warn(e);
               navigate(`/response/${advertisement.id}/${e.id}`)
             }
             return (

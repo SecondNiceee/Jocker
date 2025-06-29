@@ -102,7 +102,6 @@ const telegramUserInfo = createSlice({
       state.status = "loading";
     });
     builder.addCase(fetchUserInfo.fulfilled, (state, action) => {
-      console.warn({...state.profile , about : action.payload.about, stage : action.payload.stage === null ? '0' : action.payload.stage});
       state.lastTransaction = action.payload.lastTransaction
       state.id = action.payload.id;
       state.firstName = action.payload.firstName;

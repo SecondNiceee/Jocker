@@ -260,9 +260,6 @@ export const fetchResponses = createAsyncThunk(
             
             localResponses[i].advertisement = {...advertisementError}
 
-            console.warn(localResponses[i].advertisement)
-
-        
             let photos = [];
     
             if (localResponses[i].photos) {

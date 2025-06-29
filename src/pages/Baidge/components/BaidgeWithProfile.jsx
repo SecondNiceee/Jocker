@@ -54,6 +54,9 @@ const BaidgeWithProfile = ({ userInfo, className, setUserInfo, urlParametr}) => 
   };
 
   const ratingLoaded = useRef(false);
+
+  console.warn(userInfo);  
+
   useEffect( () => {
       if (userInfo){
         if (!ratingLoaded.current){

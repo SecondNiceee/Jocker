@@ -31,7 +31,6 @@ const AboutOne = () => {
   const [task, setOrderInformation] = useState(null);
   const {advId} = useParams()
   const advertisementFormStore = useSelector(state => state.information.advertisement);
-  console.warn(task);
   useEffect( () => {
     if (advertisementFormStore){
       setOrderInformation(advertisementFormStore);

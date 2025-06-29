@@ -78,10 +78,6 @@ const AdCreating = () => {
 
   const isCategorysUpdated = useRef(false);
 
-  console.warn("Рендер AdCreating");
-
-  console.log(subCategorys);
-
   useEffect(() => {
     if (!isCategorysUpdated.current) {
       if (categorys && subCategorys) {
@@ -178,12 +174,10 @@ const AdCreating = () => {
     }
     let localTaskInformation = { ...secondPageCopy, ...firstPage };
     window.Telegram.WebApp.HapticFeedback.notificationOccurred("success");
-    console.warn("Дошел до сюда!!!")
     post(localTaskInformation);
     spet = 0;
   }
   async function post(el) {
-    console.warn(el);
     console.log({
       userId : String(USERID),
       title : String(el.taskName.trim()),

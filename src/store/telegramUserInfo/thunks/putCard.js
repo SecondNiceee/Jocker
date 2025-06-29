@@ -4,9 +4,7 @@ import $api from "../../../http";
 export const putCard = createAsyncThunk(
     "telegramUserInfo/putCard",
     async function (data){
-        console.warn(data[2]);
         try{
-
             let im = await $api.put(`${process.env.REACT_APP_HOST}/card` , data[0] , 
                 {
                     params : {

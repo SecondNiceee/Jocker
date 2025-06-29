@@ -29,9 +29,6 @@ export const fetchAdditionalUserInfo = async (whatIsNeededToFetch, user) => {
         const ratingByProfession = await getRatingByProfession(user);
         addittionalInfo = {...addittionalInfo, ratingByProfession}
     }
-
-    console.warn(addittionalInfo);
-
     return addittionalInfo;
 
 }
