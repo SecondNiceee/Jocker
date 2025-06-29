@@ -73,10 +73,10 @@ const useGetResponseById = ({id}) => {
                         else{
                             getUserWithoutCards(responseFromStore.user.id).then((user) => {
                                 dispatch(setResponse({...responseFromStore, user}))
-                                isLoadResponse = true
+                                isLoadResponse.current = true
                             }).catch( (err) => {
                                 console.warn(err);
-                                isLoadResponse = true
+                                isLoadResponse.current = true
                             } )
                         }
                     }

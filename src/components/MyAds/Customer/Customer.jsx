@@ -1,7 +1,6 @@
-import React, { useCallback } from 'react';
+import { useCallback } from 'react';
 import cl from './Customer.module.css'
 import MyButton from '../../UI/MyButton/MyButton';
-import userPhoto from "../../../images/userPhoto/user.png"
 import Text from '../../Text/Text';
 import translation from '../../../functions/translate';
 import useGetUserPhotoLink from '../../../hooks/useGetUserPhotoLink';

@@ -1,7 +1,6 @@
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router";
 import { setUser } from "../../../store/information";
-import { showAllert } from "../../../functions/showAlert";
 
 const useGetOptionsConfig = () => {
     const userInfo = useSelector((state) => state.telegramUserInfo); 
