@@ -424,6 +424,7 @@ function App() {
     dispatch(getSubCategorys());
   }, [dispatch]);
 
+  console.log( window.Telegram.WebApp.initData);
 
   return (
     <BrowserRouter basename="/">
