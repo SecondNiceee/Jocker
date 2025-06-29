@@ -16,7 +16,6 @@ const AboutInfo = ({ responce, isTelesgramVisible = true }) => {
     // eslint-disable-next-line
   }, []);
 
-  console.warn(responce.user);
   const clickHanlder = useCallback(() => {
     if (isTelesgramVisible) {
       if (responce.user.link && responce.user.link !== "-1") {
@@ -43,8 +42,6 @@ const AboutInfo = ({ responce, isTelesgramVisible = true }) => {
       );
     }
   }, [responce, isTelesgramVisible]);
-
-  console.warn(responce.user.completedAdvertisements);
   return (
     <div className="aboutInfo">
       <div className="name">

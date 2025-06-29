@@ -42,7 +42,6 @@ const ChoiceCategory = ({ ...props }) => {
 
   const setTaskInformation = useCallback(
     (par) => {
-      console.warn(par);
       dispatch(setFirstPage(par));
     },
     [dispatch]
@@ -55,7 +54,6 @@ const ChoiceCategory = ({ ...props }) => {
         subCategory: subCategorys.find((e) => e.subCategory === "Другое"),
       });
     } else {
-      console.warn("Сюда")
       let sortedCategorys = subCategorys.filter(
         (el) => el.category.id === choisenCategory.id
       );

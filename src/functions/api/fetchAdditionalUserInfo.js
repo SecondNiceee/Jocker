@@ -13,9 +13,6 @@ import { getRatingByProfession } from "./getRatingByProfession";
 export const fetchAdditionalUserInfo = async (whatIsNeededToFetch, user) => {
 
     const {isCounterOfResponses, isCommonRating, isRatingByProfession } = whatIsNeededToFetch;
-
-    console.warn({isCounterOfResponses, isCommonRating, isRatingByProfession })
-
     let addittionalInfo = {};
     if (isCounterOfResponses){
         const counterOfResponses = await getCounterOfResponses(user.id);

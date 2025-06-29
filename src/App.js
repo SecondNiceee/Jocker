@@ -386,10 +386,9 @@ const AnimatedSwitch = () => {
         </AnimatePresence>
       </div>
     </>
-  );
+);
 };
 function App() { 
-  console.log(window.Telegram.WebApp.initData);
 
   useEffect( () => {
     window.Telegram.WebApp.setHeaderColor("#18222d");
