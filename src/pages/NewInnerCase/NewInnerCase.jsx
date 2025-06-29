@@ -21,17 +21,16 @@ import { secondaryButtonController } from '../Baidge/controllers/SecondaryButton
 import { SecondatyButton } from '../../constants/SecondaryButton';
 import { enableColorAndActiveButton } from '../../functions/enableColorAndActiveButton';
 import formatViews from './utils/formatViews';
-import useAddHistory from '../../hooks/useAddHistory';
 import { getUserWithoutCards } from '../../functions/api/getUserWithoutCards';
 import $api from '../../http';
+import { useAddPageHistory } from '../../hooks/useAddPageHistory';
 
 const NewInnerCase = () => {
     const clickFunc = () => {
         console.log('Делюсь кейсом')
         
     }
-
-    useAddHistory();
+    useAddPageHistory();
 
     const {userId, cardId} = useParams();
     

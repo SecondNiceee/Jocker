@@ -5,15 +5,15 @@ import menuController from "../../functions/menuController";
 import StatistikComponent from "../Baidge/components/StatistikComponent";
 import useGetProfileStatistics from './hooks/useGetProfileStatistics';
 import useGetOrderStatistics from "./hooks/useGetOrderStatistics";
-import useAddHistory from "../../hooks/useAddHistory";
+import { useAddPageHistory } from "../../hooks/useAddPageHistory";
 
 
 const StatisticPage = () => {  
   const userConfig = useSelector( (state) => state.information.baidgeUser );
   
   useNavigateBack({isSliderOpened : false, setSlideOpened : false});
-
-  useAddHistory();
+  
+  useAddPageHistory();
   
   useEffect( () => {
     menuController.hideMenu();

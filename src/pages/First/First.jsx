@@ -9,7 +9,6 @@ import { useSelector } from "react-redux";
 import { useFilteredArr } from "../../hooks/useFilteredArr";
 import CssTransitionSlider from "../../components/UI/PhotosSlider/CssTransitionSlider";
 import useBlockInputs from "../../hooks/useBlockInputs";
-import useAddHistory from "../../hooks/MyAds/useAddHistory";
 import useSlider from "../../hooks/useSlider";
 import useFilteredArray from "./hooks/useFilteredArray";
 import BackButton from "../../constants/BackButton";
@@ -34,7 +33,6 @@ const First = () => {
     setPhotos,
     setSlideOpened,
   } = useSlider();
-  useAddHistory();
   useAddPageHistory();
   useBlockInputs();
 

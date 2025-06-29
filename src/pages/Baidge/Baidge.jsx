@@ -8,7 +8,7 @@ import { findUserById } from "../../functions/api/findUserById";
 import menuController from "../../functions/menuController";
 import MainButton from "../../constants/MainButton";
 import { putUserInfo } from "../../store/telegramUserInfo/thunks/putUserInfo";
-import useAddHistory from "../../hooks/useAddHistory";
+import { useAddPageHistory } from "../../hooks/useAddPageHistory";
 
 const baidgeId =  window.Telegram.WebApp.initDataUnsafe?.start_param || null
 const Baidge = ({isExternal = false}) => {
@@ -16,6 +16,8 @@ const Baidge = ({isExternal = false}) => {
   const me = useSelector((state) => state.telegramUserInfo);
 
   const {id} = useParams();
+
+  useAddPageHistory();
 
   const [userInfo, setUserInfo] = useState(null);
 
@@ -42,9 +44,6 @@ const Baidge = ({isExternal = false}) => {
       }
     }
   }, [ me, id, isExternal]);
-
-  useAddHistory();
-
   useEffect( () => { 
     MainButton.hide();
   }, [] )

@@ -11,8 +11,8 @@ import BackButton from "../../constants/BackButton";
 import menuController from "../../functions/menuController";
 import { fetchUserInfo } from "../../store/telegramUserInfo/thunks/fetchUserInfo";
 import { putUserInfo } from "../../store/telegramUserInfo/thunks/putUserInfo";
-import useAddHistory from "../../hooks/useAddHistory";
 import { fetchMyAdditionalUserInfo } from "../../store/telegramUserInfo/thunks/fetchAdditionalUserInfo";
+import { useAddPageHistory } from "../../hooks/useAddPageHistory";
 
 const BaidgeCreating = ({isChanging = false}) => {
   const dispatch = useDispatch();
@@ -21,6 +21,7 @@ const BaidgeCreating = ({isChanging = false}) => {
     dispatch(getProfessions());
   }, [dispatch]);
 
+  useAddPageHistory();
 
   const categorys = useSelector((state) => state.categorys.category);
 
@@ -85,8 +86,6 @@ const BaidgeCreating = ({isChanging = false}) => {
   useEffect(() => {
     baidgeButtonController.controlText({ step, me, isChanging });
   }, [step, me, isChanging]);
-
-  useAddHistory();
 
   useEffect(() => {
     const notEmptyTaggs = taggs.filter( (tag) => tag.length !== 0 )

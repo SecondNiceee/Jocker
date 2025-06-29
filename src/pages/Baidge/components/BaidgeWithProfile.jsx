@@ -13,6 +13,7 @@ import useScrollTop from "../../../hooks/useScrollTop";
 import menuController from "../../../functions/menuController";
 import { fetchMyAdditionalUserInfo } from "../../../store/telegramUserInfo/thunks/fetchAdditionalUserInfo";
 import { fetchAdditionalUserInfo } from "../../../functions/api/fetchAdditionalUserInfo";
+import { useAddPageHistory } from "../../../hooks/useAddPageHistory";
 
 const BaidgeWithProfile = ({ userInfo, className, setUserInfo, urlParametr}) => {
 
@@ -21,6 +22,8 @@ const BaidgeWithProfile = ({ userInfo, className, setUserInfo, urlParametr}) => 
   const dispatch = useDispatch();
 
   useScrollTop();
+
+  useAddPageHistory();
 
   useNavigateBack({isSliderOpened : false, setSlideOpened : false})
 
@@ -34,6 +37,7 @@ const BaidgeWithProfile = ({ userInfo, className, setUserInfo, urlParametr}) => 
   const photoUrl = useGetUserPhotoLink({anotherUserInfo : userInfo});
 
   const optionsConfig = useGetBaidgeOprionsConfig({userInfo})
+
 
   const clickLikeUser = () => {
     likesController.likeUser({
@@ -79,6 +83,8 @@ const BaidgeWithProfile = ({ userInfo, className, setUserInfo, urlParametr}) => 
       }
 
   } , [userInfo, setUserInfo, me, dispatch])
+
+  
 
 
   useEffect( () => {
