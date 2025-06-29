@@ -55,10 +55,8 @@ const BaidgeWithProfile = ({ userInfo, className, setUserInfo, urlParametr}) => 
 
   const ratingLoaded = useRef(false);
 
-  console.warn("ЭТО ЛОГИ БЕЙДЖА!!!");
-
   useEffect( () => {
-      if (userInfo && me){
+      if (userInfo && me.id){
         if (!ratingLoaded.current){
           if (userInfo.id === me.id){
               console.warn("Тут");
