@@ -24,10 +24,15 @@ const Baidge = ({isExternal = false}) => {
     menuController.raiseMenu();
   }, [] );
   useEffect(() => {
-    if (isExternal){
-      findUserById(baidgeId).then( (user) => {setUserInfo(user)} ).catch( () => {
-        alert("Не удалось найти пользователя с id = " + baidgeId)
-      } )
+    if (isExternal && me.id){
+      if (String(baidgeId) === String(me.id)){
+        setUserInfo(me);
+      }
+      else{
+        findUserById(baidgeId).then( (user) => {setUserInfo(user)} ).catch( () => {
+          alert("Не удалось найти пользователя с id = " + baidgeId)
+        } )
+      }
     }
     else{
       if (id && String(id) !== me.id) {
