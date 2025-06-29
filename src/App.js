@@ -36,9 +36,6 @@ import { isIphone } from "./functions/isIphone";
 import ChoiceCategory from "./pages/AdCreatingOne/ui/components/ChoiceCategory/ChoiceCategory";
 import ChoiceSubCategory from "./pages/AdCreatingOne/ui/components/ChoiceCategory/ChoiceSubCategory";
 import NewChangeCard from "./pages/NewChangeCard/NewChangeCard";
-import parseTelegramData from "./functions/parseTelegramData";
-
-
 
 const HappyPage = lazy(() => import("./pages/HappyHold/HappyPage"));
 const   First = lazy(() => import("./pages/First/First"));
@@ -55,11 +52,8 @@ const FirstChoiseSubCategory = lazy( () => import("./pages/AdCreatingOne/ui/comp
 const BaidgeCreating = lazy(() =>
   import("./pages/BaidgeCreating/BaidgeCreating")
 );
-const NewCardsPage = lazy( () => import("./pages/NewCardsPage/NewCardsPage") )
-
-const StatisticPage = lazy( () => import("./pages/StatisticPage/StatisticPage") )
-
-console.warn(parseTelegramData(window.Telegram.WebApp.initData));
+const NewCardsPage = lazy( () => import("./pages/NewCardsPage/NewCardsPage") );
+const StatisticPage = lazy( () => import("./pages/StatisticPage/StatisticPage") );
 const MyLoader = () => {
   return (
     <div
@@ -86,46 +80,6 @@ const MyLoader = () => {
 };
 
 const AnimatedSwitch = () => {
-  // const navigate = useNavigate();
-
-  // const congratulate = useSelector(
-  //   (state) => state.telegramUserInfo.congratulate
-  // );
-
-  // const [showCongradulate, setShowCongradulate] = useState(true);
-
-  // useEffect(() => {
-  //   if (congratulate && congratulate.length > 0 && showCongradulate) {
-  //     navigate("/HappyPage");
-  //   }
-  // }, [congratulate, navigate, showCongradulate]);
-
-
-  // useEffect(() => {
-  //   async function makeUserVisit(params) {
-  //     try {
-  //       await $api.put(
-  //         `${process.env.REACT_APP_HOST}/user/visit`,
-  //         {},
-  //         {
-  //           params: {
-  //             userId: String(userId),
-  //           },
-  //           headers: {
-  //             "X-API-KEY-AUTH": process.env.REACT_APP_API_KEY,
-  //           },
-  //         }
-  //       );
-  //     } catch (e) {
-  //       console.warn(e);
-  //     }
-  //   }
-  //   if (userId) {
-  //     makeUserVisit();
-  //   }
-  // }, [userId]);
-
-
   return (
     <>
       <FirstMenu />
@@ -434,7 +388,8 @@ const AnimatedSwitch = () => {
     </>
   );
 };
-function App() {
+function App() { 
+  console.log(window.Telegram.WebApp.initData);
 
   useEffect( () => {
     window.Telegram.WebApp.setHeaderColor("#18222d");
@@ -458,7 +413,6 @@ function App() {
 
   const dispatch = useDispatch();
 
-  // const address = useSelector((state) => state.telegramUserInfo.address);
 
   window.Telegram.WebApp.ready();
 
@@ -469,26 +423,14 @@ function App() {
     dispatch(fetchUserInfo());
     dispatch(getCategorys());
     dispatch(getSubCategorys());
-    // dispatch(fetchCommonRating());
-    // dispatch(fetchRatingByProfession())
-    // dispatch(fetchAllShablons());
-    // dispatch(fetchAllIds());
-    // dispatch(fetchAllValues());
   }, [dispatch]);
 
-
-  // useEffect(() => {
-  //   if (address) {
-  //     dispatch(getBalance({ userAddress: address }));
-  //   }
-  // }, [address, dispatch]);
 
   return (
     <BrowserRouter basename="/">
       <div className="UperContainer">
         <div className="MainContainer">
           <AnimatedSwitch />
-          {/* <ModalChoicer /> */}
         </div>
       </div>
     </BrowserRouter>

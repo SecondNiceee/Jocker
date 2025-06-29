@@ -55,10 +55,8 @@ const BaidgeWithProfile = ({ userInfo, className, setUserInfo, urlParametr}) => 
 
   const ratingLoaded = useRef(false);
 
-  console.warn(userInfo);  
-
   useEffect( () => {
-      if (userInfo){
+      if (userInfo && me){
         if (!ratingLoaded.current){
           if (userInfo.id === me.id){
               dispatch(fetchMyAdditionalUserInfo(
