@@ -2,8 +2,8 @@ import { memo } from 'react';
 import useGetLinksFormatedArray from '../hooks/useGetLinksFormatedArray';
 import { openLink } from '../../../functions/openLink';
 
-const Links = ({links, isFirstMyLink}) => {
-    const formatedLinks = useGetLinksFormatedArray({links, isFirstMyLink})
+const Links = ({links, isFirstMyLink, user}) => {
+    const formatedLinks = useGetLinksFormatedArray({links, isFirstMyLink, user})
     const clickHandler = (link) => () => {
         openLink(link)
     }

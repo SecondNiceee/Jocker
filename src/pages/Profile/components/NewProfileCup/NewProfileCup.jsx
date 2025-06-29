@@ -64,7 +64,7 @@ const NewProfileCup = ({
     window.Telegram.WebApp.HapticFeedback.selectionChanged();
   }
 
-    console.warn(commonRating, positionOfNitcheRating);
+
     if (!positionOfNitcheRating || !commonRating){
       return <MyLoader />
     }

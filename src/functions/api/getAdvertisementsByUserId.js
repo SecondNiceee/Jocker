@@ -1,10 +1,9 @@
-import axios from "axios";
-
+import $api from "../../http";
 
 export const getAdvertisementsByUserId = async (user, page, limit = 1) => {
     try{
         const tasks = []
-        const advertisementsResponse = await axios.get(
+        const advertisementsResponse = await $api.get(
             `${process.env.REACT_APP_HOST}/advertisement/findByUser`,
             {
               params: { 
@@ -13,7 +12,6 @@ export const getAdvertisementsByUserId = async (user, page, limit = 1) => {
               headers: {
                 "Content-Type": "multipart/form-data",
                 "Access-Control-Allow-Origin": "*",
-                "X-API-KEY-AUTH" : process.env.REACT_APP_API_KEY
               },
             }
           );
@@ -29,40 +27,15 @@ export const getAdvertisementsByUserId = async (user, page, limit = 1) => {
 
           let files = order.photos;
 
-          let imTwo = await axios.get(
+          let imTwo = await $api.get(
             `${process.env.REACT_APP_HOST}/advertisement/findCount`,
             {
               params: {
                 userId: user.id,
               },
-              headers : {
-                "X-API-KEY-AUTH" : process.env.REACT_APP_API_KEY
-              }
             }
           );
 
-          const newUser = {...user}
-          try{
-            if (newUser.photo.includes('http')){
-              await axios.get(newUser.photo)
-            }
-          }
-          catch{
-            try{
-            const responce = await axios.put(`${process.env.REACT_APP_HOST}/user/photo`, {}, {
-              params : {
-                userId : newUser.id
-              },
-              headers : {
-                "X-API-KEY-AUTH" : process.env.REACT_APP_API_KEY
-              }
-            })
-            newUser.photo = responce.data
-          }
-          catch(e){ 
-            newUser.photo = ""
-          }
-          }
           tasks.push({
             id: order.id,
             taskName: order.title,
@@ -80,7 +53,7 @@ export const getAdvertisementsByUserId = async (user, page, limit = 1) => {
             viewsNumber: order.views,
             responces: order.responses,
             status: order.status,
-            user: newUser,
+            user: user,
             createNumber : imTwo.data,
             category : order.category.id,
             subCategory : order.subCategory.id

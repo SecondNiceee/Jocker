@@ -7,7 +7,8 @@ import Stage from '../../UI/Stage/Stage';
 import MyLoader from '../../UI/MyLoader/MyLoader';
 import ExampleWorks from '../../../pages/MyAds/components/ExampleWorks';
 import AboutTop from '../../../pages/MyAds/components/AboutTop';
-import axios from 'axios';
+import $api from '../../../http';
+
 const SavedProfile = ({responce, openFunc}) => {
 
 
@@ -17,14 +18,10 @@ const SavedProfile = ({responce, openFunc}) => {
         let localCards = []
         try{
   
-          let allCards = await axios.get("https://www.connectbirga.ru/card/findByUser" , {
+          let allCards = await $api.get(`${process.env.REACT_APP_HOST}/card/findByUser` , {
               params : {
-                  userId : responce.user.id,
-                  
+                userId : responce.user.id,
               },
-              headers : {
-                "X-API-KEY-AUTH" : process.env.REACT_APP_API_KEY
-              }
           })
   
           

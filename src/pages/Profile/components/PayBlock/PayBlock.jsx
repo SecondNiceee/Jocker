@@ -99,7 +99,6 @@ const PayBlock = ({ className = {} }) => {
                 </defs>
               </svg>
       </CreateButton>
-      <PayTextContainer style = {!address ? {} : {display : "none"}} />
     </div>
     }
     </>

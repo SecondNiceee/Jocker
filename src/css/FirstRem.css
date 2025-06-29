@@ -8,6 +8,7 @@
           flex-direction: column;
   position: relative;
   overflow-x: hidden;
+  overflow-y: hidden;
   padding-left: 17.4915254237px;
   padding-right: 17.4915254237px;
 }
@@ -46,6 +47,7 @@
 }
 
 .FirstMain {
+  overflow-y: hidden;
   margin-top: 20.185px;
   display: -webkit-box;
   display: -ms-flexbox;
@@ -75,8 +77,8 @@
   display: flex;
 }
 .First__block .FirstMain__top img {
-  width: 34.9824px;
-  height: 34.9824px;
+  width: 37px;
+  height: 37px;
   margin-right: 10.932px;
 }
 .First__block .FirstMain__top p {

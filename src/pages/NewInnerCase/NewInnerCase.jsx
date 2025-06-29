@@ -9,7 +9,6 @@ import formateDateForTimeAgo from '../../functions/formateDateForTimeAgo';
 import TextAboutMe from '../../components/UI/AboutMeText/TextAboutMe';
 import MyLoader from '../../components/UI/MyLoader/MyLoader';
 import { useNavigate, useParams } from 'react-router';
-import { findUserById } from '../../functions/api/findUserById';
 import { getCardById } from '../../functions/api/getCardById';
 import { useDispatch, useSelector } from 'react-redux';
 import menuController from '../../functions/menuController';
@@ -21,9 +20,10 @@ import CssTransitionSlider from '../../components/UI/PhotosSlider/CssTransitionS
 import { secondaryButtonController } from '../Baidge/controllers/SecondaryButtonController';
 import { SecondatyButton } from '../../constants/SecondaryButton';
 import { enableColorAndActiveButton } from '../../functions/enableColorAndActiveButton';
-import axios from 'axios';
 import formatViews from './utils/formatViews';
 import useAddHistory from '../../hooks/useAddHistory';
+import { getUserWithoutCards } from '../../functions/api/getUserWithoutCards';
+import $api from '../../http';
 
 const NewInnerCase = () => {
     const clickFunc = () => {
@@ -64,19 +64,14 @@ const NewInnerCase = () => {
     } , [])
 
     const addWatches = useCallback(async () => {
-        console.log(casePar);
         if (casePar?.views !== null && casePar?.views !== undefined){
-            console.log(casePar.views);
-            console.log(String(casePar.views + 1))
-            await axios.put(`${process.env.REACT_APP_HOST}/card`, {
+
+            await $api.put(`${process.env.REACT_APP_HOST}/card`, {
                 views : String(casePar.views + 1)
             }, {
                 params : {
                     id : casePar.id
                 },
-                headers: {
-            "X-API-KEY-AUTH": process.env.REACT_APP_API_KEY,
-          },
             })
         }
     }, [casePar] )
@@ -97,7 +92,7 @@ const NewInnerCase = () => {
                 }
             }
             else{
-                findUserById(userId).then( (user) => {
+                getUserWithoutCards(userId).then( (user) => {
                     dispatch(setUser(user))
                     setUserInfo(user);
                 } )

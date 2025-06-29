@@ -15,8 +15,7 @@ const ReactionBlock = ({
   //451
   return (
     <div className="reactions__block">
-       
-
+  
       <Responses
         setPhotos = {setPhotos}
         setPhotoIndex = {setPhotoIndex}

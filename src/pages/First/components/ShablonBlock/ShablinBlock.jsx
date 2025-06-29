@@ -8,53 +8,26 @@ import ModalChoicer from "../../../../components/UI/ModalChoicer/ModalChoicer";
 import Text from "../../../../components/Text/Text";
 import translation from "../../../../functions/translate";
 
-
 const exitText = translation("ОТКЛИКНУТЬСЯ")
 const ShablinBlock = ({
   shablonsArr,
-  left = "100%",
-  className,
   setResponce,
   responce,
   setClearPhoto,
   clearPhoto
 }) => {
   const [shablonSetting, setShablonSetting] = useState({
-      text: "",
-      name: "",
-      photos: []
+    text: "",
+    name: "",
+    photos: []
   });
-
-
-
-
-
   return (
-    <div className={className ? [cl.main, className].join(" ") : cl.main}>
+    <div className={cl.main}>
       {shablonsArr.length > 0 ? (
         <Component className={cl.component}>
           <Text>Шаблон</Text>
-          {/* <Choicer
-            onChoice={(index) => {
-              setResponce({
-                name: shablonsArr[index].name,
-                text: shablonsArr[index].text,
-                photos: shablonsArr[index].photos,
-                isShablonModalActive: false,
-                shablonIndex : index,
-                isShablon : true
-              });
-              
-            }}
-            isActive={responce.isShablonModalActive}
-            setActive={(value) => {
-              setResponce({ ...responce, isShablonModalActive: value });
-            }}
-            text={responce.name}
-            arr={shablonsArr.map((e) => e.name)}
-          /> */}
           <ModalChoicer
-            values={shablonsArr.map((e , i) => i)}
+            values={shablonsArr.map((e, i) => i)}
             setValue={(index) => {
               setClearPhoto(clearPhoto + 1)
               setResponce({
@@ -66,7 +39,7 @@ const ShablinBlock = ({
                 isShablon: true,
               });
             }}
-            names={shablonsArr.map((e) => e.name) }
+            names={shablonsArr.map((e) => e.name)}
             defaultValue={0}
           />
         </Component>
@@ -74,11 +47,10 @@ const ShablinBlock = ({
         <AdCreateFunc
           text={translation("Создать шаблон")}
           func={() => {
-            setResponce((value) =>  ({ ...value , shablonMaker: true }));
+            setResponce((value) => ({ ...value, shablonMaker: true }));
           }}
         />
       )}
-
       <CSSTransition
         in={responce.shablonMaker}
         timeout={400}
@@ -87,12 +59,10 @@ const ShablinBlock = ({
         mountOnEnter
       >
         <Shablon
-          mistakes={{text : false, name : false}}
-          exitText = {exitText}
-          isExitShow = {true}
-          style = {{
-            left : "0px"
-          }}
+          mistakes={{ text: false, name: false }}
+          exitText={exitText}
+          isExitShow={true}
+          style={{ left: "0px" }}
           setActive={() => {
             setResponce({
               ...responce,

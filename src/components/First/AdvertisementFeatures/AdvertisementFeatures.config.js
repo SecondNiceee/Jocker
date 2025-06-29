@@ -1,13 +1,13 @@
 // src/components/AdvertisementFeatures/config.ts
 
 export const getFeatureConfig = ({
-  isOutSide = true,
-  isUrgently = true,
-  isWarrantly = true,
+  isOutSide = false,
+  isUrgently = false,
+  isWarranty = false,
 })  => [
     {
         key: 'warrant',
-        show: isWarrantly,
+        show: isWarranty,
         containerClass: 'warrent',
         textClass: 'warrent-text',
         text: 'Гарантия оплаты',
@@ -26,4 +26,4 @@ export const getFeatureConfig = ({
       textClass: 'outside-text',
       text: 'Вне биржи',
     },
-];
+].filter( (feature => feature.show) );

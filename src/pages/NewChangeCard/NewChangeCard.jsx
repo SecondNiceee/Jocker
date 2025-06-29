@@ -59,7 +59,9 @@ const NewChangeCard = ({isNewCard}) => {
     } , [isNewCard, baidgeCard, id, userCards]) 
     
     const save = useCallback( async ( ) => {
-        alert("Вызов save");
+
+        navigate(-1);
+        
         if (isNewCard){
             const myFormData = makeCardFormData({card : changedCard, isCardNew : true} )
             await dispatch(postCard([myFormData, USERID, changedCard]));
@@ -70,7 +72,6 @@ const NewChangeCard = ({isNewCard}) => {
             await dispatch(putCard([myFormData, changedCard.id, changedCard]));
             dispatch(setUser(me));
         }
-        navigate(-1);
     } , [changedCard, dispatch, isNewCard, navigate, me] )
 
     const backFunction = useCallback( () => {

@@ -1,7 +1,25 @@
+.rating-icon-small{
+    @apply !min-w-[53.4px] !h-[49.5px] !top-[2.33px] !absolute !z-20;
+}
+.rating-icon-small-text{
+    width: 14.67px;
+    height: 14.67px;
+    color: #21303F;
+    text-align: center;
+    font-family: "SF Pro Display 700";
+    font-size: 8.333px;
+    font-style: normal;
+    font-weight: 700;
+    bottom: 17.25%;
+    line-height: 18.311px;
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+}
 .rating-icon{
     @apply min-w-[115px] absolute bottom-[-10px] left-[50%] -translate-x-1/2;
 }
 
 .rating-icon__text{
-    @apply z-30 absolute -bottom-[11.5px] left-1/2 -translate-x-1/2 leading-[55px] font-sf-pro-display-700 text-[17px] text-[#21303F];
+    @apply z-30 absolute -bottom-[11.5px] left-1/2 !-translate-x-1/2 leading-[55px] font-sf-pro-display-700 text-[17px] text-[#21303F];
 }

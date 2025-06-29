@@ -4,20 +4,21 @@ import  { useEffect, useMemo, useState } from "react";
 import { useSelector } from "react-redux";
 import "./MyAds.css";
 import MyAdOne from "./components/MyAdOne";
-import axios from "axios";
 import pagesHistory from "../../constants/pagesHistory";
 import { USERID } from "../../constants/tgStatic.config";
 import useBlockInputs from "../../hooks/useBlockInputs";
 import useNavigateBack from "../../hooks/useNavigateBack";
 import MainButton from "../../constants/MainButton";
-
+import menuController from "../../functions/menuController";
+import $api from "../../http";
 
 const MyAds = () => {
+
   const [valueOne , setValueOne] = useState("all")
 
   const [valueTwo , setValueTwo] = useState("all")
 
-  const responsesArr = useSelector((state) => state.responses.responses);
+  const responsesArr = useSelector((state) => state.responses.responses)
 
   const sortedResponses = useMemo( () => {
     let copy = [...responsesArr]
@@ -47,6 +48,12 @@ const MyAds = () => {
 
   const myAdsArray = useSelector((state) => state.information.myAdsArray);
 
+  useEffect( () => {
+    menuController.showMenu();
+    menuController.raiseMenu();
+  }, [] )
+
+
   const filteredArray = useMemo( () => {
     switch (valueTwo){
       case "all":
@@ -69,36 +76,28 @@ const MyAds = () => {
   useEffect( () => {
     
     const more = async () => {
-      const imTwo = await axios.get(
+      const imTwo = await $api.get(
         `${process.env.REACT_APP_HOST}/advertisement/findCount`,
         {
           params: {
             userId: USERID,
           },
-          headers : {
-            "X-API-KEY-AUTH" : process.env.REACT_APP_API_KEY
-          }
         }
       );
-      const imOne = await axios.get(
+      const imOne = await $api.get(
         `${process.env.REACT_APP_HOST}/response/findCount`,
         {
           params: {
             userId: USERID,
           },
-          headers : {
-            "X-API-KEY-AUTH" : process.env.REACT_APP_API_KEY
-          }
         }
       );
-      console.log(imOne.data);
       const advertisemetCount = imTwo.data
       const responseCount = imOne.data
       if (pagesHistory[pagesHistory.length - 1] === "/AdCreating"){
         setNowKey("customer")
       }
       else{
-        console.log(advertisemetCount, responseCount);
         if (advertisemetCount < responseCount){
           setNowKey("freelancer")
         

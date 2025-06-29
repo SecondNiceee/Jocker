@@ -1,6 +1,8 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import axios from "axios";
 import { USERID } from "../constants/tgStatic.config";
+import { formatUserFromApi } from "../functions/api/formatUserFromApi";
+import { formateTaskFromApi } from "../functions/formateTaskFromApi";
+import $api from "../http";
 
 export const addWatch = createAsyncThunk(
   "information/addWatch",
@@ -10,17 +12,15 @@ export const addWatch = createAsyncThunk(
         let myData = new FormData();
         myData.append("views", String(Number(advertisement.viewsNumber) + 1));
         
-        await axios.put(`${process.env.REACT_APP_HOST}/advertisement`, myData, {
+        await $api.put(`${process.env.REACT_APP_HOST}/advertisement`, myData, {
           params: {
             id: String(advertisement.id),
           },
           headers : {
             "Content-Type": "multipart/form-data",
-            "X-API-KEY-AUTH" : process.env.REACT_APP_API_KEY
           }
         });
       } catch (e) {
-        // alert(e)
         console.warn(e);
       }
     }
@@ -30,13 +30,10 @@ export const deleteAd = createAsyncThunk(
   "information/deleteMyAd",
   async function (id) {
     try {
-      await axios.delete(`${process.env.REACT_APP_HOST}/advertisement`, {
+      await $api.delete(`${process.env.REACT_APP_HOST}/advertisement`, {
         params: {
           id: String(id),
         },
-        headers : {
-          "X-API-KEY-AUTH" : process.env.REACT_APP_API_KEY
-        }
       });
       return id;
     } catch (e) {
@@ -48,8 +45,7 @@ export const putMyTask = createAsyncThunk(
   "inforation/putMyTask",
   async function (data) {
     try {
-      console.log(data);
-      let answ = await axios.put(
+      let answ = await $api.put(
         `${process.env.REACT_APP_HOST}/advertisement`,
         data[0],
         {
@@ -59,15 +55,11 @@ export const putMyTask = createAsyncThunk(
           headers: {
             "Content-Type": "multipart/form-data",
             "Access-Control-Allow-Origin": "*",
-            "X-API-KEY-AUTH" : process.env.REACT_APP_API_KEY
           },
         }
       );
       let localTask = data[2];
       localTask.photos = answ.data.photos;
-
-      console.log(localTask);
-      
 
       return {...localTask , myAds : true};
     } catch (e) {
@@ -83,14 +75,11 @@ export const postMyTask = createAsyncThunk(
 
       for (let i = 0 ; i < 1; i++){
         try{
-          console.warn(arr)
-          const resp = await axios.post(`${process.env.REACT_APP_HOST}/advertisement`, arr[0], {
+          await $api.post(`${process.env.REACT_APP_HOST}/advertisement`, arr[0], {
             headers: {
               "Content-Type" :'multipart/form-data',
-              "X-API-KEY-AUTH" : process.env.REACT_APP_API_KEY
             },
           });
-          console.warn(resp);
         }
         catch(e){
           window.Telegram.WebApp.showAlert("Задание не было создано. Попробуйте позже")
@@ -109,13 +98,10 @@ export const setStartTask = createAsyncThunk(
     try {
       let myData = new FormData();
       myData.append("status", "inProcess");
-      await axios.put(`${process.env.REACT_APP_HOST}/advertisement`, myData, {
+      await $api.put(`${process.env.REACT_APP_HOST}/advertisement`, myData, {
         params: {
           id: id,
         },
-        headers : {
-          "X-API-KEY-AUTH" : process.env.REACT_APP_API_KEY
-        }
       });
       return id;
     } catch (e) {
@@ -127,11 +113,10 @@ export const setStartTask = createAsyncThunk(
 
 export const fetchMyOrders = createAsyncThunk(
   "information/fetchMyOrders",
-
   async function (page) {
     try {
       let tasks = [];
-      let task = await axios.get(
+      let task = await $api.get(
         `${process.env.REACT_APP_HOST}/advertisement/findByUser`,
         {
           params: {
@@ -142,7 +127,6 @@ export const fetchMyOrders = createAsyncThunk(
           headers: {
             "Content-Type": "multipart/form-data",
             "Access-Control-Allow-Origin": "*",
-            "X-API-KEY-AUTH" : process.env.REACT_APP_API_KEY
           },
         }
       );
@@ -151,15 +135,15 @@ export const fetchMyOrders = createAsyncThunk(
       } else {
         for (let order of task.data) {
           let files = order.photos;
-          let responseCounter = await axios.get(`${process.env.REACT_APP_HOST}/response/countByAdvertisement` , {
+          let responseCounter = await $api.get(`${process.env.REACT_APP_HOST}/response/countByAdvertisement` , {
             params : {
               "advertisementId" : order.id,
             },
-            headers : {
-              "X-API-KEY-AUTH" : process.env.REACT_APP_API_KEY
-            }
           })
           tasks.push({
+            isOutSide : order.isOutSide,
+            isUrgently : order.isUrgently,
+            isWarranty : order.isWarranty,
             id: order.id,
             taskName: order.title,
             executionPlace: "Можно выполнить удаленно",
@@ -167,6 +151,7 @@ export const fetchMyOrders = createAsyncThunk(
               start: new Date(order.startTime),
               end: new Date(order.endTime),
             },
+            outSideButtonUrl : order.outSideButtonUrl,
             tonValue: order.tonPrice,
             rubleValue : order.price,
             taskDescription: order.description,
@@ -205,19 +190,15 @@ export const fetchTasksInformation = createAsyncThunk(
     let tasks = [];
     let task;
     try {
-      task = await axios.get(
+      task = await $api.get(
         `${process.env.REACT_APP_HOST}/advertisement/findAll`,
         {
           params: {
             limit: 10,
             page: par,
           },
-          headers : {
-            "X-API-KEY-AUTH" : process.env.REACT_APP_API_KEY
-          }
         }
       );
-      console.warn(task.data);
     } catch (e) {
       alert("Сейчас идет обновление, пожалуйста перезайдите через минуту")
       console.log(e);
@@ -227,78 +208,25 @@ export const fetchTasksInformation = createAsyncThunk(
     } else {   
       try {
         for (let order of task.data) {
-          let one = new Date(order.startTime);
-          let two;
-          if (order.endTime) {
-            two = new Date(order.endTime);
-          } else {
-            two = "";
-          }
-
-          let files = order.photos;
-
-          let imTwo = await axios.get(
+          let numberOfResponses = (await $api.get(
             `${process.env.REACT_APP_HOST}/advertisement/findCount`,
             {
               params: {
                 userId: order.user.id,
               },
-              headers : {
-                "X-API-KEY-AUTH" : process.env.REACT_APP_API_KEY
-              }
             }
-          );
+          )).data;
 
           const newUser = {...order.user}
-          try{
-            if (newUser.photo.includes('http')){
-              await axios.get(newUser.photo)
-            }
-          }
-          catch{
-            try{
-            const responce = await axios.put(`${process.env.REACT_APP_HOST}/user/photo`, {}, {
-              params : {
-                userId : newUser.id
-              },
-              headers : {
-                "X-API-KEY-AUTH" : process.env.REACT_APP_API_KEY
-              }
-            })
-            newUser.photo = responce.data
-          }
-          catch(e){ 
-            newUser.photo = ""
-          }
-          }
 
-          console.log(order);
+          // checkUserPhoto(newUser);
 
-          tasks.push({
-            id: order.id,
-            taskName: order.title,
-            executionPlace: "Можно выполнить удаленно",
-            time: { start: one, end: two },
-            tonValue: order.tonPrice,
-            rubleValue : order.price,
-            taskDescription: order.description,
-            photos: files,
-            photosName: order.photos,
-            customerName: order.user.fl,
-            userPhoto: order.user.photo ? order.user.photo : "",
-            rate: "5",
-            isActive: true,
-            creationTime: order.createdAt,
-            viewsNumber: order.views,
-            responces: order.responses,
-            status: order.status,
-            user: newUser,
-            createNumber : imTwo.data,
-            category : order.category.id,
-            subCategory : order.subCategory.id
-          });
+          const rezultUser = formatUserFromApi(newUser);
+
+          const formatedAdvertisement = formateTaskFromApi(order, numberOfResponses, rezultUser);
+
+          tasks.push(formatedAdvertisement);
         }
-
       } catch (e) {
         console.warn(e);
       }
@@ -338,9 +266,7 @@ const information = createSlice({
       time: { start: null, end: null },
 
     },
-
     orderInformations: [],
-
     myAdsArray: [],
     myPaginationArray: [],
   },
@@ -361,7 +287,6 @@ const information = createSlice({
       state.detailsAdvertisement = action.payload;
     },
     setAdvertisement(state,action){
-      console.log(action.payload);
       state.advertisement = action.payload
     },
     setResponse(state, action){
@@ -388,13 +313,13 @@ const information = createSlice({
     },
     clearTasks(state){
       state.orderInformations = [];
+      state.tasksPage = 1
     },
     addResponce(state, action) {
       state.orderInformations = state.orderInformations.map((e) => {
         if (e.id === action.payload[0]) {
           e.responces.push(action.payload[1]);
         }
-        console.log(e);
         return e;
       });
     },
@@ -490,7 +415,6 @@ const information = createSlice({
       } )]
       state.orderInformations = [...state.orderInformations.map((order) => {
         if (order.id === action.payload.id){
-          console.warn(action.payload);
           return {order, ...action.payload}
         }
         return order;
@@ -531,6 +455,6 @@ export const {
   setUser,
   setCard,
   setPage,
-  addMyLocalResponses
+  addMyLocalResponses,
 } = information.actions;
 export default information.reducer;

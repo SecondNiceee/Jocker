@@ -1,7 +1,6 @@
 import { memo, useEffect, useRef, useState } from "react"
 import "./TextAboutMe.css"
 import Text from "../../Text/Text"
-import translation from "../../../functions/translate"
 
 const TextAboutMe = ({
   aboutU,
@@ -9,6 +8,7 @@ const TextAboutMe = ({
   className = {},
   textareaClassName = {},
   buttonClassNames = {},
+  emptyText = "Пользователь ничего не написал о себе",
   ...props
 }) => {
   const [isExpanded, setIsExpanded] = useState(false)
@@ -100,7 +100,7 @@ const TextAboutMe = ({
     }, 100)
   }, [aboutU])
 
-  const displayText = isEmpty ? translation("Пользователь ничего не написал о себе") : aboutU
+  const displayText = isEmpty ? emptyText : aboutU
 
   let currentText
   if (isEmpty) {

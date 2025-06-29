@@ -1,17 +1,13 @@
-import axios from "axios";
 import { showAllert } from "./showAlert";
 import { USERID } from "../constants/tgStatic.config";
+import $api from "../http";
 
 export const shareProfession = (userId, professionName) => async () => {
-    const repsonse = await axios.post(`${process.env.REACT_APP_HOST}/bot/sendProfessionMessage` , {
+    const repsonse = await $api.post(`${process.env.REACT_APP_HOST}/bot/sendProfessionMessage` , {
       "language_code" : "ru",
       "authorId" : Number(USERID),
       "professionName" : professionName,
       "ownerId" :  Number(userId)
-    }, {
-        headers : {
-            "X-API-KEY-AUTH" : process.env.REACT_APP_API_KEY
-        }
     })
     const messageId = repsonse.data
     console.warn(messageId);

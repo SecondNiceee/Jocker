@@ -1,24 +1,40 @@
-import React, { forwardRef, useCallback } from "react";
+import {useCallback, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import userPhoto from '../../images/userPhoto/user.png'
 import Text from "../../components/Text/Text";
 import { setChanger } from "../../store/menuSlice";
 
-const FirstMenu = forwardRef(({...props} , ref) => {
+const FirstMenu = () => {
+
   const dispatch = useDispatch();
 
   const location = useLocation();
+  
+  const ref = useRef(null);
 
   const me = useSelector((state) => state.telegramUserInfo);
 
-  const navigate = useNavigate()
+  const navigate = useNavigate();
+
   const onClick = useCallback( (par) => {
     dispatch(setChanger())
     navigate(par)
     ref.current.classList.add("fuckNuubs")
     ref.current.classList.remove("disappearAnimation")
   } , [navigate, dispatch, ref] )
+
+  const sendPlug = () => {
+        window.Telegram.WebApp
+        .showPopup({
+        title: "⏳Скоро доступно",
+        message: "Эта функция появится в одном из ближайших обновлений. Мы уже работаем над её запуском — следите за новостями!",
+        buttons: [
+            { id: "save", type: "default", text: "Понятно" },
+        ],
+        } , (buttonId) => {    
+        } )
+  }
 
   return (
     <div ref={ref} className={"FirstMenu"}>
@@ -80,7 +96,9 @@ const FirstMenu = forwardRef(({...props} , ref) => {
 
           <Text>Мои задания</Text>
         </div>
-        <div className= { location.pathname === "/savedPage" ? "menuLink active" : "menuLink"} onClick={() => {onClick("/savedPage")}}>
+        <div className= { location.pathname === "/savedPage" ? "menuLink active" : "menuLink"} onClick={() => {
+          sendPlug();
+        }}>
           <svg
             width="24"
             height="24"
@@ -100,6 +118,6 @@ const FirstMenu = forwardRef(({...props} , ref) => {
       </div>
     </div>
   );
-});
+};
 
 export default FirstMenu;

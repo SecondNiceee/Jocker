@@ -8,20 +8,27 @@ import { useDispatch, useSelector } from "react-redux";
 import MyLoader from "../../components/UI/MyLoader/MyLoader";
 import ProfileCup from "./components/ProfileCup/ProfileCup";
 import pagesHistory from "../../constants/pagesHistory";
-import { fetchRatingByProfession } from "../../store/telegramUserInfo/thunks/fetchRatingByProfession";
-import { fetchCommonRating } from "../../store/telegramUserInfo/thunks/fetchCommonRating";
 import { useNavigate } from "react-router";
 import BackButton from "../../constants/BackButton";
 import MainButton from "../../constants/MainButton";
+import useGetSupportConfig from "./hooks/useGetSupportConfig";
+import { openLink } from "../../functions/openLink";
+import menuController from "../../functions/menuController";
+import { fetchMyAdditionalUserInfo } from "../../store/telegramUserInfo/thunks/fetchAdditionalUserInfo";
 
 const NewProfile = () => {
+
   const optionsConfig = useGetOptionsConfig();
 
-  const photoLink = useGetUserPhotoLink({});
+  const supportConfig = useGetSupportConfig();
 
   const userInfo = useSelector((state) => state.telegramUserInfo);
-
+  
   const navigate = useNavigate();
+
+  const me = useSelector( (state) => state.telegramUserInfo );
+
+  const photoLink = useGetUserPhotoLink({anotherUserInfo : me});
 
   useEffect( () => {
     MainButton.hide();
@@ -50,15 +57,17 @@ const NewProfile = () => {
 
   const dispatch = useDispatch();
 
+  useEffect( () => {
+    menuController.raiseMenu();
+    menuController.showMenu();
+  }, [] )
+
   const isLoadedInf = useRef(false);
   useEffect( () => {
     if (userInfo.profession && !isLoadedInf.current){
-      if (!userInfo.ratingByProfession){
-        dispatch(fetchRatingByProfession());
-      }
-      if (!userInfo.commonRating){
-        dispatch(fetchCommonRating());
-      }
+      dispatch(fetchMyAdditionalUserInfo({isRatingByProfession : !userInfo.ratingByProfession,
+        isCommonRating : !userInfo.commonRating
+      }))
       isLoadedInf.current = true;
     }
   }, [userInfo.profession, dispatch, userInfo.ratingByProfession, userInfo.commonRating] ) ;
@@ -93,6 +102,7 @@ const NewProfile = () => {
       <div className="flex flex-col rounded-[12px] bg-[#20303f]">
         {optionsConfig.map((option, i) => (
           <NewOption
+            isActive = {option.isActive}
             imgPath={option.imgPath}
             isNededToFill={option.isNeededFill}
             neededActiveButton={option.isNeededActiveTitle}
@@ -100,12 +110,40 @@ const NewProfile = () => {
             key={i}
             isNeededBorder={i !== Number(optionsConfig.length - 1)}
             isAloneElement={false}
-          onClick={option.clickFunc}
+           onClick={option.clickFunc}
           />
         ))}
       </div>
 
-      <NewOption
+      <div className="flex flex-col rounded-[12px] bg-[#20303f]">
+        {supportConfig.map((option, i) => (
+          <NewOption
+
+            imgPath={option.imgPath}
+            isNededToFill={option.isNeededFill}
+            neededActiveButton={option.isNeededActiveTitle}
+            text={option.text}
+            key={i}
+            isNeededBorder={i !== Number(supportConfig.length - 1)}
+            isAloneElement={false}
+           onClick={option.clickFunc}
+          />
+        ))}
+      </div>
+
+      <NewOption imgPath={"/images/icons/news-icon.svg"}
+       isAloneElement={true}
+       text={"Новости Connect"}
+       numberNearToArrow={false}
+       neededActiveButton={false}
+       onClick={() => {
+        openLink('https://t.me/connect_support_team')
+       }}
+       isNededToFill={false}
+       isNeededBorder={false}
+       />
+
+      {/* <NewOption
         isAloneElement={true}
         imgPath={"/images/newProfile/subscription.svg"}
         isNededToFill={false}
@@ -119,7 +157,7 @@ const NewProfile = () => {
         isNededToFill={false}
         neededActiveButton={false}
         text={"Реферальная система"}
-      />
+      /> */}
 
     </div>
   );

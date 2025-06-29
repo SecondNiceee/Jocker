@@ -1,17 +1,14 @@
-import axios from "axios";
+import $api from "../../http";
 
 export const getCounterOfResponses = async (userId) => {
     try{
 
-        const reponse = await axios.get(
+        const reponse = await $api.get(
           `${process.env.REACT_APP_HOST}/response/findCount`,
           {
             params: {
               userId: userId,
             },
-            headers : {
-              "X-API-KEY-AUTH" : process.env.REACT_APP_API_KEY
-            }
           }
           
         );

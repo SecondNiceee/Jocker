@@ -4,9 +4,13 @@
     gap: 7.33px;
 }
 .compactTitle{
-    font-family: "SF Pro Display 600";
-    font-weight: 600;
-    font-size: 20px;
-    color: white;
+    color: #DAF5FE;
+    font-family: "SF Pro Display 400";
+    font-size: 13.333px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 15.643px; /* 117.322% */
+    letter-spacing: 0.267px;
+    text-transform: uppercase;
     margin-left: 16px;
 }

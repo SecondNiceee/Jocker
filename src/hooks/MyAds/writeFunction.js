@@ -4,11 +4,10 @@ import { useNavigate } from "react-router-dom";
 import MainButton from "../../constants/MainButton";
 import { setStartTask } from "../../store/information";
 import { setStartResponse } from "../../store/responses";
-import axios from "axios";
 import { fetchUserInfo } from "../../store/telegramUserInfo";
 import { useMemo } from "react";
 import { USERID } from "../../constants/tgStatic.config";
-
+import $api from "../../http";
 
 
 
@@ -32,7 +31,7 @@ function useWriteFucntion({walletH, buyPage, setBuyPage, happyHold, setOpen, isO
 
   
   async function hold(id, amount , service, serviceUs) {
-    await axios.get("https://www.connectbirga.ru/user/hold" , {
+    await $api.get(`${process.env.REACT_APP_HOST}/user/hold`, {
       params : {
         fromId : id,
         amount : amount,
@@ -40,9 +39,6 @@ function useWriteFucntion({walletH, buyPage, setBuyPage, happyHold, setOpen, isO
         serviceUs : String(serviceUs),
         advertisementId : String(myAdOneAdvertisement.id)
       },
-      headers : {
-        "X-API-KEY-AUTH" : process.env.REACT_APP_API_KEY
-      }
     })
   
     
@@ -143,7 +139,6 @@ function useWriteFucntion({walletH, buyPage, setBuyPage, happyHold, setOpen, isO
                           MainButton.setText(translation("Перейти к заданию"))
       
                         }).catch(value => {
-                          console.log(value);
                           alert(translation("Холд не прошел. Отправте в поддержку следующее сообщение"))
                           alert(JSON.stringify(value))                    
                         } )  

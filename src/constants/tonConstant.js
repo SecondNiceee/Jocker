@@ -1,2 +1,2 @@
-let tonConstant = {value : 10};
+let tonConstant = {value : 80};
 export default tonConstant

@@ -1,17 +1,13 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import axios from "axios";
-
 import translation from "../functions/translate";
 import en from "../constants/language";
-import makeNewUser from "../functions/makeNewUser";
 import { USERID } from "../constants/tgStatic.config";
-
-
+import $api from "../http";
 
 export const fetchResponseByAdvertisement = createAsyncThunk(
     "fetchResponseByAdvertisement",
     async function([id, task, page]){
-        let im = await axios.get(
+        let im = await $api.get(
             `${process.env.REACT_APP_HOST}/response/findByAdvertisement`,
             {
               params: {
@@ -19,12 +15,11 @@ export const fetchResponseByAdvertisement = createAsyncThunk(
                 limit : 4,
                 page : page
               },
-              headers : {
-                "X-API-KEY-AUTH" : process.env.REACT_APP_API_KEY
-              }
             }
           );
+          
           let responces = im.data;
+
           for (let i = 0; i < responces.length; i++) {
             let photos = [];
     
@@ -32,30 +27,34 @@ export const fetchResponseByAdvertisement = createAsyncThunk(
               photos = responces[i].photos;
             }
 
-            let b = await axios.get(`${process.env.REACT_APP_HOST}/card/countByUser` , {
+            let b = await $api.get(`${process.env.REACT_APP_HOST}/card/countByUser` , {
                 params : {
                     advertisementId: responces[i].user.id,
                 },
-                headers : {
-                    "X-API-KEY-AUTH" : process.env.REACT_APP_API_KEY
-                }
             } )
     
             responces[i].photos = photos;
             responces[i].advertisement = task
-            responces[i].user.cardsNumber = b.data
+            responces[i].user.cardsNumber = b.data;
             
-    
+            // if (responces[i].user.profession){
+            //     try{
+            //         const {commonRating, ratingByProfession} = await fetchUserRating(responces[i].user);
+            //         responces[i].user.commonRating = commonRating;
+            //         responces[i].user.ratingByProfession = ratingByProfession;
+            //     }
+            //     catch(e){
+            //         console.warn("Не удалось найти рейтинг ")
+            //     }
+            // }
+            
             try {
-              let imTwo = await axios.get(
+              let imTwo = await $api.get(
                 `${process.env.REACT_APP_HOST}/advertisement/findCount`,
                 {
                   params: {
                     userId: responces[i].user.id,
                   },
-                  headers : {
-                    "X-API-KEY-AUTH" : process.env.REACT_APP_API_KEY
-                  }
                 }
               );
               responces[i].createNumber = imTwo.data;
@@ -74,13 +73,10 @@ export const deleteResponse = createAsyncThunk(
     async function(id){
         try{
 
-            await axios.delete(`${process.env.REACT_APP_HOST}/respon    se`, {
+            await $api.delete(`${process.env.REACT_APP_HOST}/respon    se`, {
                 params : {
                     id : id
                 },
-                headers : {
-                    "X-API-KEY-AUTH" : process.env.REACT_APP_API_KEY
-                  }
             })
             return id
         }
@@ -97,16 +93,13 @@ export const setStartResponse = createAsyncThunk(
         myData.append("isWatched" , "inProcess")
         const messageOne = translation("📣✅ Вы были выбраны исполнителем на задание")
         try{
-            await axios.put(`${process.env.REACT_APP_HOST}/response` , myData, {
+            await $api.put(`${process.env.REACT_APP_HOST}/response` , myData, {
                 params : {
                     id : responce.id
                 },
-                headers : {
-                    "X-API-KEY-AUTH" : process.env.REACT_APP_API_KEY
-                  }
             } )
 
-            await axios.get(`${process.env.REACT_APP_HOST}/user/sendMessage`, {
+            await $api.get(`${process.env.REACT_APP_HOST}/user/sendMessage`, {
                 params: {
                   chatId: responce.user.id,
                   text:
@@ -115,9 +108,6 @@ export const setStartResponse = createAsyncThunk(
                     "https://connectbirga.ru/MyAds?open=1" ,
                     languageCode : en ? "en" : "ru"
                 },
-                headers : {
-                    "X-API-KEY-AUTH" : process.env.REACT_APP_API_KEY
-                  }
               });
 
               
@@ -136,28 +126,21 @@ export const addResponse = createAsyncThunk(
 
             const messageOne = translation("📣 Вы получили отклик на задачу «")
             const messageTwo = translation("» от ")
-            await axios.post(`${process.env.REACT_APP_HOST}/response` , par[0], {
+            await $api.post(`${process.env.REACT_APP_HOST}/response` , par[0], {
                 params : {
                     advertisementId : par[1].advertisement.id,
                     userId : par[1].user.id
                 },
-                headers : {
-                    "X-API-KEY-AUTH" : process.env.REACT_APP_API_KEY
-                  }
-
             })
 
             const en = true
             
-            await axios.get(`${process.env.REACT_APP_HOST}/user/sendMessage` , {
+            await $api.get(`${process.env.REACT_APP_HOST}/user/sendMessage` , {
                 params : {
                   "chatId" : par[1].advertisement.user.chatId,
                   "text" : messageOne + par[1].advertisement.taskName.bold() + messageTwo +  par[1].user.fl ,
                   "languageCode" : en ? "en" : "ru"
                 },
-                headers : {
-                    "X-API-KEY-AUTH" : process.env.REACT_APP_API_KEY
-                  }
               })
 
             return par[1]
@@ -175,13 +158,10 @@ export const postResponse = createAsyncThunk(
         let myData = new FormData()
         myData.append("isWatched" , "watched")
         try{
-            await axios.put(`${process.env.REACT_APP_HOST}/response` , myData, {
+            await $api.put(`${process.env.REACT_APP_HOST}/response` , myData, {
                 params : {
                     id : id
                 },
-                headers : {
-                    "X-API-KEY-AUTH" : process.env.REACT_APP_API_KEY
-                  }
             } )
         }
         catch(e){
@@ -194,36 +174,25 @@ export const fetchResponses = createAsyncThunk(
     async function (par){
         try{
 
-        
-        let im = await axios.get(`${process.env.REACT_APP_HOST}/response/findByUser` , {
+        let im = await $api.get(`${process.env.REACT_APP_HOST}/response/findByUser` , {
             params : {
                 "userId" : USERID,
                 page : par[1],
                 limit : 4
                 
             },
-            headers : {
-                "X-API-KEY-AUTH" : process.env.REACT_APP_API_KEY
-              }
         })
-
-
-
 
         let localResponses = im.data
 
-        let me = par[0]
-        
+        let me = par[0]        
 
         for (let i = 0; i < localResponses.length; i++){
 
-            const advertisementData = await axios.get(`${process.env.REACT_APP_HOST}/advertisement/findOne`, {
+            const advertisementData = await $api.get(`${process.env.REACT_APP_HOST}/advertisement/findOne`, {
                 params : {
                     "id" : localResponses[i].advertisement.id
                 },
-                headers : {
-                    "X-API-KEY-AUTH" : process.env.REACT_APP_API_KEY
-                }
             })
 
             const advertisement = advertisementData.data
@@ -240,15 +209,12 @@ export const fetchResponses = createAsyncThunk(
             let files = advertisement.photos;
 
             try {
-                let imTwo = await axios.get(
+                let imTwo = await $api.get(
                   `${process.env.REACT_APP_HOST}/advertisement/findCount`,
                   {
                     params: {
                       userId: me.id,
                     },
-                    headers : {
-                        "X-API-KEY-AUTH" : process.env.REACT_APP_API_KEY
-                      }
                   }
                 );
                 localResponses[i].createNumber = imTwo.data;
@@ -257,22 +223,16 @@ export const fetchResponses = createAsyncThunk(
                 window.Telegram.WebApp.showAlert(e);
               }
             
-            const advertisementUser = await axios.get(`${process.env.REACT_APP_HOST}/user/findOne` , {
+            const advertisementUser = await $api.get(`${process.env.REACT_APP_HOST}/user/findOne` , {
                 params : {
                     "id" : advertisement.user.id
                 },
-                headers : {
-                    "X-API-KEY-AUTH" : process.env.REACT_APP_API_KEY
-                  }
             })
 
-            const advertisementCrateNumber = await axios.get(`${process.env.REACT_APP_HOST}/advertisement/findCount` , {
+            const advertisementCrateNumber = await $api.get(`${process.env.REACT_APP_HOST}/advertisement/findCount` , {
                 params : {
                     "userId" : localResponses[i].advertisement.user.id
                 },
-                headers : {
-                    "X-API-KEY-AUTH" : process.env.REACT_APP_API_KEY
-                  }
             })
 
             const advertisementError = {
@@ -296,9 +256,9 @@ export const fetchResponses = createAsyncThunk(
                 createNumber : advertisementCrateNumber.data,
                 responces : advertisement.responses
             }
-            const newUser = await makeNewUser(advertisementError)
+            // const newUser = await makeNewUser(advertisementError)
             
-            localResponses[i].advertisement = {...advertisementError, user : newUser}
+            localResponses[i].advertisement = {...advertisementError}
 
             console.warn(localResponses[i].advertisement)
 

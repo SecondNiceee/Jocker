@@ -4,6 +4,7 @@ import MyButton from '../../UI/MyButton/MyButton';
 import userPhoto from "../../../images/userPhoto/user.png"
 import Text from '../../Text/Text';
 import translation from '../../../functions/translate';
+import useGetUserPhotoLink from '../../../hooks/useGetUserPhotoLink';
 const Customer = ({fl , photo, link, id, onImageClick}) => {
 
     const openTelegrmaLink = useCallback( () => {
@@ -30,11 +31,13 @@ const Customer = ({fl , photo, link, id, onImageClick}) => {
         }
 
 } , [link] )
+
+    const imgSrc = useGetUserPhotoLink({anotherUserInfo : {photo}})
     return (
         <div className={cl.wrapper}>
             <img style={{
                 objectFit : "cover"
-            }} onClick={onImageClick}  className={cl.userPhoto} src={photo.length > 0 ? photo.split('https://').length === 2 ? photo : `${process.env.REACT_APP_HOST}/${id}/${photo}` : userPhoto} alt="" />
+            }} onClick={onImageClick}  className={cl.userPhoto} src={imgSrc} alt="" />
             <div onClick={onImageClick} className={cl.two}>
                 <Text>{fl}</Text>
                 <Text>Заказчик</Text>

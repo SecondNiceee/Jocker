@@ -1,6 +1,7 @@
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router";
 import { setUser } from "../../../store/information";
+import { showAllert } from "../../../functions/showAlert";
 
 const useGetOptionsConfig = () => {
     const userInfo = useSelector((state) => state.telegramUserInfo); 
@@ -11,6 +12,7 @@ const useGetOptionsConfig = () => {
     return (
         [
             {
+                isActive : true,
                 imgPath : "/images/newProfile/baidge-icon.svg",
                 text : "Бэйдж исполнителя",
                 isNeededFill : !userInfo.profession,
@@ -26,6 +28,7 @@ const useGetOptionsConfig = () => {
                 numberNearToArrow : null
             },
             {
+                isActive : true,
                 imgPath : "/images/newProfile/example-of-works-icon.svg",
                 text : "Примеры работ",
                 isNeededFill : userInfo.profile.cards.length === 0  ,
@@ -36,11 +39,22 @@ const useGetOptionsConfig = () => {
                 numberNearToArrow : null
             },
             {
+                isActive : false,
                 imgPath : "/images/newProfile/template-of-responses-icon.svg",
                 text : "Шаблоны откликов",
                 isNeededFill : false,
                 isNeededActiveTitle : false,
-                clickFunc : () => {navigate('/AllShablons')},
+                clickFunc : () => {
+                    window.Telegram.WebApp
+                    .showPopup({
+                    title: "⏳Скоро доступно",
+                    message: "Эта функция появится в одном из ближайших обновлений. Мы уже работаем над её запуском — следите за новостями!",
+                    buttons: [
+                        { id: "save", type: "default", text: "Понятно" },
+                    ],
+                    } , (buttonId) => {    
+                    } )
+                },
                 numberNearToArrow : null
             }
         ]

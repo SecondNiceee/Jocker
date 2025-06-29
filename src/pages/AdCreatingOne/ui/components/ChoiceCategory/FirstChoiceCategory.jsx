@@ -7,6 +7,7 @@ import { softVibration } from "../../../../../functions/softVibration";
 import { setAdvertisementFilters } from "../../../../../store/filters";
 import { useDispatch, useSelector } from "react-redux";
 import {  useNavigate } from "react-router";
+import DevelopmentMainButton from "../../../../../components/UI/DevelopmentMainButton/DevelopmentMainButton";
 
 
 const FirstChoiceCategory = ({
@@ -93,9 +94,7 @@ const FirstChoiceCategory = ({
 
   return (
     <div className={cl.ChoiceCategory} {...props}>
-        <div onClick={buttonHandler} className="fixed left-1/2 top-1/2 rounded p-2 border-black border-solid border-2 cursor-pointer">
-          MAIN BUTTON
-        </div>
+      <DevelopmentMainButton />
       <p className="mt-[13px] ml-[17px] font-sf-pro-display-400 font-extralight text-[13px] tracking-[0.02em] text-[#84898f] uppercase mb-[9px]">КАТЕГОРИИ</p>
         <div className="flex rounded-[10px] bg-[#21303f] flex-col pl-[16px] pr-[16px]">
             {categorys.map((category, id) => {

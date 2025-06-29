@@ -1,18 +1,16 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import axios from "axios";
 import makeNameFiles from "../functions/makeNameFiles";
 import { USERID } from "../constants/tgStatic.config";
+import $api from "../http";
+
 export const deleteShablon = createAsyncThunk(
   "shablon/deleteShablon",
   async function(id){
     try{
-      await axios.delete(`${process.env.REACT_APP_HOST}/template` , {
+      await $api.delete(`${process.env.REACT_APP_HOST}/template` , {
         params : {
           id : id
         },
-        headers : {
-          "X-API-KEY-AUTH" : process.env.REACT_APP_API_KEY
-        }
       })
       return id
     }
@@ -25,14 +23,11 @@ export const putShablon = createAsyncThunk(
   "shablon/putShablon" ,
   async function(data){
     try{
-      let im = await axios.put(`${process.env.REACT_APP_HOST}/template` , data[0] , 
+      let im = await $api.put(`${process.env.REACT_APP_HOST}/template` , data[0] , 
         {
           params : {
             id : data[1]
           },
-          headers : {
-            "X-API-KEY-AUTH" : process.env.REACT_APP_API_KEY
-          }
         }
       )
       let photos = makeNameFiles(data[2].photos , im.data.photos)
@@ -54,7 +49,7 @@ export const postShablon = createAsyncThunk(
   "shablon/postShablon",
   async function(data){
     try{
-        let im = await axios.post(`${process.env.REACT_APP_HOST}/template` , data[0] , 
+        let im = await $api.post(`${process.env.REACT_APP_HOST}/template` , data[0] , 
         {
           params : {
             userId : USERID
@@ -62,7 +57,6 @@ export const postShablon = createAsyncThunk(
           headers: {
             "Content-Type" :'multipart/form-data',
             "Access-Control-Allow-Origin": "*",
-            "X-API-KEY-AUTH" : process.env.REACT_APP_API_KEY
           },
         }
         )
@@ -87,14 +81,11 @@ export const fetchAllShablons = createAsyncThunk(
   "shablon/fetchAllShablons",
   async function(id){
     try{
-        let im = await axios.get(`${process.env.REACT_APP_HOST}/template/findByUser` , 
+        let im = await $api.get(`${process.env.REACT_APP_HOST}/template/findByUser` , 
             {
                 params : {
                     userId : USERID
                 },
-                headers : {
-                  "X-API-KEY-AUTH" : process.env.REACT_APP_API_KEY
-                }
             }
         )
       

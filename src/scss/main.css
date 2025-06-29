@@ -13,6 +13,7 @@
 }
 
 .First {
+  overflow-y: hidden;
   display: flex;
   transition: transform 0.4s;
   will-change: transform;
@@ -38,6 +39,7 @@ body::-webkit-scrollbar {
 }
 
 .first-container {
+   overflow-y: hidden;
   transition: 0.4s;
   display: flex;
 }
@@ -53,6 +55,7 @@ body::-webkit-scrollbar {
 }
 
 .first-wrapper {
+  overflow-y: hidden;
   display: flex;
   width: 100;
   margin-bottom: 96px;
@@ -69,12 +72,8 @@ body::-webkit-scrollbar {
 }
 
 .First__block .FirstMain__top .watchedTask {
-  font-family: "SF Pro Display";
-  font-weight: 500;
-  font-size: 14.67px;
-  line-height: 120%;
   color: #95979e;
-  gap: 16.6845px;
+
 }
 
 .AllTasks {
@@ -130,6 +129,7 @@ body::-webkit-scrollbar {
 }
 
 .FirstMain {
+  overflow-y: hidden;
   width: 100%;
   margin-top: 17px;
   display: flex;
@@ -137,7 +137,6 @@ body::-webkit-scrollbar {
   flex-direction: column;
   gap: 8px;
   border-radius: 10px;
-  overflow-x: hidden;
   min-height: unset;
 }
 
@@ -226,8 +225,8 @@ body::-webkit-scrollbar {
 }
 .First__block .FirstMain__top img {
   margin-right: 10px;
-  width: 34px;
-  height: 34px;
+  width: 37px;
+  height: 37px;
 }
 .First__block .FirstMain__top p {
   /* Default text */
@@ -2359,7 +2358,7 @@ input {
   line-height: 107%;
   text-align: center;
   color: #95979e;
-  margin-top: 8px;
+  margin-top: -4px;
 }
 
 .PickerContent {
@@ -2731,10 +2730,10 @@ body {
 }
 
 .UperContainer {
+  overflow-y: hidden;
   position: relative;
   height: auto;
   width: 100%;
-  overflow: auto;
 }
 
 .MuiSelect-select {

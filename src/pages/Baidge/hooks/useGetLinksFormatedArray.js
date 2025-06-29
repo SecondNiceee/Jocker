@@ -1,10 +1,10 @@
 
-const useGetLinksFormatedArray = ({links, isFirstMyLink}) => {
+const useGetLinksFormatedArray = ({links, isFirstMyLink, user}) => {
 
     const notRecognisedLinks = []
 
 
-    const tgName = isFirstMyLink ? "@" + links[0]  : ""
+    const tgName = isFirstMyLink ? "@" + user.link  : ""
     let dribbleLink = null;
     let behanceLink = null;
     let artstationLink = null;
@@ -29,7 +29,7 @@ const useGetLinksFormatedArray = ({links, isFirstMyLink}) => {
     let framerLink = null;
     let figmaLink = null;
 
-    for (let i = isFirstMyLink ? 1 : 0; i < links?.length; i++){
+    for (let i = 0; i < links?.length; i++){
         let isRecognisedLink = false;
 
         if (links[i].includes("https://t.me/")){
@@ -134,7 +134,7 @@ const useGetLinksFormatedArray = ({links, isFirstMyLink}) => {
         {
             title : "Мой Telegram",
             profession : tgName,
-            link : `https://t.me/${tgName.slice(1)}`,
+            link : isFirstMyLink ? `https://t.me/${tgName.slice(1)}` : null,
         },
         {
             title : "HH",

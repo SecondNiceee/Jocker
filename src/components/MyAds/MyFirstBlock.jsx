@@ -73,7 +73,7 @@ const MyFirstBlock = ({
                     style={
                       photos.length === 1
                         ? {
-                            width: "calc(100% - 3.67px)",
+                            width: "calc(100%)",
                           }
                         : {}
                     }
@@ -81,7 +81,6 @@ const MyFirstBlock = ({
                     alt=""
                   />
                 );
-                // return <img className='first__photo' src = {'https://www.connectbirga.ru/' + e} />
               })}
             </div>
           ) : (

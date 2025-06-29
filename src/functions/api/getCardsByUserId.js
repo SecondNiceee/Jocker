@@ -1,15 +1,12 @@
-import axios from "axios";
+import $api from "../../http";
 
 export const getCardByUserId = async (id) => {
   const localCards = [];
-  let allCards = await axios.get(
+  let allCards = await $api.get(
     `${process.env.REACT_APP_HOST}/card/findByUser`,
     {
       params: {
         userId: id,
-      },
-      headers: {
-        "X-API-KEY-AUTH": process.env.REACT_APP_API_KEY,
       },
     }
   );

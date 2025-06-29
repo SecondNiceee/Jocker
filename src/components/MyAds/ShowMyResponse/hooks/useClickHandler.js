@@ -1,8 +1,8 @@
-import axios from "axios";
 import { useCallback } from "react";
 import { useSelector } from "react-redux";
 import translation from "../../../../functions/translate";
 import { useNavigate } from "react-router";
+import $api from "../../../../http";
 
 
 const bigText = translation("Отправили запрос заказчику, статус задания обновится после после подтверждения")
@@ -13,17 +13,13 @@ const useClickHandler = ({advertisement, response}) => {
     if (advertisement && response){
     if (address) {
       try {
-        await axios.get(process.env.REACT_APP_HOST + "/bot/notification", {
+        await $api.get(`${process.env.REACT_APP_HOST}/bot/notification`, {
           params: {
             executorId: String(response.user.id),
             consumerId: String(response.advertisement.user.id),
             responseId: String(response.id),
             chatId: String(response.advertisement.user.id),
             advertisementId: String(response.advertisement.id),
-          },
-
-          headers: {
-            "X-API-KEY-AUTH": process.env.REACT_APP_API_KEY,
           },
         });
 

@@ -1,14 +1,11 @@
-import axios from "axios";
+import $api from "../../http";
 
 export const getCardById = async (id) => {
-  let response = await axios.get(
+  let response = await $api.get(
     `${process.env.REACT_APP_HOST}/card/findOne`,
     {
       params: {
         id: id
-      },
-      headers: {
-        "X-API-KEY-AUTH": process.env.REACT_APP_API_KEY,
       },
     }
   );

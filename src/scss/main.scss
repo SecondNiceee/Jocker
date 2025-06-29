@@ -33,7 +33,7 @@ body { width: 100%; height: auto;  background: rgb(24, 34, 45); }
   position: relative;
   height: auto;
   width: 100%;
-  overflow: auto;
+  overflow-y: hidden;
 }
 
 .MuiSelect-select{

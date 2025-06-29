@@ -35,7 +35,5 @@ export default function checkMistakes(changingTask, isSet = true) {
     descriptionError: descriptionError,
   };
 
-  console.log(rezult);
-
   return Object.values(rezult).every((value) => value === false);
 }

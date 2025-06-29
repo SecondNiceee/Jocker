@@ -91,45 +91,33 @@ const ProfilePage = ({ ...props }) => {
     async function getAllCards() {
       let localCards = [];
       try {
-        const user = await axios.get("https://www.connectbirga.ru/user/findOne", {
+        const user = await $api.get(`${process.env.REACT_APP_HOST}/user/findOne`, {
           params: {
             id: Number(window.Telegram.WebApp.initDataUnsafe.start_param.split('m')[1]),
           },
-          headers : {
-            "X-API-KEY-AUTH" : process.env.REACT_APP_API_KEY
-          }
         });
 
-        let imTwo = await axios.get(
-            "https://www.connectbirga.ru/advertisement/findCount",
+        let imTwo = await $api.get(
+            `${process.env.REACT_APP_HOST}/advertisement/findCount`,
             {
               params: {
                 userId: Number(window.Telegram.WebApp.initDataUnsafe.start_param.split('m')[1]),
               },
-              headers : {
-                "X-API-KEY-AUTH" : process.env.REACT_APP_API_KEY
-              }
             }
           );
 
-        const cardOne = await axios.get("https://www.connectbirga.ru/card/findOne" , {
+        const cardOne = await $api.get(`${process.env.REACT_APP_HOST}/card/findOne`, {
             params : {
                 id : Number(window.Telegram.WebApp.initDataUnsafe.start_param.split('m')[0])
             },
-            headers : {
-              "X-API-KEY-AUTH" : process.env.REACT_APP_API_KEY
-            }
         })
 
-        let allCards = await axios.get(
-          "https://www.connectbirga.ru/card/findByUser",
+        let allCards = await $api.get(
+          `${process.env.REACT_APP_HOST}/card/findByUser`,
           {
             params: {
               userId: user.data.id,
             },
-            headers : {
-              "X-API-KEY-AUTH" : process.env.REACT_APP_API_KEY
-            }
           }
         );
 

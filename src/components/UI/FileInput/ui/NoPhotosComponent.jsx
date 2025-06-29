@@ -4,7 +4,6 @@ import { device } from '../../../../constants/device';
 
 const NoPhotosComponent = forwardRef(({ files, imageStyle, addFiles }, ref) => {
   const handleFileChange = (event) => {
-  console.log('Файлы выбраны:', event.target.files); // ❗Проверка
   const selectedFiles = event.target.files;
 
   if (!selectedFiles || selectedFiles.length === 0) return;
@@ -13,8 +12,6 @@ const NoPhotosComponent = forwardRef(({ files, imageStyle, addFiles }, ref) => {
 
   for (let i = 0; i < selectedFiles.length; i++) {
     const file = selectedFiles[i];
-    console.log('Обрабатываем файл:', file); // ❗Проверка
-
     const fileExtension = file.name.slice(file.name.lastIndexOf('.'));
     const newName = `photo_${Date.now()}_${i}${fileExtension}`;
 
@@ -23,11 +20,9 @@ const NoPhotosComponent = forwardRef(({ files, imageStyle, addFiles }, ref) => {
       lastModified: file.lastModified,
     });
 
-    console.log('Созданный файл:', renamedFile); // ❗Проверка
     newFiles.push(renamedFile);
   }
 
-  console.log('Отправляем в addFiles:', newFiles); // ❗Проверка
   addFiles(newFiles);
 
   if (ref?.current) {
