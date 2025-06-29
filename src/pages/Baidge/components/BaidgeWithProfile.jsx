@@ -78,7 +78,7 @@ const BaidgeWithProfile = ({ userInfo, className, setUserInfo, urlParametr}) => 
         ratingLoaded.current = true;
       }
 
-  } , [userInfo, setUserInfo, me.id, dispatch])
+  } , [userInfo, setUserInfo, me, dispatch])
 
 
   useEffect( () => {
