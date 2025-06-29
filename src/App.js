@@ -36,6 +36,7 @@ import { isIphone } from "./functions/isIphone";
 import ChoiceCategory from "./pages/AdCreatingOne/ui/components/ChoiceCategory/ChoiceCategory";
 import ChoiceSubCategory from "./pages/AdCreatingOne/ui/components/ChoiceCategory/ChoiceSubCategory";
 import NewChangeCard from "./pages/NewChangeCard/NewChangeCard";
+import parseTelegramData from "./functions/parseTelegramData";
 
 
 
@@ -58,7 +59,7 @@ const NewCardsPage = lazy( () => import("./pages/NewCardsPage/NewCardsPage") )
 
 const StatisticPage = lazy( () => import("./pages/StatisticPage/StatisticPage") )
 
-console.warn(window.Telegram.WebApp.initData)
+console.warn(parseTelegramData(window.Telegram.WebApp.initData));
 const MyLoader = () => {
   return (
     <div
