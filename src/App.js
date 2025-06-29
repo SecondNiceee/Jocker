@@ -58,6 +58,7 @@ const NewCardsPage = lazy( () => import("./pages/NewCardsPage/NewCardsPage") )
 
 const StatisticPage = lazy( () => import("./pages/StatisticPage/StatisticPage") )
 
+console.warn(window.Telegram.WebApp.initData);
 const MyLoader = () => {
   return (
     <div
