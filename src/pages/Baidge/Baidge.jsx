@@ -9,6 +9,7 @@ import menuController from "../../functions/menuController";
 import MainButton from "../../constants/MainButton";
 import { putUserInfo } from "../../store/telegramUserInfo/thunks/putUserInfo";
 import { useAddPageHistory } from "../../hooks/useAddPageHistory";
+import { setUser } from "../../store/information";
 
 const baidgeId =  window.Telegram.WebApp.initDataUnsafe?.start_param || null
 const Baidge = ({isExternal = false}) => {
@@ -17,7 +18,15 @@ const Baidge = ({isExternal = false}) => {
 
   const {id} = useParams();
 
-  const [userInfo, setUserInfo] = useState(null);
+  const dispatch = useDispatch();
+
+  const userInfo = useSelector( (state) => state.information.baidgeUser );
+
+  const setUserInfo = useCallback( (user) => {
+    dispatch(setUser(user))
+  }, [dispatch] )
+
+  console.log(userInfo);
 
   useEffect( () => {
     menuController.showMenu();
@@ -41,13 +50,10 @@ const Baidge = ({isExternal = false}) => {
         setUserInfo(me);
       }
     }
-  }, [ me, id, isExternal]);
+  }, [ me, id, isExternal, setUserInfo]);
   useEffect( () => { 
     MainButton.hide();
   }, [] )
-
-  const dispatch = useDispatch();
-
 
   const addWatch = useCallback( async () => {
     if (userInfo){
@@ -57,15 +63,13 @@ const Baidge = ({isExternal = false}) => {
     }
   }, [dispatch, userInfo] )
 
-
-
   useEffect( () => {
     if (userInfo && userInfo.id && me.id ){
       if (userInfo.id !== me.id){
         addWatch();
       }
     }
-  } , [userInfo, me, addWatch])
+  } , [userInfo, me, addWatch]);
 
 
   if (!userInfo || userInfo.id === null) {
