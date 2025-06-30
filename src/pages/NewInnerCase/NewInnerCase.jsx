@@ -41,6 +41,7 @@ const NewInnerCase = () => {
     const [casePar, setCasePar] = useState(null);
 
     const user = useSelector( state => state.information.baidgeUser );
+    
     const card = useSelector( state => state.information.baidgeCard );
 
     const navigate = useNavigate();

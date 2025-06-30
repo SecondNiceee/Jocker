@@ -31,7 +31,7 @@ const Baidge = ({isExternal = false}) => {
   }, [] );
 
   useEffect(() => {
-    if (isExternal && me.id){
+    if (isExternal && me.id && !userInfo){
       if (String(baidgeId) === String(me.id)){
         alert("Попав сюда !")
         setUserInfo(me);
