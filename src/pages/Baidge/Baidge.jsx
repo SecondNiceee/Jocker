@@ -17,8 +17,6 @@ const Baidge = ({isExternal = false}) => {
 
   const {id} = useParams();
 
-  useAddPageHistory();
-
   const [userInfo, setUserInfo] = useState(null);
 
   useEffect( () => {

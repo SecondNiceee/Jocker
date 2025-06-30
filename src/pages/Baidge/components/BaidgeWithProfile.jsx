@@ -14,6 +14,7 @@ import menuController from "../../../functions/menuController";
 import { fetchMyAdditionalUserInfo } from "../../../store/telegramUserInfo/thunks/fetchAdditionalUserInfo";
 import { fetchAdditionalUserInfo } from "../../../functions/api/fetchAdditionalUserInfo";
 import { useAddPageHistory } from "../../../hooks/useAddPageHistory";
+import pagesHistory from "../../../constants/pagesHistory";
 
 const BaidgeWithProfile = ({ userInfo, className, setUserInfo, urlParametr}) => {
 
@@ -26,6 +27,9 @@ const BaidgeWithProfile = ({ userInfo, className, setUserInfo, urlParametr}) => 
   useAddPageHistory();
 
   useNavigateBack({isSliderOpened : false, setSlideOpened : false})
+
+
+  console.log(pagesHistory);
 
   const isLikeActive = useMemo(() => {
     if (!userInfo) {
