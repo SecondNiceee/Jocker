@@ -41,7 +41,6 @@ const NewChangeCard = ({isNewCard}) => {
     const me = useSelector( (state) => state.telegramUserInfo )
     const baidgeCard = useMemo(() => userCards.find((card) => String(card.id) === id) ?? {}, [userCards, id])
 
-
     useEffect( () => {
         if (isNewCard){
             setChangedCard( {

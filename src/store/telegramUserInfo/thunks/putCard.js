@@ -16,12 +16,11 @@ export const putCard = createAsyncThunk(
                       },
                 }
             )
-            let photos = []
              let localCard = {
                 ...data[2],
                 watches : im.data.watches,
                 photosNames : im.data.photos,
-                photos : photos,
+                photos : im.data.photos,
                 id : im.data.id
             }
             return localCard
