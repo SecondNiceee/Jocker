@@ -41,7 +41,7 @@ const NewInnerCase = () => {
     const [casePar, setCasePar] = useState(null);
 
     const user = useSelector( state => state.information.baidgeUser );
-    
+
     const card = useSelector( state => state.information.baidgeCard );
 
     const navigate = useNavigate();
@@ -84,7 +84,7 @@ const NewInnerCase = () => {
 
     useEffect( () => {
 
-        if (userId && cardId){
+        if (userId && cardId && !userInfo){
             if (String(userId) === String(me.id)){
                 if (me.id){
                     setUserInfo(me);
@@ -174,8 +174,6 @@ const NewInnerCase = () => {
             MainButton.offClick(backFunction);
         }
     }, [backFunction, changeCard, me, userInfo] )
-
-
 
     const secondaryButtonHandler = useCallback( () => {
         secondaryButtonController.secondaryButtonHandler({card, dispatch, me, navigate});
