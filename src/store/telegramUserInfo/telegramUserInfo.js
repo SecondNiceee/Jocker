@@ -89,7 +89,7 @@ const telegramUserInfo = createSlice({
     })
 
     builder.addCase(fetchMyAdditionalUserInfo.fulfilled, (state, action) => {
-
+        console.warn(action.payload);
         return {...state, ...action.payload};
     })
 

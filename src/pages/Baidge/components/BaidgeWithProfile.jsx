@@ -28,9 +28,6 @@ const BaidgeWithProfile = ({ userInfo, className, setUserInfo, urlParametr}) => 
 
   useNavigateBack({isSliderOpened : false, setSlideOpened : false})
 
-
-  console.log(pagesHistory);
-
   const isLikeActive = useMemo(() => {
     if (!userInfo) {
       return null;
@@ -41,7 +38,6 @@ const BaidgeWithProfile = ({ userInfo, className, setUserInfo, urlParametr}) => 
   const photoUrl = useGetUserPhotoLink({anotherUserInfo : userInfo});
 
   const optionsConfig = useGetBaidgeOprionsConfig({userInfo})
-
 
   const clickLikeUser = () => {
     likesController.likeUser({
