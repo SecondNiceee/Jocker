@@ -25,15 +25,15 @@ const Baidge = ({isExternal = false}) => {
     dispatch(setUser(user))
   }, [dispatch] )
 
-  console.log(userInfo);
-
   useEffect( () => {
     menuController.showMenu();
     menuController.raiseMenu();
   }, [] );
+
   useEffect(() => {
     if (isExternal && me.id){
       if (String(baidgeId) === String(me.id)){
+        console.log(me);
         setUserInfo(me);
       }
       else{
