@@ -14,7 +14,6 @@ import menuController from "../../../functions/menuController";
 import { fetchMyAdditionalUserInfo } from "../../../store/telegramUserInfo/thunks/fetchAdditionalUserInfo";
 import { fetchAdditionalUserInfo } from "../../../functions/api/fetchAdditionalUserInfo";
 import { useAddPageHistory } from "../../../hooks/useAddPageHistory";
-import pagesHistory from "../../../constants/pagesHistory";
 
 const BaidgeWithProfile = ({ userInfo, className, setUserInfo, urlParametr}) => {
 
@@ -26,7 +25,7 @@ const BaidgeWithProfile = ({ userInfo, className, setUserInfo, urlParametr}) => 
 
   useAddPageHistory();
 
-  useNavigateBack({isSliderOpened : false, setSlideOpened : false})
+  useNavigateBack({isSliderOpened : false, setSlideOpened : false});
 
   const isLikeActive = useMemo(() => {
     if (!userInfo) {
@@ -63,8 +62,6 @@ const BaidgeWithProfile = ({ userInfo, className, setUserInfo, urlParametr}) => 
       if (userInfo && me.id){
         if (!ratingLoaded.current){
           if (userInfo.id === me.id){
-              console.warn("Тут");
-              console.warn(userInfo, me);
               dispatch(fetchMyAdditionalUserInfo(
                 {
                   isCounterOfResponses : !userInfo.responsesCounter,
@@ -75,7 +72,7 @@ const BaidgeWithProfile = ({ userInfo, className, setUserInfo, urlParametr}) => 
           }
           else{
               fetchAdditionalUserInfo({isCommonRating : true, isRatingByProfession : true}, userInfo).then( (info) => {
-                setUserInfo((value) => ({...value, ...info}))
+                setUserInfo({...userInfo, ...info})
               }  )
           }
         }
@@ -83,15 +80,10 @@ const BaidgeWithProfile = ({ userInfo, className, setUserInfo, urlParametr}) => 
       }
 
   } , [userInfo, setUserInfo, me, dispatch])
-
-  
-
-
   useEffect( () => {
     menuController.showMenu();
     menuController.raiseMenu();
   }, [] )
-
   return (
     <>
       <div className={`pt-[16px] w-full  z-50 px-[16px] bg-[#18222d] gap-[16px] flex flex-col  pb-[100px] ${className}`}>

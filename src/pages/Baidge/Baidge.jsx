@@ -33,7 +33,7 @@ const Baidge = ({isExternal = false}) => {
   useEffect(() => {
     if (isExternal && me.id){
       if (String(baidgeId) === String(me.id)){
-        console.log(me);
+        alert("Попав сюда !")
         setUserInfo(me);
       }
       else{
@@ -49,7 +49,8 @@ const Baidge = ({isExternal = false}) => {
         setUserInfo(me);
       }
     }
-  }, [ me, id, isExternal, setUserInfo]);
+  }, [me, id, isExternal, setUserInfo]);
+
   useEffect( () => { 
     MainButton.hide();
   }, [] )
