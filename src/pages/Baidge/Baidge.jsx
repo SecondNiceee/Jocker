@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect } from "react";
 import {useDispatch, useSelector } from "react-redux";
 import MyLoader from "../../components/UI/MyLoader/MyLoader";
 import BaidgeWithProfile from "./components/BaidgeWithProfile";
@@ -8,7 +8,6 @@ import { findUserById } from "../../functions/api/findUserById";
 import menuController from "../../functions/menuController";
 import MainButton from "../../constants/MainButton";
 import { putUserInfo } from "../../store/telegramUserInfo/thunks/putUserInfo";
-import { useAddPageHistory } from "../../hooks/useAddPageHistory";
 import { setUser } from "../../store/information";
 
 const baidgeId =  window.Telegram.WebApp.initDataUnsafe?.start_param || null
