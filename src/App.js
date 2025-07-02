@@ -406,6 +406,17 @@ function App() {
     sendPlug();
     }, [] )
 
+    window.Telegram.WebApp
+    .showPopup({
+    title: "⏳Обновление",
+    message: "Сейчас идет обновление, пожалуйста, заходите позже",
+    buttons: [
+        { id: "save", type: "default", text: "Понятно" },
+    ],
+    } , (buttonId) => {   
+      window.Telegram.WebApp.close();
+    } )
+
   useEffect( () => {
     window.Telegram.WebApp.setHeaderColor("#18222d");
     window.Telegram.WebApp.setBackgroundColor("#18222d");
