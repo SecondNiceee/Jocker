@@ -13,6 +13,7 @@ import { fetchUserInfo } from "../../store/telegramUserInfo/thunks/fetchUserInfo
 import { putUserInfo } from "../../store/telegramUserInfo/thunks/putUserInfo";
 import { fetchMyAdditionalUserInfo } from "../../store/telegramUserInfo/thunks/fetchAdditionalUserInfo";
 import { useAddPageHistory } from "../../hooks/useAddPageHistory";
+import DevelopmentMainButton from "../../components/UI/DevelopmentMainButton/DevelopmentMainButton";
 
 const BaidgeCreating = ({isChanging = false}) => {
   const dispatch = useDispatch();
@@ -172,8 +173,8 @@ const BaidgeCreating = ({isChanging = false}) => {
         step === 0 ? "translate-x-0" : "-translate-x-[100vw]"
       }`}
     >
-      <button className="fixed left-[100vw]" onClick={goFoward}>ГО</button>
-      <button className="fixed left-[0vw]" onClick={goFoward}>ГО</button>
+      <DevelopmentMainButton goForward={goFoward} className={"!fixed !left-[100vw]"} />
+      <DevelopmentMainButton goForward={goFoward} className={"!fixed !left-[0vw]"} />
       <BaidgeCreaitingOne
         setStage={setStage}
         stage={stage}

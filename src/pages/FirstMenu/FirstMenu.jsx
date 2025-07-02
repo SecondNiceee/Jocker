@@ -33,6 +33,7 @@ const FirstMenu = () => {
             { id: "save", type: "default", text: "Понятно" },
         ],
         } , (buttonId) => {    
+          
         } )
   }
 

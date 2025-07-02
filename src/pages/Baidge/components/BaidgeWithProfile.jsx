@@ -72,10 +72,11 @@ const BaidgeWithProfile = ({ userInfo, className, setUserInfo, urlParametr}) => 
           }
           else{
               fetchAdditionalUserInfo({isCommonRating : true, isRatingByProfession : true}, userInfo).then( (info) => {
+                console.warn({...userInfo, ...info});
                 setUserInfo({...userInfo, ...info})
               }  )
           }
-        }
+        } 
         ratingLoaded.current = true;
       }
 

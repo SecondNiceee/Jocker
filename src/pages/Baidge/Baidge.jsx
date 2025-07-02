@@ -1,4 +1,4 @@
-import { useCallback, useEffect } from "react";
+import { useCallback, useEffect, useRef } from "react";
 import {useDispatch, useSelector } from "react-redux";
 import MyLoader from "../../components/UI/MyLoader/MyLoader";
 import BaidgeWithProfile from "./components/BaidgeWithProfile";
@@ -30,26 +30,32 @@ const Baidge = ({isExternal = false}) => {
     menuController.raiseMenu();
   }, [] );
 
+  const isUserFetched = useRef(false);
+
   useEffect(() => {
-    if (isExternal && me.id && !userInfo){
-      if (String(baidgeId) === String(me.id)){
-        alert("Попав сюда !")
-        setUserInfo(me);
+    if (!userInfo && !isUserFetched.current){
+      if (isExternal && me.id){
+        if (String(baidgeId) === String(me.id)){
+          setUserInfo(me);
+        }
+        else{
+          findUserById(baidgeId).then( (user) => {setUserInfo(user)} ).catch( () => {
+            alert("Не удалось найти пользователя с id = " + baidgeId)
+          } )
+        }
       }
       else{
-        findUserById(baidgeId).then( (user) => {setUserInfo(user)} ).catch( () => {
-          alert("Не удалось найти пользователя с id = " + baidgeId)
-        } )
+        if (id && String(id) !== me.id) {
+          findUserById(id).then( (user) => {setUserInfo(user)
+            console.warn(user);
+          } )
+        } else {
+          setUserInfo(me);
+        }
       }
+        isUserFetched.current=true;
     }
-    else{
-      if (id && String(id) !== me.id) {
-        findUserById(id).then( (user) => {setUserInfo(user)} )
-      } else {
-        setUserInfo(me);
-      }
-    }
-  }, [me, id, isExternal, setUserInfo]);
+  }, [me, id, isExternal, userInfo, setUserInfo]);
 
   useEffect( () => { 
     MainButton.hide();

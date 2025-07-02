@@ -6,6 +6,7 @@ export const findUserById = async (id) => {
         let user;
         try{
              user = await getUserWithoutCards(id);
+             console.log(user);
         }
         catch(e){      
             console.warn(e);
@@ -18,6 +19,7 @@ export const findUserById = async (id) => {
             user = await getUserWithoutCards(id); 
         }
         const userCards = await getCardByUserId(id);
+        console.warn(user);
         return {...user, profile : {...user.profile, cards : userCards} };
     }
     catch (e){

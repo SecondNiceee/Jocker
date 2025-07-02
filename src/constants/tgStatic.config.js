@@ -1,4 +1,4 @@
-export const USERID = window.Telegram.WebApp?.initDataUnsafe?.user?.id || String(2144832745);
+export const USERID = window.Telegram.WebApp?.initDataUnsafe?.user?.id || String(1392120153);
 export const USERLINK = window.Telegram.WebApp?.initDataUnsafe?.user?.link || "https://t.me/LastTryS";
 
 
