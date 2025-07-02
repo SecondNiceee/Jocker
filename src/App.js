@@ -395,7 +395,7 @@ function App() {
           window.Telegram.WebApp
           .showPopup({
           title: "⏳Обновление",
-          message: "Сейчас идет обновление, заходите позже",
+          message: "Сейчас идет обновление, пожалуйста, заходите позже",
           buttons: [
               { id: "save", type: "default", text: "Понятно" },
           ],
