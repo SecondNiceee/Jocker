@@ -343,7 +343,7 @@ function App() {
   console.log("Prod log");
   useEffect(() => {
     document.addEventListener("deviceready", function () {
-          Telegram.WebApp.ready();
+          window.Telegram.WebApp.ready();
                 window.Telegram.WebApp.showPopup(
         {
           title: "⏳ Обновление",
