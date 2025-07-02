@@ -340,8 +340,21 @@ const AnimatedSwitch = () => {
   );
 };
 function App() {
-  
+  console.log("Prod log");
   useEffect(() => {
+    document.addEventListener("deviceready", function () {
+          Telegram.WebApp.ready();
+                window.Telegram.WebApp.showPopup(
+        {
+          title: "⏳ Обновление",
+          message: "Сейчас идет обновление, пожалуйста, заходите позже",
+          buttons: [{ id: "save", type: "default", text: "Понятно" }],
+        },
+        (buttonId) => {
+          window.Telegram.WebApp.close();
+        }
+      );
+      });
     window.addEventListener("DOMContentLoaded", function () {
       window.Telegram.WebApp.ready();
 
