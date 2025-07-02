@@ -1,4 +1,4 @@
-import { lazy, useEffect, Suspense} from "react";
+import { lazy, useEffect, Suspense } from "react";
 import { useDispatch } from "react-redux";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import { AnimatePresence } from "framer-motion";
@@ -38,22 +38,29 @@ import ChoiceSubCategory from "./pages/AdCreatingOne/ui/components/ChoiceCategor
 import NewChangeCard from "./pages/NewChangeCard/NewChangeCard";
 
 const HappyPage = lazy(() => import("./pages/HappyHold/HappyPage"));
-const   First = lazy(() => import("./pages/First/First"));
+const First = lazy(() => import("./pages/First/First"));
 const AdCreating = lazy(() => import("./pages/AdCreating/AdCreating"));
 const NewProfile = lazy(() => import("./pages/Profile/NewProfile"));
 const Balance = lazy(() => import("./pages/Balance"));
 const MyAds = lazy(() => import("./pages/MyAds/MyAds"));
 const AllShablons = lazy(() => import("./pages/AllShablons/AllShablons"));
 const SavedPage = lazy(() => import("./pages/SavedPage/SavedPage"));
-const FirstChoiceCategory = lazy( () => import("./pages/AdCreatingOne/ui/components/ChoiceCategory/FirstChoiceCategory") )
-const FirstChoiseSubCategory = lazy( () => import("./pages/AdCreatingOne/ui/components/ChoiceCategory/FirstChoiceSubCategory") )
-
+const FirstChoiceCategory = lazy(() =>
+  import(
+    "./pages/AdCreatingOne/ui/components/ChoiceCategory/FirstChoiceCategory"
+  )
+);
+const FirstChoiseSubCategory = lazy(() =>
+  import(
+    "./pages/AdCreatingOne/ui/components/ChoiceCategory/FirstChoiceSubCategory"
+  )
+);
 
 const BaidgeCreating = lazy(() =>
   import("./pages/BaidgeCreating/BaidgeCreating")
 );
-const NewCardsPage = lazy( () => import("./pages/NewCardsPage/NewCardsPage") );
-const StatisticPage = lazy( () => import("./pages/StatisticPage/StatisticPage") );
+const NewCardsPage = lazy(() => import("./pages/NewCardsPage/NewCardsPage"));
+const StatisticPage = lazy(() => import("./pages/StatisticPage/StatisticPage"));
 const MyLoader = () => {
   return (
     <div
@@ -65,7 +72,6 @@ const MyLoader = () => {
         justifyContent: "center",
       }}
     >
-
       <Triangle
         visible={true}
         height="80"
@@ -84,35 +90,23 @@ const AnimatedSwitch = () => {
     <>
       <FirstMenu />
 
-      <div
-        className="container overflow-y-hidden"
-      >
-
+      <div className="container overflow-y-hidden">
         <AnimatePresence>
-          <Routes >
-            <Route element = {<AppLayout />}>
-            
+          <Routes>
+            <Route element={<AppLayout />}>
               <Route
                 path="/changeAdvertisement/:advId"
-                element={
-                    <ChangeAdvertisement />
-                }
+                element={<ChangeAdvertisement />}
               />
-
-
 
               <Route
                 path="/responsedAdvertisement/:id"
-                element={
-                    <FirstDetails showButton = {false} />
-                }
+                element={<FirstDetails showButton={false} />}
               />
 
               <Route
                 path="/changeCard/:id"
-                element={
-                    <NewChangeCard isNewCard={false} />
-                }
+                element={<NewChangeCard isNewCard={false} />}
               />
 
               <Route
@@ -135,36 +129,24 @@ const AnimatedSwitch = () => {
 
               <Route
                 path="/cardCreation"
-                element={
-                    <NewChangeCard isNewCard={true} />
-                }
+                element={<NewChangeCard isNewCard={true} />}
               />
 
               <Route
                 path="/confirm/:advId/:resId"
-                element={
-                    <ShowMyResponse />
-                }
+                element={<ShowMyResponse />}
               />
 
-              <Route
-                path="/feedbacks/:userId"
-                element={
-                    <Feedbacks />
-                }
-              />
-
+              <Route path="/feedbacks/:userId" element={<Feedbacks />} />
 
               <Route
                 path="/response/:advertisementId/:responseId"
-                element={
-                    <LastAds />
-                }
+                element={<LastAds />}
               />
 
               <Route
                 path="/firstchoicecategory"
-                element = {
+                element={
                   <Suspense fallback={<MyLoader />}>
                     <FirstChoiceCategory />
                   </Suspense>
@@ -173,7 +155,7 @@ const AnimatedSwitch = () => {
 
               <Route
                 path="/firstchoicesubcategory"
-                element = {
+                element={
                   <Suspense fallback={<MyLoader />}>
                     <FirstChoiseSubCategory />
                   </Suspense>
@@ -182,11 +164,9 @@ const AnimatedSwitch = () => {
 
               <Route
                 path="/hold/:advertisementId/:responseId"
-                element={
-                    <AdCreatingThree />
-                }
+                element={<AdCreatingThree />}
               />
-              
+
               <Route
                 path="/"
                 element={
@@ -195,8 +175,6 @@ const AnimatedSwitch = () => {
                   </Suspense>
                 }
               />
-
-
 
               <Route
                 path="/cardsPage"
@@ -245,9 +223,7 @@ const AnimatedSwitch = () => {
 
               <Route
                 path="/advertisementResponses/:advId"
-                element={
-                    <AboutOne />
-                }
+                element={<AboutOne />}
               />
 
               <Route
@@ -259,49 +235,32 @@ const AnimatedSwitch = () => {
                 }
               />
 
-
               <Route
                 path="/BaidgeChanging"
                 element={
                   <Suspense fallback={<MyLoader />}>
-                    <BaidgeCreating isChanging = {true} />
+                    <BaidgeCreating isChanging={true} />
                   </Suspense>
                 }
               />
 
-
               <Route
                 path="/FirstDetails/:id"
-                element={
-                    <FirstDetails isPage={true} />}
+                element={<FirstDetails isPage={true} />}
               />
-
 
               <Route
                 path="/FirstDetails"
-                element={
-                    <FirstDetails isPage={true} />}
+                element={<FirstDetails isPage={true} />}
               />
 
-              <Route
-                path="/Baidge"
-                element={
-                    <Baidge />
-                }
-              />
+              <Route path="/Baidge" element={<Baidge />} />
 
-              <Route
-                path="/Baidge/:id"
-                element={
-                    <Baidge />
-                }
-              />
+              <Route path="/Baidge/:id" element={<Baidge />} />
 
               <Route
                 path="/ExternalBaidge"
-                element={
-                    <Baidge isExternal = {true} />
-                }
+                element={<Baidge isExternal={true} />}
               />
 
               <Route
@@ -345,11 +304,11 @@ const AnimatedSwitch = () => {
                 element={
                   <Suspense fallback={<MyLoader />}>
                     <HappyPage
-                      // setShowCongradulate={setShowCongradulate}
-                      // congradulate={congratulate}
-                      // task={
-                      //   congratulate ? congratulate[congratulate.length - 1] : []
-                      // }
+                    // setShowCongradulate={setShowCongradulate}
+                    // congradulate={congratulate}
+                    // task={
+                    //   congratulate ? congratulate[congratulate.length - 1] : []
+                    // }
                     />
                   </Suspense>
                 }
@@ -363,14 +322,7 @@ const AnimatedSwitch = () => {
                 }
               />
 
-
-              <Route
-                path="/makeresponse/:id"
-                element={
-                    <Responce />
-                }
-              />
-
+              <Route path="/makeresponse/:id" element={<Responce />} />
 
               <Route
                 path="/AllShablons"
@@ -381,64 +333,47 @@ const AnimatedSwitch = () => {
                 }
               />
             </Route>
-            
           </Routes>
         </AnimatePresence>
       </div>
     </>
-);
+  );
 };
-function App() { 
+function App() {
+  
+  useEffect(() => {
+    window.addEventListener("DOMContentLoaded", function () {
+      window.Telegram.WebApp.ready();
 
-    useEffect( () => {
-      const sendPlug = () => {
-          window.Telegram.WebApp
-          .showPopup({
-          title: "⏳Обновление",
+      window.Telegram.WebApp.showPopup(
+        {
+          title: "⏳ Обновление",
           message: "Сейчас идет обновление, пожалуйста, заходите позже",
-          buttons: [
-              { id: "save", type: "default", text: "Понятно" },
-          ],
-          } , (buttonId) => {   
-            window.Telegram.WebApp.close();
-          } )
-    }
-    sendPlug();
-    }, [] )
+          buttons: [{ id: "save", type: "default", text: "Понятно" }],
+        },
+        (buttonId) => {
+          window.Telegram.WebApp.close();
+        }
+      );
+    });
+  }, []);
 
-    window.Telegram.WebApp
-    .showPopup({
-    title: "⏳Обновление",
-    message: "Сейчас идет обновление, пожалуйста, заходите позже",
-    buttons: [
-        { id: "save", type: "default", text: "Понятно" },
-    ],
-    } , (buttonId) => {   
-      window.Telegram.WebApp.close();
-    } )
-
-  useEffect( () => {
+  useEffect(() => {
     window.Telegram.WebApp.setHeaderColor("#18222d");
     window.Telegram.WebApp.setBackgroundColor("#18222d");
     window.Telegram.WebApp.expand();
-    window.Telegram.WebApp.ready(); 
+    window.Telegram.WebApp.ready();
     window.Telegram.WebApp.disableVerticalSwipes();
-    try{
-      if (isIphone()){
-        window.Telegram.WebApp.requestFullscreen() 
+    try {
+      if (isIphone()) {
+        window.Telegram.WebApp.requestFullscreen();
+      } else {
+        window.Telegram.WebApp.exitFullscreen();
       }
-      else{
-        window.Telegram.WebApp.exitFullscreen()
-      }
-    }
-    catch(e){
-      
-    }
-  }, [] )
-
+    } catch (e) {}
+  }, []);
 
   const dispatch = useDispatch();
-
 
   window.Telegram.WebApp.ready();
 
@@ -451,7 +386,7 @@ function App() {
     dispatch(getSubCategorys());
   }, [dispatch]);
 
-  console.log( window.Telegram.WebApp.initData);
+  console.log(window.Telegram.WebApp.initData);
 
   return (
     <BrowserRouter basename="/">
