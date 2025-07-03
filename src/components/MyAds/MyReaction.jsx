@@ -48,10 +48,9 @@ const MyReaction = ({
         >
           <img
             onClick={() => {
-              
               navigate(`/Baidge/${responce.user.id}`)
             }}
-            className="icon"
+            className="icon object-cover"
             style={{objectFit : "cover"}}
             src={userPhoto}
             alt=""

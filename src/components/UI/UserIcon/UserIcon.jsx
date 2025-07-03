@@ -6,7 +6,7 @@ const UserIcon = ({user, small}) => {
     return (
         <div className="relative">
             <RatingIcon small = {small} user={user} className={"absolute left-1/2 -translate-x-1/2"} />
-            <img alt="icon" src={link} className="!w-[40px] !h-[40px] rounded-full" />
+            <img alt="icon" src={link} className="!w-[40px] !h-[40px] rounded-full object-cover" />
         </div>
     );
 };

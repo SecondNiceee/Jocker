@@ -221,7 +221,7 @@ const NewInnerCase = () => {
             </div>
 
             <div onClick={() => {}} className='flex cursor-pointer rounded-[13.33px] bg-card py-[12px] pr-4 pl-[19px] items-center mt-2'>
-                    <img className='w-[40px] h-[40px] rounded-full' src={iconUrl} alt="" />
+                    <img className='w-[40px] h-[40px] rounded-full object-cover' src={iconUrl} alt="" />
                     <div className='flex flex-col gap-[2.33px] ml-[10px]'>
                         <h2 className='font-medium font-sf-pro-display text-[17px] leading-[18px] text-white'>{getFormatedUserFullName(userInfo.firstName, userInfo.lastName)}</h2>
                         <p className='font-normal font-sf-pro-display-400 text-[#B5CED9] text-[14.67px] leading-[17.7px]'>

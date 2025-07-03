@@ -36,7 +36,7 @@ const Customer = ({fl , photo, link, id, onImageClick}) => {
         <div className={cl.wrapper}>
             <img style={{
                 objectFit : "cover"
-            }} onClick={onImageClick}  className={cl.userPhoto} src={imgSrc} alt="" />
+            }} onClick={onImageClick}  className={`${cl.userPhoto} object-cover`} src={imgSrc} alt="" />
             <div onClick={onImageClick} className={cl.two}>
                 <Text>{fl}</Text>
                 <Text>Заказчик</Text>

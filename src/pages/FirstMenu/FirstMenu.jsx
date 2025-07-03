@@ -79,7 +79,7 @@ const FirstMenu = () => {
         </Link>
         <div className={ (location.pathname === "/Profile" || location.pathname === "/AllShablons") ? "menuLink active" : "menuLink"} onClick={() => {onClick("/Profile")}}>
           <div className="menuCircle">
-            <img className="menuPhoto" src={userPhoto} alt="" />
+            <img className="menuPhoto object-cover" src={userPhoto} alt="" />
           </div>
         </div>
         <div className={ location.pathname === "/MyAds" ? "menuLink active" : "menuLink"} onClick={() => {onClick("/MyAds")}}>

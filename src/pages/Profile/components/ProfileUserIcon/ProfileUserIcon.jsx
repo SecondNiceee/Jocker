@@ -5,7 +5,7 @@ const ProfileUserIcon = ({photoUrl}) => {
         <img
         style={{ objectFit: "cover" }}
         src={photoUrl}
-        className="w-[94px] h-[94px] rounded-full "
+        className="w-[94px] h-[94px] object-cover rounded-full "
         alt=""
       />
     );

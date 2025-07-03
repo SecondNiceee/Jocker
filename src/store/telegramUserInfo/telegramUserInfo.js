@@ -102,30 +102,7 @@ const telegramUserInfo = createSlice({
       state.status = "loading";
     });
     builder.addCase(fetchUserInfo.fulfilled, (state, action) => {
-      state.lastTransaction = action.payload.lastTransaction
-      state.id = action.payload.id;
-      state.firstName = action.payload.firstName;
-      state.fl = action.payload.fl
-      state.lastName = action.payload.lastName;
-      state.photo = action.payload.photo ? action.payload.photo : "";
-      state.profile = {...state.profile , about : action.payload.about, stage : action.payload.stage === null ? '0' : action.payload.stage};
-      state.profile.cards = action.payload.profile.cards;
-      state.profile.userId = action.payload.id
-      state.completedTasks = action.payload.completedTasks
-      state.deals = action.payload.deals
-      state.mnemonic = action.payload.mnemonic
-      state.address = action.payload.address
-      state.createdAt = action.payload.createdAt
-      state.congradulations = action.payload.address
-      state.congratulate = action.payload.congratulate
-      state.state = "yes";
-      state.views = action.payload.views;
-      state.link = action.payload.link;
-      state.userLikes = action.payload.userLikes;
-      state.profession = action.payload.profession; 
-      state.links = action.payload.links;
-      state.taggs = action.payload.taggs;
-      state.rating = action.payload.rating;
+      return {...state, ...action.payload};
     });
     builder.addCase(fetchUserInfo.rejected, (state) => {
       state.status = "error";
