@@ -32,6 +32,7 @@ const Baidge = ({isExternal = false}) => {
 
   const isUserFetched = useRef(false);
 
+
   useEffect(() => {
     if (!userInfo && !isUserFetched.current){
       if (isExternal && me.id){
@@ -77,7 +78,7 @@ const Baidge = ({isExternal = false}) => {
     }
   } , [userInfo, me, addWatch]);
 
-
+  console.log(userInfo);
   if (!userInfo || userInfo.id === null) {
     return <MyLoader />;
   }
@@ -87,7 +88,7 @@ const Baidge = ({isExternal = false}) => {
         <BaidgeWithProfile
           urlParametr={id}
           setUserInfo={setUserInfo}
-          userInfo={userInfo}
+          userInfo={userInfo.id === me.id ? me : userInfo}
         />
       ) : (
         <BaidgeWithoutProfile setUserInfo = {setUserInfo} userInfo={userInfo} />
