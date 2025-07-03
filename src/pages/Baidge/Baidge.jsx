@@ -45,7 +45,7 @@ const Baidge = ({isExternal = false}) => {
         }
       }
       else{
-        if (String(id) !== me.id) {
+        if (String(id) !== me.id && id) { // если не будет id значит бейдж точно пользователя webApp
           findUserById(id).then( (user) => {setUserInfo(user)
             console.warn(user);
           } ).catch( (err) => {
