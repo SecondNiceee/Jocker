@@ -32,15 +32,9 @@ const AddLinksComponent = ({links, setLinks}) => {
     const isAddActive = links?.length !== 5;
 
     useEffect( () => {
-        if (!links){
+        if (!links || !links.length){
             setLinks([""])
-        }
-        else{
-            if (!links.length){
-                setLinks([""])
-            }
-        }
-        
+        }        
         // eslint-disable-next-line
     } , [] )
 

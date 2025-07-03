@@ -34,7 +34,6 @@ const BaidgeCreating = ({isChanging = false}) => {
   const taskInformation = {
     category: categorys[0],
     subCategory: { subCategory: "Привет" },
-    
   };
 
   const [taggsText, setTaggsText] = useState("");
@@ -43,10 +42,9 @@ const BaidgeCreating = ({isChanging = false}) => {
 
   const [links, setLinks] = useState(me.links ? (me.links.length === 0 ? [""] : me.links) : [""]);
 
-  const [stage, setStage] = useState(0);
+  const [stage, setStage] = useState(me.profile.stage ?? 0);
 
   const [step, setStep] = useState(0);
-
 
   const navigate = useNavigate();
 
