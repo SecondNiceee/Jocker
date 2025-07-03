@@ -32,10 +32,9 @@ const Baidge = ({isExternal = false}) => {
 
   const isUserFetched = useRef(false);
 
-
   useEffect(() => {
-    if (!userInfo && !isUserFetched.current){
-      if (isExternal && me.id){
+    if (!userInfo && !isUserFetched.current && me.id){
+      if (isExternal){
         if (String(baidgeId) === String(me.id)){
           setUserInfo(me);
         }
