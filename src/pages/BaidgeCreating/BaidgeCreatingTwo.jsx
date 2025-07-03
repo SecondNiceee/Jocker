@@ -2,12 +2,9 @@ import {useEffect } from 'react';
 import Cap from '../../components/UI/Cap/Cap';
 import Text from '../../components/Text/Text';
 import DescriptionAndPhoto from '../../components/UI/DescriptionAndPhoto/DescriptionAndPhoto';
-import useBlockInputs from '../../hooks/useBlockInputs';
 import AddLinksComponent from '../../components/UI/AddLinksComponent/AddLinksComponent';
 
 const BaidgeCreatingTwo = ({setLinks, links, taggsText, setTaggsText, setTaggs, taggs}) => {
-
-    useBlockInputs();
 
     useEffect( () => {
         const splitedTaggs = taggsText.split(',').map((word, i) => word.trim()).filter((word) => word.length > 0)
