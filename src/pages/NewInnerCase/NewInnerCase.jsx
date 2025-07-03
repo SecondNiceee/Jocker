@@ -193,7 +193,7 @@ const NewInnerCase = () => {
         }
     }, [isSliderOpened] )
 
-
+    console.log(casePar);
 
     if (!casePar || !userInfo){
         return <MyLoader />

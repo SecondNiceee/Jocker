@@ -22,7 +22,9 @@ export const makeCardFormData = ({isCardNew, card, categoryId}) => {
 
     }
     card.links.filter(link => link.length).forEach( (link, i) => {
+        console.warn(`links[${i}]`, link.trim())
         myFormData.append(`links[${i}]`, link.trim())
     } ) 
+    console.warn(card);
     return myFormData;
 }
