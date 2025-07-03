@@ -29,18 +29,20 @@ const BaidgeCreating = ({isChanging = false}) => {
   const professions = useSelector((state) => state.profession.professions);
 
   const me = useSelector( (state) => state.telegramUserInfo )
-  const [description, setDescription] = useState(me.profile.about ?? "");
+  const [description, setDescription] = useState(me?.profile?.about ?? "");
 
   const taskInformation = {
     category: categorys[0],
     subCategory: { subCategory: "Привет" },
   };
 
-  const [taggsText, setTaggsText] = useState("");
+  const [taggsText, setTaggsText] = useState(me?.taggs?.join(', ') ?? "");
 
-  const [taggs, setTaggs] = useState(me.taggs ?? []);
+  const [taggs, setTaggs] = useState(me?.taggs ?? []);
 
   const [links, setLinks] = useState(me.links ? (me.links.length === 0 ? [""] : me.links) : [""]);
+
+  console.log(links, me)
 
   const [stage, setStage] = useState(me.profile.stage ?? 0);
 
@@ -62,21 +64,6 @@ const BaidgeCreating = ({isChanging = false}) => {
       setCategoryInformation({category : categorys[0], profession : {}})
     }
   }, [categorys] )
-
-  useEffect( () => {
-    if (me.profession){
-      setDescription(me.profile.about);
-      setTaggs(me.taggs);
-      if (me.links.length === 1){
-        setLinks([""])
-      }
-      else{
-        setLinks(me.links.slice(1, me.links.length)); // Зачем мы делаем слайс всех ссылок от одной до последней? Типо потому что первая ссылка всегда ссылка на тг?
-      }
-      // setCategoryInformation({profession : me.profession, category : categorys[0]})
-      setTaggsText(me.taggs.join(', '))
-    }
-  } , [me] )
 
   const [errors, setErrors] = useState({
     descriptionError: false,

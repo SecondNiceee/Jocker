@@ -2,7 +2,6 @@ import { useMemo } from "react";
 import { openLink } from "../../../functions/openLink";
 
 const useGetSupportConfig = () => {
-    
     const supportConfig = useMemo( () => {
         return ([
             {

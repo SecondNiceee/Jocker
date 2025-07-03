@@ -32,11 +32,15 @@ const AddLinksComponent = ({links, setLinks}) => {
     const isAddActive = links?.length !== 5;
 
     useEffect( () => {
+        console.log(links);
+        console.log(links.length);
         if (!links || !links.length){
+            alert();
             setLinks([""])
         }        
         // eslint-disable-next-line
     } , [] )
+
 
     return (
         <div className='flex flex-col gap-2 mt-[18px]'>
