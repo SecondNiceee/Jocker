@@ -5,7 +5,6 @@ const AboutTop = ({responce}) => {
   return (
     <div className="about__top">
       <img style={{objectFit : "cover"}} src={userLink} alt="" className="topMiddle" />
-
     </div>
   );
 };

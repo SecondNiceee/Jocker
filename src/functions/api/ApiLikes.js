@@ -1,6 +1,7 @@
 import $api from "../../http";
 
 class ApiLikes{
+    
     async likeUser({userId, likedUserId }){
         const response = await $api.post(`${process.env.REACT_APP_HOST}/user/like`, {} ,{
             params : {
