@@ -56,10 +56,11 @@ const BaidgeWithProfile = ({ userInfo, className, setUserInfo, urlParametr}) => 
     });
   };
 
+  const ratingLoaded = useRef(false);
 
-  console.log("Рендер!");
   useEffect( () => {
       if (userInfo && me.id){
+        if (!ratingLoaded.current){
           if (userInfo.id === me.id){
               dispatch(fetchMyAdditionalUserInfo(
                 {
@@ -75,6 +76,8 @@ const BaidgeWithProfile = ({ userInfo, className, setUserInfo, urlParametr}) => 
                 setUserInfo({...userInfo, ...info})
               }  )
           }
+          ratingLoaded.current = true;
+        } 
       }
 
   } , [userInfo, setUserInfo, me, dispatch])
