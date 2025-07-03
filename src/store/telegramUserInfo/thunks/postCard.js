@@ -22,7 +22,8 @@ export const postCard = createAsyncThunk(
                 createdAt : im.data.createdAt,
                 photosNames : im.data.photos,
                 photos : im.data.photos,
-                id : im.data.id
+                id : im.data.id,
+                views : im.data.views
             }
             return localCard
         }

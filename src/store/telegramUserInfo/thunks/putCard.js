@@ -21,7 +21,8 @@ export const putCard = createAsyncThunk(
                 watches : im.data.watches,
                 photosNames : im.data.photos,
                 photos : im.data.photos,
-                id : im.data.id
+                id : im.data.id,
+                views : im.data.views
             }
             return localCard
         }

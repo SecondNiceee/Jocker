@@ -59,9 +59,7 @@ const NewChangeCard = ({isNewCard}) => {
     } , [isNewCard, baidgeCard, id, userCards]) 
     
     const save = useCallback( async ( ) => {
-
         navigate(-1);
-        
         if (isNewCard){
             const myFormData = makeCardFormData({card : changedCard, isCardNew : true} )
             await dispatch(postCard([myFormData, USERID, changedCard]));

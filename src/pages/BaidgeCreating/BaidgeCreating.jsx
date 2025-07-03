@@ -161,7 +161,7 @@ const BaidgeCreating = ({isChanging = false}) => {
   }, []);
 
   useEffect(() => {
-    menuController.lowerMenu();
+    menuController.hideMenu();
   }, []);
 
   if (categorys.length === 0 || professions.length === 0) {
