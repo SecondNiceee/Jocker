@@ -225,8 +225,6 @@ const EditAdvertisement = ({
     }
   }, [state.isOpen, dateObject, datePickerObject]);
 
-  console.warn(taskInformation);
-
   const setTextDescription = useCallback( (e) => {    
       setTaskInformation( {taskDescription : e} )
 
@@ -237,7 +235,6 @@ const EditAdvertisement = ({
   } , [setTaskInformation] )
 
   const setFile = useCallback( (e) => {
-    console.warn(e);
     setTaskInformation( {photos : e} )
   } , [setTaskInformation] )
 

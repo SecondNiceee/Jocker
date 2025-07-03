@@ -1,4 +1,4 @@
-import  { useCallback, useEffect, useRef } from "react";
+import  { useEffect, useRef } from "react";
 import PayBlock from "./components/PayBlock/PayBlock";
 import useGetOptionsConfig from "./hooks/useGetOptionsConfig";
 import NewOption from "./components/NewOption/NewOption";
@@ -8,13 +8,12 @@ import { useDispatch, useSelector } from "react-redux";
 import MyLoader from "../../components/UI/MyLoader/MyLoader";
 import ProfileCup from "./components/ProfileCup/ProfileCup";
 import pagesHistory from "../../constants/pagesHistory";
-import { useNavigate } from "react-router";
-import BackButton from "../../constants/BackButton";
 import MainButton from "../../constants/MainButton";
 import useGetSupportConfig from "./hooks/useGetSupportConfig";
 import { openLink } from "../../functions/openLink";
 import menuController from "../../functions/menuController";
 import { fetchMyAdditionalUserInfo } from "../../store/telegramUserInfo/thunks/fetchAdditionalUserInfo";
+import useNavigateBack from "../../hooks/useNavigateBack";
 
 const NewProfile = () => {
 
@@ -23,8 +22,6 @@ const NewProfile = () => {
   const supportConfig = useGetSupportConfig();
 
   const userInfo = useSelector((state) => state.telegramUserInfo);
-  
-  const navigate = useNavigate();
 
   const me = useSelector( (state) => state.telegramUserInfo );
 
@@ -34,22 +31,7 @@ const NewProfile = () => {
     MainButton.hide();
   }, [] )
 
-  const goBack = useCallback( () => {
-    if (pagesHistory[pagesHistory.length-1] === "/BaidgeCreating"){
-      navigate(-2);
-    }
-    else{
-      navigate(-1);
-    }
-  }, [navigate] )
-
-  useEffect( () => {
-    BackButton.show();
-    BackButton.onClick(goBack)
-    return () => {
-      BackButton.offClick(goBack);
-    }
-  }, [goBack] )
+  useNavigateBack({isSliderOpened : false, setSlideOpened : false, isWorks : true});
 
   useEffect( () => {
     pagesHistory.push("/Profile")

@@ -1,7 +1,6 @@
 import { memo, useEffect } from "react";
 import cl from "./PayBlock.module.scss";
 import CreateButton from "../CreateButton/CreateButton";
-import PayTextContainer from "../PayTextContainer/PayTextContainer";
 import { useDispatch, useSelector } from "react-redux";
 import translation from "../../../../functions/translate";
 import useTonConnection from "../../../../hooks/useTonConnection";

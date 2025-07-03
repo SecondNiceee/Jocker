@@ -89,7 +89,7 @@ const telegramUserInfo = createSlice({
     })
 
     builder.addCase(fetchMyAdditionalUserInfo.fulfilled, (state, action) => {
-
+        console.warn(action.payload);
         return {...state, ...action.payload};
     })
 
@@ -102,7 +102,6 @@ const telegramUserInfo = createSlice({
       state.status = "loading";
     });
     builder.addCase(fetchUserInfo.fulfilled, (state, action) => {
-      console.warn({...state.profile , about : action.payload.about, stage : action.payload.stage === null ? '0' : action.payload.stage});
       state.lastTransaction = action.payload.lastTransaction
       state.id = action.payload.id;
       state.firstName = action.payload.firstName;

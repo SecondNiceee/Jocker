@@ -14,6 +14,7 @@ import { useNavigate, useParams } from 'react-router';
 import { setUser } from '../../store/information';
 import { postCard } from '../../store/telegramUserInfo/thunks/postCard';
 import { putCard } from '../../store/telegramUserInfo/thunks/putCard';
+import DevelopmentMainButton from '../../components/UI/DevelopmentMainButton/DevelopmentMainButton';
 
 
 const NewChangeCard = ({isNewCard}) => {
@@ -41,7 +42,6 @@ const NewChangeCard = ({isNewCard}) => {
     const me = useSelector( (state) => state.telegramUserInfo )
     const baidgeCard = useMemo(() => userCards.find((card) => String(card.id) === id) ?? {}, [userCards, id])
 
-
     useEffect( () => {
         if (isNewCard){
             setChangedCard( {
@@ -59,9 +59,7 @@ const NewChangeCard = ({isNewCard}) => {
     } , [isNewCard, baidgeCard, id, userCards]) 
     
     const save = useCallback( async ( ) => {
-
         navigate(-1);
-        
         if (isNewCard){
             const myFormData = makeCardFormData({card : changedCard, isCardNew : true} )
             await dispatch(postCard([myFormData, USERID, changedCard]));
@@ -151,8 +149,7 @@ const NewChangeCard = ({isNewCard}) => {
     }
     return (
         <div className="pt-[20px] left-0 top-0 px-[16px] bg-[#18222d] flex flex-col pb-[16px]">
-             <div className='fixed left-1/2 top-1/2' onClick={forwardFunction}>MAIN</div>
-            <button onClick={forwardFunction}>ГО</button>
+            <DevelopmentMainButton goForward={forwardFunction} />
             <h2 className='ml-4 text-[20.72px] font-semibold font-sf-pro-display-600 text-white'>{isNewCard ? "Создание кейса" : "Изменение кейса"}</h2>
             <div className='py-3 mt-[18px] px-4 flex bg-card rounded-t-[11.7px] items-center border-b-[1px] border-[0px] border-solid border-[#2A343F]'>
                 <input value={changedCard.title} onChange={changeCardTitle} className='font-normal w-full text-[16.67px] font-sf-pro-display-400 text-white leading-[18.3px] placeholder:text-[#90979F]' placeholder='Название' type="text" />

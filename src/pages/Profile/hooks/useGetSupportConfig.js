@@ -1,9 +1,9 @@
+import { useMemo } from "react";
 import { openLink } from "../../../functions/openLink";
 
 const useGetSupportConfig = () => {
-    
-    return (
-        [
+    const supportConfig = useMemo( () => {
+        return ([
             {
                 imgPath : "/images/icons/faq-icon.svg",
                 text : "FAQ",
@@ -24,8 +24,10 @@ const useGetSupportConfig = () => {
                 },
                 numberNearToArrow : null
             }
-        ]
-    );
+        ])
+    } , []) 
+
+    return supportConfig
 };
 
 export default useGetSupportConfig;

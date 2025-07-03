@@ -10,7 +10,6 @@ export const shareProfession = (userId, professionName) => async () => {
       "ownerId" :  Number(userId)
     })
     const messageId = repsonse.data
-    console.warn(messageId);
     window.Telegram.WebApp.shareMessage(messageId).then((result) => {
       }).catch((error) => {
         showAllert("Не удалось поделиться.")

@@ -70,7 +70,6 @@ const ChangeAdvertisement = () => {
   }, []);
 
   const changeAdvertisement = useCallback( (par) => {
-    console.warn(par);
     setOrderInformation(( value ) => ({...value ,...par}))
   }, [] )
 

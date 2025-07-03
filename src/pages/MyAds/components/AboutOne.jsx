@@ -16,8 +16,8 @@ import { deleteAd, setAdvertisement } from "../../../store/information";
 import useNavigateBack from "../../../hooks/useNavigateBack";
 import { getAdvertisementById } from "../../../functions/api/getAdvertisemetById";
 import MainButton from "../../../constants/MainButton";
-import useAddHistory from "../../../hooks/useAddHistory";
 import menuController from "../../../functions/menuController";
+import { useAddPageHistory } from "../../../hooks/useAddPageHistory";
 
 const AboutOne = () => {
   const responces = useSelector((state) => state.responses.responsesByA);
@@ -31,7 +31,6 @@ const AboutOne = () => {
   const [task, setOrderInformation] = useState(null);
   const {advId} = useParams()
   const advertisementFormStore = useSelector(state => state.information.advertisement);
-  console.warn(task);
   useEffect( () => {
     if (advertisementFormStore){
       setOrderInformation(advertisementFormStore);
@@ -120,8 +119,7 @@ const AboutOne = () => {
 
   useNavigateBack({isSliderOpened, setSlideOpened})
 
-  useAddHistory();
-
+  useAddPageHistory();
 
   const openDetails = useCallback(() => {
       navigate(`/changeAdvertisement/${task.id}`)

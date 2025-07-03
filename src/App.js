@@ -59,8 +59,8 @@ const FirstChoiseSubCategory = lazy(() =>
 const BaidgeCreating = lazy(() =>
   import("./pages/BaidgeCreating/BaidgeCreating")
 );
-const NewCardsPage = lazy(() => import("./pages/NewCardsPage/NewCardsPage"));
-const StatisticPage = lazy(() => import("./pages/StatisticPage/StatisticPage"));
+const NewCardsPage = lazy( () => import("./pages/NewCardsPage/NewCardsPage") );
+const StatisticPage = lazy( () => import("./pages/StatisticPage/StatisticPage") );
 const MyLoader = () => {
   return (
     <div
@@ -337,41 +337,13 @@ const AnimatedSwitch = () => {
         </AnimatePresence>
       </div>
     </>
-  );
+);
 };
-function App() {
-  console.log("Prod log");
-  useEffect(() => {
-    document.addEventListener("deviceready", function () {
-          window.Telegram.WebApp.ready();
-                window.Telegram.WebApp.showPopup(
-        {
-          title: "⏳ Обновление",
-          message: "Сейчас идет обновление, пожалуйста, заходите позже",
-          buttons: [{ id: "save", type: "default", text: "Понятно" }],
-        },
-        (buttonId) => {
-          window.Telegram.WebApp.close();
-        }
-      );
-      });
-    window.addEventListener("DOMContentLoaded", function () {
-      window.Telegram.WebApp.ready();
+function App() { 
 
-      window.Telegram.WebApp.showPopup(
-        {
-          title: "⏳ Обновление",
-          message: "Сейчас идет обновление, пожалуйста, заходите позже",
-          buttons: [{ id: "save", type: "default", text: "Понятно" }],
-        },
-        (buttonId) => {
-          window.Telegram.WebApp.close();
-        }
-      );
-    });
-  }, []);
 
-  useEffect(() => {
+
+  useEffect( () => {
     window.Telegram.WebApp.setHeaderColor("#18222d");
     window.Telegram.WebApp.setBackgroundColor("#18222d");
     window.Telegram.WebApp.expand();
@@ -388,6 +360,7 @@ function App() {
 
   const dispatch = useDispatch();
 
+
   window.Telegram.WebApp.ready();
 
   window.Telegram.WebApp.expand();
@@ -399,7 +372,7 @@ function App() {
     dispatch(getSubCategorys());
   }, [dispatch]);
 
-  console.log(window.Telegram.WebApp.initData);
+  console.log( window.Telegram.WebApp.initData);
 
   return (
     <BrowserRouter basename="/">

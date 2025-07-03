@@ -13,6 +13,7 @@ import useScrollTop from "../../../hooks/useScrollTop";
 import menuController from "../../../functions/menuController";
 import { fetchMyAdditionalUserInfo } from "../../../store/telegramUserInfo/thunks/fetchAdditionalUserInfo";
 import { fetchAdditionalUserInfo } from "../../../functions/api/fetchAdditionalUserInfo";
+import { useAddPageHistory } from "../../../hooks/useAddPageHistory";
 
 const BaidgeWithProfile = ({ userInfo, className, setUserInfo, urlParametr}) => {
 
@@ -22,7 +23,9 @@ const BaidgeWithProfile = ({ userInfo, className, setUserInfo, urlParametr}) => 
 
   useScrollTop();
 
-  useNavigateBack({isSliderOpened : false, setSlideOpened : false})
+  useAddPageHistory();
+
+  useNavigateBack({isSliderOpened : false, setSlideOpened : false});
 
   const isLikeActive = useMemo(() => {
     if (!userInfo) {
@@ -54,8 +57,9 @@ const BaidgeWithProfile = ({ userInfo, className, setUserInfo, urlParametr}) => 
   };
 
   const ratingLoaded = useRef(false);
+
   useEffect( () => {
-      if (userInfo){
+      if (userInfo && me.id){
         if (!ratingLoaded.current){
           if (userInfo.id === me.id){
               dispatch(fetchMyAdditionalUserInfo(
@@ -68,21 +72,19 @@ const BaidgeWithProfile = ({ userInfo, className, setUserInfo, urlParametr}) => 
           }
           else{
               fetchAdditionalUserInfo({isCommonRating : true, isRatingByProfession : true}, userInfo).then( (info) => {
-                setUserInfo((value) => ({...value, ...info}))
+                console.warn({...userInfo, ...info});
+                setUserInfo({...userInfo, ...info})
               }  )
           }
-        }
-        ratingLoaded.current = true;
+          ratingLoaded.current = true;
+        } 
       }
 
-  } , [userInfo, setUserInfo, me.id, dispatch])
-
-
+  } , [userInfo, setUserInfo, me, dispatch])
   useEffect( () => {
     menuController.showMenu();
     menuController.raiseMenu();
   }, [] )
-
   return (
     <>
       <div className={`pt-[16px] w-full  z-50 px-[16px] bg-[#18222d] gap-[16px] flex flex-col  pb-[100px] ${className}`}>

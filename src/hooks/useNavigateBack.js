@@ -12,7 +12,6 @@ const useNavigateBack = ({isSliderOpened, setSlideOpened, isWorks = true}) => {
       setSlideOpened(false)
     }
     else{
-      console.warn(pagesHistory);
       if (pagesHistory.length === 1){
         navigate('/', {replace : true});
       }

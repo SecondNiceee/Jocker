@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useRef } from "react";
 import {useDispatch, useSelector } from "react-redux";
 import MyLoader from "../../components/UI/MyLoader/MyLoader";
 import BaidgeWithProfile from "./components/BaidgeWithProfile";
@@ -8,7 +8,7 @@ import { findUserById } from "../../functions/api/findUserById";
 import menuController from "../../functions/menuController";
 import MainButton from "../../constants/MainButton";
 import { putUserInfo } from "../../store/telegramUserInfo/thunks/putUserInfo";
-import useAddHistory from "../../hooks/useAddHistory";
+import { setUser } from "../../store/information";
 
 const baidgeId =  window.Telegram.WebApp.initDataUnsafe?.start_param || null
 const Baidge = ({isExternal = false}) => {
@@ -17,35 +17,52 @@ const Baidge = ({isExternal = false}) => {
 
   const {id} = useParams();
 
-  const [userInfo, setUserInfo] = useState(null);
+  const dispatch = useDispatch();
+
+  const userInfo = useSelector( (state) => state.information.baidgeUser );
+
+  const setUserInfo = useCallback( (user) => {
+    dispatch(setUser(user))
+  }, [dispatch] )
 
   useEffect( () => {
     menuController.showMenu();
     menuController.raiseMenu();
   }, [] );
-  useEffect(() => {
-    if (isExternal){
-      findUserById(baidgeId).then( (user) => {setUserInfo(user)} ).catch( () => {
-        alert("Не удалось найти пользователя с id = " + baidgeId)
-      } )
-    }
-    else{
-      if (id && String(id) !== me.id) {
-        findUserById(id).then( (user) => {setUserInfo(user)} )
-      } else {
-        setUserInfo(me);
-      }
-    }
-  }, [ me, id, isExternal]);
 
-  useAddHistory();
+  const isUserFetched = useRef(false);
+
+  useEffect(() => {
+    if (!isUserFetched.current && me.id && !userInfo){ // Если прогружен пользователь приложения и еще не было загрузки обладателя бейджа
+      if (isExternal){ // бейдж переслан через ссылку
+        if (String(baidgeId) === String(me.id)){
+          setUserInfo(me);
+        }
+        else{
+          findUserById(baidgeId).then( (user) => {setUserInfo(user)} ).catch( () => {
+            alert("Не удалось найти пользователя с id = " + baidgeId)
+          } )
+        }
+      }
+      else{
+        if (String(id) !== me.id && id) { // если не будет id значит бейдж точно пользователя webApp
+          findUserById(id).then( (user) => {setUserInfo(user)
+            console.warn(user);
+          } ).catch( (err) => {
+            console.error(err);
+            alert("Не удалось прогрузить бейдж пользователя.")
+          } )
+        } else {
+          setUserInfo(me);
+        }
+      }
+        isUserFetched.current=true; // загрузка обладателя бейджа была завешена
+    }
+  }, [me, id, isExternal, userInfo, setUserInfo]);
 
   useEffect( () => { 
     MainButton.hide();
   }, [] )
-
-  const dispatch = useDispatch();
-
 
   const addWatch = useCallback( async () => {
     if (userInfo){
@@ -55,17 +72,15 @@ const Baidge = ({isExternal = false}) => {
     }
   }, [dispatch, userInfo] )
 
-
-
   useEffect( () => {
     if (userInfo && userInfo.id && me.id ){
       if (userInfo.id !== me.id){
         addWatch();
       }
     }
-  } , [userInfo, me, addWatch])
+  } , [userInfo, me, addWatch]);
 
-
+  console.log(userInfo);
   if (!userInfo || userInfo.id === null) {
     return <MyLoader />;
   }
@@ -75,7 +90,7 @@ const Baidge = ({isExternal = false}) => {
         <BaidgeWithProfile
           urlParametr={id}
           setUserInfo={setUserInfo}
-          userInfo={userInfo}
+          userInfo={userInfo.id === me.id ? me : userInfo}
         />
       ) : (
         <BaidgeWithoutProfile setUserInfo = {setUserInfo} userInfo={userInfo} />

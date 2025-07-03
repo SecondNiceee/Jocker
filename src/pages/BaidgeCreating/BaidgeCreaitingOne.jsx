@@ -7,7 +7,6 @@ import { useSelector } from 'react-redux';
 import { CSSTransition } from 'react-transition-group';
 import BaidgeCategoryChoicer from './ui/BaidgeCategoryChoicer';
 import BaidgeSubCategoryChoiser from './ui/BaidgeSubCategoryChoiser';
-import useBlockInputs from '../../hooks/useBlockInputs';
 import MyLoader from '../../components/UI/MyLoader/MyLoader';
 import SmallInput from '../../components/UI/SmallInput/SmallInput';
 import Compact from '../../components/UI/Compact/Compact';
@@ -19,8 +18,6 @@ const BaidgeCreaitingOne = ({setDescription, setStage, stage, description, setCa
     const categorys = useSelector((state) => state.categorys.category)
 
     const professions = useSelector((state) => state.profession.professions)
-
-    useBlockInputs();
 
     const {onBlurFunc, onFocusFunc, setValueFunc} = useStageInputController({setStage, stage});
 
@@ -71,7 +68,7 @@ const BaidgeCreaitingOne = ({setDescription, setStage, stage, description, setCa
                 setValue={setValueFunc}
               />
             </Compact>
-            <DescriptionAndPhoto className={"mt-[18px]"} titleStyles={{
+            <DescriptionAndPhoto  className={"mt-[18px]"} titleStyles={{
                 color : "#DAF5FE"
             }} textTitle={"Краткое резюме"} textPlaceholder={"Краткое резюме"} setText={setDescription} isFileInput = {false} text={description} />
             <p className='font-sf-pro-display-400 mt-[5px] text-[13px] leading-[16px] mx-auto text-[#daf5fe]'>

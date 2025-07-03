@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { CardsFilterEnum } from "./enums/CardsFilterEnum";
 import { useSelector } from "react-redux";
 import MyLoader from "../../components/UI/MyLoader/MyLoader";
@@ -11,8 +11,8 @@ import MainButton from "../../constants/MainButton";
 import useNavigateBack from "../../hooks/useNavigateBack";
 import { enableColorAndActiveButton } from "../../functions/enableColorAndActiveButton";
 import NoCards from "./components/NoCards";
-import useAddHistory from "../../hooks/useAddHistory";
 import DevelopmentMainButton from "../../components/UI/DevelopmentMainButton/DevelopmentMainButton";
+import { useAddPageHistory } from "../../hooks/useAddPageHistory";
 
 const NewCardsPage = () => {
 
@@ -35,6 +35,7 @@ const NewCardsPage = () => {
     }
   }, [me,baidgeUser] )
 
+  useAddPageHistory();
 
   const navigate = useNavigate();
 
@@ -107,8 +108,6 @@ const NewCardsPage = () => {
     } 
     return []
   }, [filter, cards] )
-
-  useAddHistory();
 
   if (postState === "pending" || putState === "pending" || !userInfo) {
     return <MyLoader />;

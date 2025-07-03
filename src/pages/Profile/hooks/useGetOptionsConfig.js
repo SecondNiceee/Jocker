@@ -1,16 +1,16 @@
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router";
 import { setUser } from "../../../store/information";
-import { showAllert } from "../../../functions/showAlert";
+import { useMemo } from "react";
 
 const useGetOptionsConfig = () => {
     const userInfo = useSelector((state) => state.telegramUserInfo); 
-
     const dispatch = useDispatch();
     const navigate = useNavigate();
-    
-    return (
-        [
+    const me = useSelector(state => state.telegramUserInfo);
+    const baidgeOptionsConfig = useMemo( () => {
+        return (
+                  [
             {
                 isActive : true,
                 imgPath : "/images/newProfile/baidge-icon.svg",
@@ -19,6 +19,7 @@ const useGetOptionsConfig = () => {
                 isNeededActiveTitle : false,
                 clickFunc : () => {
                     if (userInfo.profession){
+                        dispatch(setUser(me));
                         navigate("/Baidge")
                     }
                     else{
@@ -58,7 +59,10 @@ const useGetOptionsConfig = () => {
                 numberNearToArrow : null
             }
         ]
-    );
+        )
+    } , [me, navigate, dispatch, userInfo])
+
+    return baidgeOptionsConfig;
 };
 
 export default useGetOptionsConfig;

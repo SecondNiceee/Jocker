@@ -11,8 +11,9 @@ import BackButton from "../../constants/BackButton";
 import menuController from "../../functions/menuController";
 import { fetchUserInfo } from "../../store/telegramUserInfo/thunks/fetchUserInfo";
 import { putUserInfo } from "../../store/telegramUserInfo/thunks/putUserInfo";
-import useAddHistory from "../../hooks/useAddHistory";
 import { fetchMyAdditionalUserInfo } from "../../store/telegramUserInfo/thunks/fetchAdditionalUserInfo";
+import { useAddPageHistory } from "../../hooks/useAddPageHistory";
+import DevelopmentMainButton from "../../components/UI/DevelopmentMainButton/DevelopmentMainButton";
 
 const BaidgeCreating = ({isChanging = false}) => {
   const dispatch = useDispatch();
@@ -21,33 +22,31 @@ const BaidgeCreating = ({isChanging = false}) => {
     dispatch(getProfessions());
   }, [dispatch]);
 
+  useAddPageHistory();
 
   const categorys = useSelector((state) => state.categorys.category);
 
   const professions = useSelector((state) => state.profession.professions);
 
   const me = useSelector( (state) => state.telegramUserInfo )
-
-  console.log(me);
-
-  const [description, setDescription] = useState(me.profile.about ?? "");
+  const [description, setDescription] = useState(me?.profile?.about ?? "");
 
   const taskInformation = {
     category: categorys[0],
     subCategory: { subCategory: "Привет" },
-    
   };
 
-  const [taggsText, setTaggsText] = useState("");
+  const [taggsText, setTaggsText] = useState(me?.taggs?.join(', ') ?? "");
 
-  const [taggs, setTaggs] = useState(me.taggs ?? []);
+  const [taggs, setTaggs] = useState(me?.taggs ?? []);
 
   const [links, setLinks] = useState(me.links ? (me.links.length === 0 ? [""] : me.links) : [""]);
 
-  const [stage, setStage] = useState(0);
+  console.log(links, me)
+
+  const [stage, setStage] = useState(me.profile.stage ?? 0);
 
   const [step, setStep] = useState(0);
-
 
   const navigate = useNavigate();
 
@@ -66,21 +65,6 @@ const BaidgeCreating = ({isChanging = false}) => {
     }
   }, [categorys] )
 
-  useEffect( () => {
-    if (me.profession){
-      setDescription(me.profile.about);
-      setTaggs(me.taggs);
-      if (me.links.length === 1){
-        setLinks([""])
-      }
-      else{
-        setLinks(me.links.slice(1, me.links.length)); // Зачем мы делаем слайс всех ссылок от одной до последней? Типо потому что первая ссылка всегда ссылка на тг?
-      }
-      // setCategoryInformation({profession : me.profession, category : categorys[0]})
-      setTaggsText(me.taggs.join(', '))
-    }
-  } , [me] )
-
   const [errors, setErrors] = useState({
     descriptionError: false,
     taggsError: false});
@@ -88,8 +72,6 @@ const BaidgeCreating = ({isChanging = false}) => {
   useEffect(() => {
     baidgeButtonController.controlText({ step, me, isChanging });
   }, [step, me, isChanging]);
-
-  useAddHistory();
 
   useEffect(() => {
     const notEmptyTaggs = taggs.filter( (tag) => tag.length !== 0 )
@@ -164,7 +146,7 @@ const BaidgeCreating = ({isChanging = false}) => {
   }, []);
 
   useEffect(() => {
-    menuController.lowerMenu();
+    menuController.hideMenu();
   }, []);
 
   if (categorys.length === 0 || professions.length === 0) {
@@ -176,8 +158,8 @@ const BaidgeCreating = ({isChanging = false}) => {
         step === 0 ? "translate-x-0" : "-translate-x-[100vw]"
       }`}
     >
-      <button className="fixed left-[100vw]" onClick={goFoward}>ГО</button>
-      <button className="fixed left-[0vw]" onClick={goFoward}>ГО</button>
+      <DevelopmentMainButton goForward={goFoward} className={"!fixed !left-[100vw]"} />
+      <DevelopmentMainButton goForward={goFoward} className={"!fixed !left-[0vw]"} />
       <BaidgeCreaitingOne
         setStage={setStage}
         stage={stage}

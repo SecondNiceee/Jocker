@@ -5,7 +5,9 @@ import pagesHistory from "../constants/pagesHistory";
 export const useAddPageHistory = () => {
     const location = useLocation();
     useEffect( () => {
-        pagesHistory.push(location.pathname);
+        if (pagesHistory[pagesHistory.length-1] !== location.pathname){
+            pagesHistory.push(location.pathname);
+        }
         // eslint-disable-next-line
     } , [])
 }

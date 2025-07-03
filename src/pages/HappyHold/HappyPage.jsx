@@ -15,8 +15,7 @@ const HappyPage = ({task , congradulate, setShowCongradulate }) => {
     useEffect( () => {
         pagesHistory.push("/HappyPage")
     } , [] )
-    console.warn(congradulate);
-    
+
 
     useEffect( () => {
         async function start(  ) {

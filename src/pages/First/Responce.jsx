@@ -15,8 +15,8 @@ import { showAllert } from "../../functions/showAlert";
 import usePostResponse from "./hooks/usePostResponse";
 import { getAdvertisementById } from "../../functions/api/getAdvertisemetById";
 import { addMyLocalResponses, setDetailsAdvertisement } from "../../store/information";
-import useAddHistory from "../../hooks/useAddHistory";
 import DevelopmentMainButton from "../../components/UI/DevelopmentMainButton/DevelopmentMainButton";
+import { useAddPageHistory } from "../../hooks/useAddPageHistory";
 
 const textPlace = translation("Почему задание должны дать именно вам")
 const useTemplate = translation("Использовать шаблон")
@@ -27,6 +27,9 @@ const Responce = () => {
   const dispatch = useDispatch();
   const orderInformation = useSelector((state) => state.information.detailsAdvertisement);
   const { id } = useParams();
+
+  useAddPageHistory();
+
   useEffect(() => {
     function func() {
       setClearPhoto(clearPhoto + 1)
@@ -64,7 +67,6 @@ const Responce = () => {
     setPhotos,
     setSlideOpened,
   } = useSlider();
-  useAddHistory();
   const postResponce = usePostResponse();
   const navigate = useNavigate();
   const goForward = useCallback(async () => {
