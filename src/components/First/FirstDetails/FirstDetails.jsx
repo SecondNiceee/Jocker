@@ -167,7 +167,7 @@ const FirstDetails = ({
                 { id: "cancel", type: "destructive", text: "Отмена" },
               ],
             } , (buttonId) => {
-              if (buttonId === "save" || buttonId === null) {  
+              if (buttonId === "create" || buttonId === null) {  
                   navigate("/BaidgeCreating")
               }
             } )
