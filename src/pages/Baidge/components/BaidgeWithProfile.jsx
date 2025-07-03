@@ -41,7 +41,6 @@ const BaidgeWithProfile = ({ userInfo, className, setUserInfo, urlParametr}) => 
   const clickLikeUser = () => {
     likesController.likeUser({
       dispatch: dispatch,
-      myId : me.id,
       user : userInfo,
       likedUserId: userInfo.id,
       setGotenUserInfo : setUserInfo
