@@ -24,6 +24,7 @@ import formatViews from './utils/formatViews';
 import { getUserWithoutCards } from '../../functions/api/getUserWithoutCards';
 import $api from '../../http';
 import { useAddPageHistory } from '../../hooks/useAddPageHistory';
+import DevelopmentMainButton from '../../components/UI/DevelopmentMainButton/DevelopmentMainButton';
 
 const NewInnerCase = () => {
     const clickFunc = () => {
@@ -201,7 +202,7 @@ const NewInnerCase = () => {
     return (
         <>
         <div className="pt-[20px] left-right z-20 px-[16px] bg-[#18222d] flex flex-col pb-[16px]">
-            <div className='fixed left-1/2 top-1/2' onClick={changeCard}>MAIN</div>
+            <DevelopmentMainButton goForward={changeCard} className={'fixed left-1/2 top-1/2'} />
             <div className='rounded-[10px] bg-[#20303f] flex flex-col duration-200 relative z-50'>
                 <CasePhotos  onClickPhotos={onClickPhotos}  photos={casePar.photos}  />
                 <div className="my-4 ml-[17px] mr-[19px] flex justify-between items-center"> 

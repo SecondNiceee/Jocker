@@ -18,6 +18,7 @@ import Links from "../../Baidge/components/Links";
 import { SecondatyButton } from "../../../constants/SecondaryButton";
 import { openLink } from "../../../functions/openLink";
 import { useAddPageHistory } from "../../../hooks/useAddPageHistory";
+import DevelopmentMainButton from "../../../components/UI/DevelopmentMainButton/DevelopmentMainButton";
 const LastAds = ({isMyResponse = false}) => {
 
   const {responseId, advertisementId} = useParams();
@@ -107,7 +108,7 @@ const LastAds = ({isMyResponse = false}) => {
     <>
       <div  className={"connect-container flex flex-col gap-4"}>
         {/* <LastTop name = {name} photo = {photo} stage = {stage} openAboutReactionFunc={openAboutReactionFunc} /> */}
-          <div className='fixed left-1/2 top-1/2' onClick={goForward}>MAIN</div>
+        <DevelopmentMainButton className={'fixed left-1/2 top-1/2'} goForward={goForward} />
         <Reaction
           setPhotoIndex={setPhotoIndex}
           setPhotos={setPhotos}

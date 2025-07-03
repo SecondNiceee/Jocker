@@ -1,8 +1,8 @@
 import "../../pages/MyAds/MyAds.css";
 import MyButton from "../UI/MyButton/MyButton";
-import userPhoto from "../../images/userPhoto/user.png"
 import Text from "../Text/Text";
 import { useNavigate } from "react-router";
+import useGetUserPhotoLink from "../../hooks/useGetUserPhotoLink";
 const MyReaction = ({
   openAboutReactionFunc,
   responce,
@@ -20,6 +20,7 @@ const MyReaction = ({
     setPhotoIndex(id)
   }
   const navigate = useNavigate();
+  const userPhoto = useGetUserPhotoLink({anotherUserInfo : responce.user})
   return (
     <>
       <div className="reaction">
@@ -52,7 +53,7 @@ const MyReaction = ({
             }}
             className="icon"
             style={{objectFit : "cover"}}
-            src={responce.user.photo.length > 0 ? responce.user.photo.split('https://').length === 2 ? responce.user.photo : `${process.env.REACT_APP_HOST}/${responce.user.id}/${responce.user.photo}` : userPhoto}
+            src={userPhoto}
             alt=""
           />
           <div

@@ -119,7 +119,7 @@ const NewProfile = () => {
        numberNearToArrow={false}
        neededActiveButton={false}
        onClick={() => {
-        openLink('https://t.me/connect_support_team')
+        openLink('https://t.me/ConnectNewsRU')
        }}
        isNededToFill={false}
        isNeededBorder={false}

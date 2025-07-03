@@ -2,13 +2,17 @@ import { useCallback } from 'react';
 import RatingText from '../../UI/RatingText/RatingText';
 import UserIcon from '../../UI/UserIcon/UserIcon';
 import { useNavigate } from 'react-router';
+import { useDispatch } from 'react-redux';
+import { setUser } from '../../../store/information';
 const Customer = ({user, isActive}) => {
     const navigate = useNavigate();
+    const dispatch = useDispatch();
     const onClick = useCallback( () => {
         if (isActive){
+            dispatch(setUser(user));
             navigate(`/Baidge/${user.id}`)
         }
-    }, [navigate, isActive, user.id] )
+    }, [navigate, isActive, dispatch, user] )
     return (
         <div onClick={onClick} className='flex flex-col gap-[7.67px] w-full mt-2'>
             <p className="ml-[17px] text-[#84898F] font-sf-pro-display-400 text-[13.33px] leading-[15.643px]">ЗАКАЗЧИК</p>

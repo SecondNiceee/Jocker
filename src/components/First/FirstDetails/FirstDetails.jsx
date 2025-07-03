@@ -16,11 +16,10 @@ import { showAllert } from "../../../functions/showAlert";
 import { enableColorAndActiveButton } from "../../../functions/enableColorAndActiveButton";
 import { disableColorButton } from "../../../functions/disableColorButton";
 import { useAddPageHistory } from "../../../hooks/useAddPageHistory";
-import { getRatingByProfession } from "../../../functions/api/getRatingByProfession";
-import { getCommonRating } from "../../../functions/api/getCommonRating";
 import { openLink } from "../../../functions/openLink";
 import DevelopmentMainButton from "../../UI/DevelopmentMainButton/DevelopmentMainButton";
 import { getUserWithoutCards } from "../../../functions/api/getUserWithoutCards";
+import { fetchAdditionalUserInfo } from "../../../functions/api/fetchAdditionalUserInfo";
 
 const advertisementId =
   window.Telegram.WebApp.initDataUnsafe.start_param?.split("m")[0] || null;
@@ -56,30 +55,23 @@ const FirstDetails = ({
     }
   }, [orderInformationParam, setOrderInformation, externalOrderInformation]);
 
-  const isFetchAdditionalInformation = useRef(false);
-
+  console.log(orderInformation);
+  const isFetchingUser = useRef(false);
+  // Загрузка юзера
   useEffect(() => {
-    async function fetchAdditionalInformation(params) {
-      let commonRating = null;
-      let ratingByProfession = null;
-      await getCommonRating(orderInformation.user.id).then((rating) => {
-        commonRating = rating;
-      });
-      await getRatingByProfession(orderInformation.user).then((rating) => {
-        ratingByProfession = rating;
-      });
-      return { commonRating, ratingByProfession };
+    async function fetchUser() {
+      const user = await getUserWithoutCards(orderInformation.user.id);
+      const addittionalInfo = await fetchAdditionalUserInfo({isCommonRating : true, isRatingByProfession : true}, user);
+      return { ...user, ...addittionalInfo };
     }
 
-    if (!isFetchAdditionalInformation.current) {
+    if (!isFetchingUser.current) {
       if (orderInformation) {
-        fetchAdditionalInformation().then((userAdditionalInformation) => {
-          setOrderInformation((prev) => ({
-            ...prev,
-            user: { ...prev.user, ...userAdditionalInformation },
-          }));
+        fetchUser().then((user) => {
+          console.warn(user);
+          setOrderInformation({...orderInformation, user});
         });
-        isFetchAdditionalInformation.current = true;
+        isFetchingUser.current = true;
       }
     }
   }, [orderInformation]);
@@ -93,16 +85,15 @@ const FirstDetails = ({
     setSlideOpened,
   } = useSlider();
 
+  // загрузка задания если его нет.
   useEffect(() => {
-    async function fetchUserAndRating() {
+    async function fetchAdvertisement() {
       let advertisement = null;
       if (advertisementId && !id) {
         advertisement = await getAdvertisementById(Number(advertisementId));
       } else {
         advertisement = await getAdvertisementById(Number(id));
       }
-      const userWithRating = await getUserWithoutCards(advertisement.user.id);
-      advertisement.user = userWithRating;
       disatch(setDetailsAdvertisement(advertisement));
     }
     if (
@@ -111,7 +102,7 @@ const FirstDetails = ({
       !orderInformationParam &&
       !externalOrderInformation
     ) {
-      fetchUserAndRating().catch((err) => {
+      fetchAdvertisement().catch((err) => {
         showAllert("Не удалось загрузить задание.")
       })
     }

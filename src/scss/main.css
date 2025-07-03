@@ -13,7 +13,6 @@
 }
 
 .First {
-  overflow-y: hidden;
   display: flex;
   transition: transform 0.4s;
   will-change: transform;
@@ -39,7 +38,7 @@ body::-webkit-scrollbar {
 }
 
 .first-container {
-   overflow-y: hidden;
+  overflow-y: hidden;
   transition: 0.4s;
   display: flex;
 }
@@ -73,7 +72,6 @@ body::-webkit-scrollbar {
 
 .First__block .FirstMain__top .watchedTask {
   color: #95979e;
-
 }
 
 .AllTasks {
@@ -137,6 +135,7 @@ body::-webkit-scrollbar {
   flex-direction: column;
   gap: 8px;
   border-radius: 10px;
+  overflow-x: hidden;
   min-height: unset;
 }
 
@@ -213,7 +212,7 @@ body::-webkit-scrollbar {
      object-fit: cover;
 }
 .First__block .FirstMain__top {
-  margin-top: 13.33px;
+  margin-top: 15.33px;
   padding-left: 17px;
   padding-right: 19px;
   align-items: center;
@@ -225,19 +224,19 @@ body::-webkit-scrollbar {
 }
 .First__block .FirstMain__top img {
   margin-right: 10px;
-  width: 37px;
-  height: 37px;
+  width: 34px;
+  height: 34px;
 }
 .First__block .FirstMain__top p {
   /* Default text */
-    color: #FFF;
-    font-family: "SF Pro Rounded 600";
-    font-size: 16px;
-    font-style: normal;
-    font-weight: 600;
-    line-height: 19.667px; /* 122.917% */
-    letter-spacing: 0.448px;
-    max-width: 237px;
+  color: #FFF;
+  font-family: "SF Pro Rounded 600";
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 600;
+  line-height: 19.667px; /* 122.917% */
+  letter-spacing: 0.448px;
+  max-width: 237px;
 }
 .First__block .circle {
   margin-left: auto;
@@ -283,7 +282,7 @@ body::-webkit-scrollbar {
 .First__block .FirstMain__bottom-left {
   display: flex;
   flex-direction: column;
-  gap: 2.33px;
+  gap: 2px;
 }
 .First__block .FirstMain__bottom-left p {
   /* Default text */
@@ -298,14 +297,6 @@ body::-webkit-scrollbar {
 .First__block .FirstMain__price-bottom {
   display: flex;
   gap: 5px;
-}
-.First__block .FirstMain__price-bottom p{
-    color: var(--Semi-Text-Light, #DAF5FE);
-    font-family: "SF Pro Display";
-    font-size: 14.662px;
-    font-style: normal;
-    font-weight: 500;
-    line-height: 17.661px; /* 120.455% */
 }
 .First__block .FirstMain__price-up p {
   color: #FFF;
@@ -322,12 +313,13 @@ body::-webkit-scrollbar {
   align-items: center;
 }
 .First__block .FirstMain__price-up p {
-  color: #FFF;
+  color: rgb(255, 255, 255);
   font-family: "SF Compact Rounded";
-  font-size: 20.019px;
-  font-style: normal;
+  font-size: 23.33px;
   font-weight: 500;
-  line-height: normal;
+  line-height: 28px;
+  letter-spacing: 0%;
+  text-align: left;
 }
 .First__block .FirstMain__price-up img {
   width: 21.67px;
@@ -2358,7 +2350,7 @@ input {
   line-height: 107%;
   text-align: center;
   color: #95979e;
-  margin-top: -4px;
+  margin-top: 8px;
 }
 
 .PickerContent {
@@ -2730,10 +2722,10 @@ body {
 }
 
 .UperContainer {
-  overflow-y: hidden;
   position: relative;
   height: auto;
   width: 100%;
+  overflow-y: hidden;
 }
 
 .MuiSelect-select {

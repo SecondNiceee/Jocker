@@ -41,7 +41,8 @@ const BaidgeWithProfile = ({ userInfo, className, setUserInfo, urlParametr}) => 
   const clickLikeUser = () => {
     likesController.likeUser({
       dispatch: dispatch,
-      userId: me.id,
+      myId : me.id,
+      user : userInfo,
       likedUserId: userInfo.id,
       setGotenUserInfo : setUserInfo
     });
@@ -49,6 +50,7 @@ const BaidgeWithProfile = ({ userInfo, className, setUserInfo, urlParametr}) => 
 
   const clickDislikeUser = () => {
     likesController.dislikeUser({
+      user : userInfo,
       dispatch: dispatch,
       userId: me.id,
       dislikedUserId: userInfo.id,

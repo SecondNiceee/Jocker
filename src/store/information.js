@@ -10,7 +10,7 @@ export const addWatch = createAsyncThunk(
     if (advertisement.viewsNumber !== undefined && advertisement.viewsNumber !== null) {
       try {
         let myData = new FormData();
-        myData.append("views", String(Number(advertisement.viewsNumber) + 1));
+      myData.append("views", String(Number(advertisement.viewsNumber) + 1));
         
         await $api.put(`${process.env.REACT_APP_HOST}/advertisement`, myData, {
           params: {

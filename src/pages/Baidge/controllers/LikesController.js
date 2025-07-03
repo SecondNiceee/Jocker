@@ -6,29 +6,29 @@ import { likeUser } from "../../../store/telegramUserInfo/thunks/likeUser";
 
 class LikesController{
 
-    async likeUser({userId, likedUserId, dispatch, setGotenUserInfo, myId}){
-        if (likedUserId === userId){
+    async likeUser({likedUserId, dispatch, user, setGotenUserInfo, myId}){
+        if (likedUserId === user.id){
             dispatch(likeUser({
-                userId : userId,
+                userId : user.id,
                 likedUserId : likedUserId
             }))
             return;
         }
-        const response = await apiLikes.likeUser({likedUserId, userId})
-        setGotenUserInfo((value) => ({...value, userLikes : [...value.userLikes, {id : response.data.id, user : {id:USERID}}]}))
+        const response = await apiLikes.likeUser({likedUserId, userId : user.id})
+        setGotenUserInfo({...user, userLikes : [...user.userLikes, {id : response.data.id, user : {id:USERID}}]})
         
     }
 
-    async dislikeUser({userId, dislikedUserId, dispatch, setGotenUserInfo}){
-        if (dislikedUserId === userId){
+    async dislikeUser({dislikedUserId, dispatch, user, setGotenUserInfo}){
+        if (dislikedUserId === user.id){
             dispatch(dislikeUser({
-                userId : String(userId),
+                userId : String(user.id),
                 dislikedUserId : String(dislikedUserId)
             }))
             return;
         }
-        await apiLikes.dislikeUser({dislikedUserId, userId})
-        setGotenUserInfo((value) => ({...value, userLikes : [...value.userLikes.filter((like) => like.user.id !== USERID ) ]}))
+        await apiLikes.dislikeUser({dislikedUserId, userId : user.id})
+        setGotenUserInfo({...user, userLikes : [...user.userLikes.filter((like) => like.user.id !== USERID ) ]})
     }
 }
 

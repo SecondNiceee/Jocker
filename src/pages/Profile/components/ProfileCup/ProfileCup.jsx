@@ -1,13 +1,14 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
-import userPhoto from "../../../../images/userPhoto/user.png";
 import Text from "../../../../components/Text/Text";
 import "../../../../scss/main.css";
 import { getFormatedUserFullName } from "../../../../functions/getFormatedUserFullname";
+import useGetUserPhotoLink from "../../../../hooks/useGetUserPhotoLink";
 
 const ProfileCup = ({gotenUserInfo}) => {
   const me = useSelector((state) => state.telegramUserInfo);
   const [userInfo, setUerInfo] = useState(null);
+  const userLink = useGetUserPhotoLink({anotherUserInfo : userInfo});
   useEffect( () => {
     if (gotenUserInfo){
       setUerInfo(gotenUserInfo)
@@ -23,13 +24,7 @@ const ProfileCup = ({gotenUserInfo}) => {
     <div className="flex flex-col w-[100%] items-center justify-center">
       <img
         style={{ objectFit: "cover" }}
-        src={
-          userInfo.photo.length > 0
-            ? userInfo.photo.split("https://").length === 2
-              ? userInfo.photo  
-              : `${process.env.REACT_APP_HOST}/${userInfo.id}/${userInfo.photo}`
-            : userPhoto
-        }
+        src={userLink}
         className="profile__icon icon"
         alt=""
       />
