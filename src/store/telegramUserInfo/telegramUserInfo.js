@@ -102,6 +102,7 @@ const telegramUserInfo = createSlice({
       state.status = "loading";
     });
     builder.addCase(fetchUserInfo.fulfilled, (state, action) => {
+      console.log(action.payload)
       return {...state, ...action.payload};
     });
     builder.addCase(fetchUserInfo.rejected, (state) => {

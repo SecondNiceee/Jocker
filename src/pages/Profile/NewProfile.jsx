@@ -25,6 +25,8 @@ const NewProfile = () => {
 
   const me = useSelector( (state) => state.telegramUserInfo );
 
+  console.log(me);
+
   const photoLink = useGetUserPhotoLink({anotherUserInfo : me});
 
   useEffect( () => {
@@ -54,9 +56,6 @@ const NewProfile = () => {
     }
   }, [userInfo.profession, dispatch, userInfo.ratingByProfession, userInfo.commonRating] ) ;
   if (userInfo.profession && (!userInfo.ratingByProfession || !userInfo.commonRating)){
-    return <MyLoader />
-  }
-  if (userInfo.state !== "yes"){
     return <MyLoader />
   }
   return (

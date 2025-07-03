@@ -21,6 +21,8 @@ const Baidge = ({isExternal = false}) => {
 
   const userInfo = useSelector( (state) => state.information.baidgeUser );
 
+    console.log(me, userInfo)
+
   const setUserInfo = useCallback( (user) => {
     dispatch(setUser(user))
   }, [dispatch] )
