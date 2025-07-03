@@ -33,8 +33,8 @@ const Baidge = ({isExternal = false}) => {
   const isUserFetched = useRef(false);
 
   useEffect(() => {
-    if (!userInfo && !isUserFetched.current && me.id){
-      if (isExternal){
+    if (!isUserFetched.current && me.id){ // Если прогружен пользователь приложения и еще не было загрузки обладателя бейджа
+      if (isExternal){ // бейдж переслан через ссылку
         if (String(baidgeId) === String(me.id)){
           setUserInfo(me);
         }
@@ -45,15 +45,18 @@ const Baidge = ({isExternal = false}) => {
         }
       }
       else{
-        if (id && String(id) !== me.id) {
+        if (String(id) !== me.id) {
           findUserById(id).then( (user) => {setUserInfo(user)
             console.warn(user);
+          } ).catch( (err) => {
+            console.error(err);
+            alert("Не удалось прогрузить бейдж пользователя.")
           } )
         } else {
           setUserInfo(me);
         }
       }
-        isUserFetched.current=true;
+        isUserFetched.current=true; // загрузка обладателя бейджа была завешена
     }
   }, [me, id, isExternal, userInfo, setUserInfo]);
 
