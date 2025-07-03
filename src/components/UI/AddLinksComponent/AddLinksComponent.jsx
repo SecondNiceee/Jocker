@@ -1,4 +1,4 @@
-import React, { memo, useCallback, useEffect } from 'react';
+import { memo, useCallback, useEffect } from 'react';
 import BaidgeCreatingLink from '../../../pages/BaidgeCreating/ui/BaidgeCreatingLink';
 import { showAllert } from '../../../functions/showAlert';
 

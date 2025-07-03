@@ -33,7 +33,7 @@ const Baidge = ({isExternal = false}) => {
   const isUserFetched = useRef(false);
 
   useEffect(() => {
-    if (!isUserFetched.current && me.id){ // Если прогружен пользователь приложения и еще не было загрузки обладателя бейджа
+    if (!isUserFetched.current && me.id && !userInfo){ // Если прогружен пользователь приложения и еще не было загрузки обладателя бейджа
       if (isExternal){ // бейдж переслан через ссылку
         if (String(baidgeId) === String(me.id)){
           setUserInfo(me);
