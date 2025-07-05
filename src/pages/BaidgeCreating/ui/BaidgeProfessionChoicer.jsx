@@ -50,6 +50,7 @@ const BaidgeProfessionChoicer = () => {
       else{
         enableColorAndActiveButton()
       }
+      MainButton.setText("Готово")
       return () => {
         MainButton.setText("ДАЛЕЕ")
         MainButton.offClick(buttonHandler)
