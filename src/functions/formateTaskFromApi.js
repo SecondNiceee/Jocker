@@ -1,4 +1,4 @@
-export const formateTaskFromApi = (order, numberOfResponses, user) => {
+export const formateTaskFromApi = (order, numberOfResponses) => {
   let one = new Date(order.startTime);
   const files = order.files;
   let two;
@@ -28,7 +28,7 @@ export const formateTaskFromApi = (order, numberOfResponses, user) => {
         viewsNumber: order.views,
         responces: order.responses,
         status: order.status,
-        user: user,
+        user: order.user,
         createNumber: numberOfResponses,
         category: order.category.id,
         subCategory: order.subCategory.id,

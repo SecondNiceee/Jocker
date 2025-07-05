@@ -1,6 +1,5 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { USERID } from "../constants/tgStatic.config";
-import { formatUserFromApi } from "../functions/api/formatUserFromApi";
 import { formateTaskFromApi } from "../functions/formateTaskFromApi";
 import $api from "../http";
 
@@ -217,13 +216,11 @@ export const fetchTasksInformation = createAsyncThunk(
             }
           )).data;
 
-          const newUser = {...order.user}
-
           // checkUserPhoto(newUser);
 
-          const rezultUser = formatUserFromApi(newUser);
+          // const rezultUser = formatUserFromApi(newUser);
 
-          const formatedAdvertisement = formateTaskFromApi(order, numberOfResponses, rezultUser);
+          const formatedAdvertisement = formateTaskFromApi(order, numberOfResponses);
 
           tasks.push(formatedAdvertisement);
         }
