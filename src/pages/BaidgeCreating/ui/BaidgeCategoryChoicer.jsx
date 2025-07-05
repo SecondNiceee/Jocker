@@ -35,7 +35,7 @@ const BaidgeCategoryChoicer = () => {
     const buttonHandler = useCallback( () => {
         const sortedProfessions = professions.filter(el => el.category.id === choisenCategory.id)
         setCategorysInformationToStore({ category: choisenCategory , profession : sortedProfessions[0] });
-        // navigate(-1);
+        navigate(-1);
     } , [setCategorysInformationToStore, choisenCategory, professions, navigate] );
 
     useEffect( () => {
@@ -50,6 +50,10 @@ const BaidgeCategoryChoicer = () => {
       }
       else{
         enableColorAndActiveButton()
+      }
+      return () => {
+        MainButton.offClick(buttonHandler);
+        MainButton.setText("ДАЛЕЕ");
       }
     } , [choisenCategory, professions, buttonHandler]  );
 
