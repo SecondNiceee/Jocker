@@ -37,9 +37,12 @@ const BaidgeProfessionChoicer = () => {
         setCategoryInformationToStore({ ...categorysInformation , profession : choisenProfession });
         navigate(-1);
     } , [setCategoryInformationToStore, choisenProfession, categorysInformation, navigate] );
+
+    useEffect( () => {
+      MainButton.show();
+    }, [] )
     
     useEffect( () => {
-
     MainButton.onClick(buttonHandler)
       if (!choisenProfession){
         disableColorAndActiveButton()

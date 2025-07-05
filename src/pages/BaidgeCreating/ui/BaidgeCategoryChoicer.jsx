@@ -36,12 +36,15 @@ const BaidgeCategoryChoicer = () => {
         const sortedProfessions = professions.filter(el => el.category.id === choisenCategory.id)
         setCategorysInformationToStore({ category: choisenCategory , profession : sortedProfessions[0] });
         navigate(-1);
-    } , [setCategorysInformationToStore, choisenCategory, professions, navigate] )
+    } , [setCategorysInformationToStore, choisenCategory, professions, navigate] );
+
     useEffect( () => {
-
-    MainButton.setText("Готово")
-
-    MainButton.onClick(buttonHandler)
+        MainButton.show();
+    }, [] );
+    
+    useEffect( () => {
+      MainButton.setText("Готово")
+      MainButton.onClick(buttonHandler);
       if (!choisenCategory){
         disableColorAndActiveButton()
       }
