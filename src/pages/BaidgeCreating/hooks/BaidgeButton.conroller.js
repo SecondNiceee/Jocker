@@ -27,25 +27,24 @@ class BaidgeButtonController{
     }
 
     forwardFunction({step, setStep, postBaidge}){
-        return () => {
+            console.log(step);
             if (step === 1){
                 successVibration();
                 postBaidge()
             }
             else{
+                console.log("asd")
+                
                 setStep(1)
             }
-        }
     }
     backFunction({step, navigate, setStep}){
-        return () => {
             if (step === 1){
                 setStep(0)
             }
             else{
                 navigate(-1);
             }  
-        }
     }
     controlText({step, me, isChanging}){
         if (step === 0){

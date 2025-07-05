@@ -60,6 +60,7 @@ const BaidgeCreating = ({isChanging = false}) => {
       }
         newBaidgeCreatingSlice.description = me.profile.about ?? "";
         newBaidgeCreatingSlice.taggs = me.taggs ?? [];
+        newBaidgeCreatingSlice.taggsText = me?.taggs ? me.taggs.join(', ') : ""
         newBaidgeCreatingSlice.links = me.links ?? [''];
         newBaidgeCreatingSlice.stage = me.stage;
         if (me.profession){
@@ -135,19 +136,22 @@ const BaidgeCreating = ({isChanging = false}) => {
     });
   }, [setStep, step, description, dispatch, links, categoryInformation?.profession?.id, taggs, postBaidge ] ) ;
 
+  const goBack = useCallback( () => {
+    baidgeButtonController.backFunction({
+          navigate,
+          step,
+          setStep,
+        });
+  }, [navigate, step, setStep] )
+
   useEffect(() => {
-    const goBack = baidgeButtonController.backFunction({
-      navigate,
-      step,
-      setStep,
-    });
     MainButton.onClick(goFoward);
     BackButton.onClick(goBack);
     return () => {
       MainButton.offClick(goFoward);
       BackButton.offClick(goBack);
     };
-  }, [step, navigate, setStep, goFoward, description, links, taggs, dispatch, categoryInformation?.profession?.id]);
+  }, [step, navigate, setStep, goFoward, goBack, description, links, taggs, dispatch, categoryInformation?.profession?.id]);
 
   useEffect(() => {
     MainButton.show();
