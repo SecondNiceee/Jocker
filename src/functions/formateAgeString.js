@@ -4,6 +4,10 @@ const lett = translation("лет");
 const goda = translation("года");
 const god = translation("год");
 export const formateAgeString = (ageString) => {
+  if (!ageString){
+    return null;
+  }
+  console.log(ageString);
   let numb = Number(
     ageString.slice(ageString.length - 1, ageString.length)
   );

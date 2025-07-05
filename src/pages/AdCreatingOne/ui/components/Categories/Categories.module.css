@@ -9,6 +9,7 @@
     background: rgb(32, 48, 63);
     gap: calc(12.63px* 2);
     position: relative;
+    cursor: pointer;
 }
 .topBlock{
     transition: 0.2s;

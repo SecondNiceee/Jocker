@@ -5,53 +5,46 @@ import { successVibration } from "../../../functions/successVibration";
 
 class BaidgeButtonController{
     mainButton = MainButton;
-    controlVisability({errors, isCategoryOpen, isProfessionOpened, step}){
+    controlVisability({errors, step}){
         const isNeededToEnableFirstPage = !errors.descriptionError
         const isNeededToEnableSecondPage = Object.values({taggsError : errors.taggsError, linksError : errors.linksError}).every((val) => !val)
-        if (!isCategoryOpen && !isProfessionOpened){
-            if (step === 0){
-                if (isNeededToEnableFirstPage){
-                    enableColorAndActiveButton()
-                }
-                else{
-                    disableColorAndActiveButton();
-                }
+        if (step === 0){
+            if (isNeededToEnableFirstPage){
+                enableColorAndActiveButton()
             }
             else{
-                if (isNeededToEnableSecondPage){
-                    enableColorAndActiveButton()
-                }
-                else{
-                    disableColorAndActiveButton();
-                }
+                disableColorAndActiveButton();
             }
-            
+        }
+        else{
+            if (isNeededToEnableSecondPage){
+                enableColorAndActiveButton()
+            }
+            else{
+                disableColorAndActiveButton();
+            }
         }
     }
 
-    forwardFunction({step, setStep, isCategoryOpen, isProfessionOpened, postBaidge}){
+    forwardFunction({step, setStep, postBaidge}){
         return () => {
-            if (!isCategoryOpen && !isProfessionOpened){
-                if (step === 1){
-                    successVibration();
-                    postBaidge()
-                }
-                else{
-                    setStep(1)
-                }
+            if (step === 1){
+                successVibration();
+                postBaidge()
+            }
+            else{
+                setStep(1)
             }
         }
     }
-    backFunction({step, navigate, setStep, isCategoryOpen, isProfessionOpened}){
+    backFunction({step, navigate, setStep}){
         return () => {
-            if (!isCategoryOpen && !isProfessionOpened){
-                if (step === 1){
-                    setStep(0)
-                }
-                else{
-                    navigate(-1);
-                }
-            } 
+            if (step === 1){
+                setStep(0)
+            }
+            else{
+                navigate(-1);
+            }  
         }
     }
     controlText({step, me, isChanging}){

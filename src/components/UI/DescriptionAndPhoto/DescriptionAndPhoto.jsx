@@ -67,9 +67,9 @@ const DescriptionAndPhoto = ({
         <p
           ref={miniRef}
           className={cl.inputCounter}
-          style={text.length < 500 ? {} : { color: "#8a0303" }}
+          style={text?.length < 500 ? {} : { color: "#8a0303" }}
         >
-          {text.length} / 500
+          {text?.length} / 500
         </p>
       </div> : <>
       </>}

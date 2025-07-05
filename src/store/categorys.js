@@ -1,6 +1,8 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import $api from "../http";
 
+
+
 export const getCategorys = createAsyncThunk(
     'category/getCategorys' , 
     async function(){
@@ -17,6 +19,8 @@ export const getSubCategorys = createAsyncThunk(
         return subCategorys.data
     }
 )
+
+// Тут лежат данные о всех категория и подкатегориях
 const categorys = createSlice(
     {
         name : 'categorys',

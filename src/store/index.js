@@ -12,6 +12,7 @@ import profession from "./profession";
 import telegramUserInfo from "./telegramUserInfo/telegramUserInfo";
 import filters from "./filters";
 import taskCreating from "./taskCreating";
+import { baidgeCreatingSlice } from './baidgeCreating';
 
 export default configureStore( {
     reducer : {
@@ -27,7 +28,8 @@ export default configureStore( {
         balance : balance,
         profession : profession,
         filters : filters,
-        taskCreating : taskCreating
+        taskCreating : taskCreating,
+        baidgeCreatingSlice : baidgeCreatingSlice.reducer
     },
     middleware: getDefaultMiddleware =>
         getDefaultMiddleware({

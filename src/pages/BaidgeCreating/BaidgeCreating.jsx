@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { getProfessions } from "../../store/profession";
 import MyLoader from "../../components/UI/MyLoader/MyLoader";
@@ -14,13 +14,11 @@ import { putUserInfo } from "../../store/telegramUserInfo/thunks/putUserInfo";
 import { fetchMyAdditionalUserInfo } from "../../store/telegramUserInfo/thunks/fetchAdditionalUserInfo";
 import { useAddPageHistory } from "../../hooks/useAddPageHistory";
 import DevelopmentMainButton from "../../components/UI/DevelopmentMainButton/DevelopmentMainButton";
+import { setBaidgeCreating } from "../../store/baidgeCreating";
 
 const BaidgeCreating = ({isChanging = false}) => {
-  const dispatch = useDispatch();
 
-  useEffect(() => {
-    dispatch(getProfessions());
-  }, [dispatch]);
+  const dispatch = useDispatch();
 
   useAddPageHistory();
 
@@ -28,42 +26,60 @@ const BaidgeCreating = ({isChanging = false}) => {
 
   const professions = useSelector((state) => state.profession.professions);
 
+  const isProfessionsLoaded = useRef(false);
+
+  useEffect(() => {
+    if (!isProfessionsLoaded.current){
+      if (!professions || !professions?.length){
+        dispatch(getProfessions());
+      }
+      isProfessionsLoaded.current = true;
+    }
+  }, [dispatch, professions]);
+
+
   const me = useSelector( (state) => state.telegramUserInfo )
-  const [description, setDescription] = useState(me?.profile?.about ?? "");
 
-  const taskInformation = {
-    category: categorys[0],
-    subCategory: { subCategory: "Привет" },
-  };
-
-  const [taggsText, setTaggsText] = useState(me?.taggs?.join(', ') ?? "");
-
-  const [taggs, setTaggs] = useState(me?.taggs ?? []);
-
-  const [links, setLinks] = useState(me.links ? (me.links.length === 0 ? [""] : me.links) : [""]);
-
-  console.log(links, me)
-
-  const [stage, setStage] = useState(me.profile.stage ?? 0);
+  const {description, taggs, links, stage, categoryInformation, isFilled} = useSelector( (state) => state.baidgeCreatingSlice )
 
   const [step, setStep] = useState(0);
 
   const navigate = useNavigate();
-
-  const [isCategoryOpen, setCategoryOpen] = useState(false);
-
-  const [isProfessionOpened, setProfessionOpened] = useState(false);
-
-  const [categoryInformation, setCategoryInformation] = useState({
-    category: categorys[0],
-    profession: {},
-  });
-
   useEffect( () => {
-    if (categorys){
-      setCategoryInformation({category : categorys[0], profession : {}})
+    if (!isFilled && professions?.length && categorys?.length && me?.id){
+      let newBaidgeCreatingSlice = {
+          categoryInformation : {
+              category : null,
+              profession : null
+          },
+          stage : null,
+          links : null,
+          taggs : null,
+          taggsText : null,
+          description : null
+      }
+        newBaidgeCreatingSlice.description = me.profile.about ?? "";
+        newBaidgeCreatingSlice.taggs = me.taggs ?? [];
+        newBaidgeCreatingSlice.links = me.links ?? [''];
+        newBaidgeCreatingSlice.stage = me.stage;
+        if (me.profession){
+          newBaidgeCreatingSlice.categoryInformation = {
+            category : categorys[0],
+            profession : me.profession
+          }
+        }
+        else{
+          newBaidgeCreatingSlice.categoryInformation = {
+            category : categorys[0],
+            profession : professions.find((profession) => profession.category.id === categorys[0].id)
+          }
+        }
+      dispatch(setBaidgeCreating({...newBaidgeCreatingSlice, isFilled : true}));
     }
-  }, [categorys] )
+    // if (!categoryInformation){
+    //   if (me)
+    // }
+  }, [me, dispatch, professions, categorys, isFilled] )
 
   const [errors, setErrors] = useState({
     descriptionError: false,
@@ -74,25 +90,24 @@ const BaidgeCreating = ({isChanging = false}) => {
   }, [step, me, isChanging]);
 
   useEffect(() => {
-    const notEmptyTaggs = taggs.filter( (tag) => tag.length !== 0 )
+    const notEmptyTaggs = taggs?.filter( (tag) => tag.length !== 0 )
     const lErrors = {
       descriptionError: false,
       taggsError: false,
     };
 
-    if (description.length > 500 || description.length < 5) {
+    if (description?.length > 500 || description?.length < 5) {
       lErrors.descriptionError = true;
     }
-    if (notEmptyTaggs.length > 5 || notEmptyTaggs.length === 0){
+    if (notEmptyTaggs?.length > 5 || notEmptyTaggs?.length === 0){
         lErrors.taggsError = true
     }
     setErrors(lErrors);
   }, [description, links, taggs]);
 
   useEffect(() => {
-    baidgeButtonController.controlVisability({ errors, isCategoryOpen, isProfessionOpened, step });
-  }, [errors, isCategoryOpen, isProfessionOpened, step]);
-
+    baidgeButtonController.controlVisability({ errors, step });
+  }, [errors, step]);
 
   const postBaidge = async () => {
         await dispatch(putUserInfo([{
@@ -104,15 +119,12 @@ const BaidgeCreating = ({isChanging = false}) => {
         }])  );
         await dispatch(fetchUserInfo())
         await dispatch(fetchMyAdditionalUserInfo({isCommonRating : true, isRatingByProfession : true}));
-
         navigate("/Baidge")
   }
 
   const goFoward = baidgeButtonController.forwardFunction({
     setStep,
     step,
-    isCategoryOpen,
-    isProfessionOpened,
     description,
     dispatch,
     links,
@@ -125,8 +137,6 @@ const BaidgeCreating = ({isChanging = false}) => {
       navigate,
       step,
       setStep,
-      isCategoryOpen,
-      isProfessionOpened,
     });
     MainButton.onClick(goFoward);
     BackButton.onClick(goBack);
@@ -134,7 +144,7 @@ const BaidgeCreating = ({isChanging = false}) => {
       MainButton.offClick(goFoward);
       BackButton.offClick(goBack);
     };
-  }, [step, navigate, setStep, isCategoryOpen, isProfessionOpened, goFoward, description, links, taggs, dispatch, categoryInformation?.profession?.id]);
+  }, [step, navigate, setStep, goFoward, description, links, taggs, dispatch, categoryInformation?.profession?.id]);
 
   useEffect(() => {
     MainButton.show();
@@ -160,27 +170,8 @@ const BaidgeCreating = ({isChanging = false}) => {
     >
       <DevelopmentMainButton goForward={goFoward} className={"!fixed !left-[100vw]"} />
       <DevelopmentMainButton goForward={goFoward} className={"!fixed !left-[0vw]"} />
-      <BaidgeCreaitingOne
-        setStage={setStage}
-        stage={stage}
-        categoryInformation={categoryInformation}
-        isCategoryOpen={isCategoryOpen}
-        isProfessionOpened={isProfessionOpened}
-        setCategoryInformation={setCategoryInformation}
-        setCategoryOpen={setCategoryOpen}
-        setProfessionOpened={setProfessionOpened}
-        description={description}
-        setDescription={setDescription}
-        taskInformation={taskInformation}
-      />
-      <BaidgeCreatingTwo
-        links={links}
-        setLinks={setLinks}
-        setTaggs={setTaggs}
-        setTaggsText={setTaggsText}
-        taggs={taggs}
-        taggsText={taggsText}
-      />
+      <BaidgeCreaitingOne/>
+      <BaidgeCreatingTwo/>
     </div>
   );
 };

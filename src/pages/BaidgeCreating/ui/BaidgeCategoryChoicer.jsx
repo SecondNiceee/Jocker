@@ -1,43 +1,42 @@
-import React, { useCallback, useEffect, useMemo, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import useBlockInputs from '../../../hooks/useBlockInputs';
 import MainButton from '../../../constants/MainButton';
 import { disableColorAndActiveButton } from '../../../functions/disableColorAndActiveButton';
 import { enableColorAndActiveButton } from '../../../functions/enableColorAndActiveButton';
-import BackButton from '../../../constants/BackButton';
 import { softVibration } from '../../../functions/softVibration';
 import menuController from '../../../functions/menuController';
+import { useDispatch, useSelector } from 'react-redux';
+import { setCategoryInformation } from '../../../store/baidgeCreating';
+import { useNavigate } from 'react-router';
+import useNavigateBack from '../../../hooks/useNavigateBack';
+import DevelopmentMainButton from '../../../components/UI/DevelopmentMainButton/DevelopmentMainButton';
 
+const BaidgeCategoryChoicer = () => {
 
-const BaidgeCategoryChoicer = ({
-    setTaskInformation,
-    taskInformation,
-    setCatagoryChoiceOpen,
-    categorys,
-    professions,
-    ...props
-  }) => {
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  
+  const professions = useSelector( state => state.profession.professions);
+  const categorys = useSelector((state) => state.categorys.category);
+  const categorysInformation = useSelector( (state) => state.baidgeCreatingSlice.categoryInformation );
 
-    const realCategorys = useMemo( () => {
-        return categorys.slice(0, categorys.length-1)
-    } , [categorys] )
+  const setCategorysInformationToStore = useCallback( (categorysInformation) => {
+    dispatch(setCategoryInformation(categorysInformation));
+  },[dispatch] )
 
-
-    useEffect( () => {
-      document.documentElement.style.overflowY = "hidden"
-      return () => {
-        document.documentElement.style.overflowY = "auto"
-      }
-    } , [] )
+  const sortedCategorys = useMemo( () => {
+      return categorys.slice(0, categorys.length-1)
+  } , [categorys] );
   
     useBlockInputs();
   
-    const [choisenCategory, setChoisenCategory] = useState(taskInformation.category);
+    const [choisenCategory, setChoisenCategory] = useState(categorysInformation.category);
   
     const buttonHandler = useCallback( () => {
-        let sortedProfessions = professions.filter(el => el.category.id === choisenCategory.id)
-        setTaskInformation({ category: choisenCategory , profession : sortedProfessions[0] });
-        setCatagoryChoiceOpen(false);
-    } , [setTaskInformation, choisenCategory, setCatagoryChoiceOpen, professions] )
+        const sortedProfessions = professions.filter(el => el.category.id === choisenCategory.id)
+        setCategorysInformationToStore({ category: choisenCategory , profession : sortedProfessions[0] });
+        navigate(-1);
+    } , [setCategorysInformationToStore, choisenCategory, professions, navigate] )
     useEffect( () => {
 
     MainButton.setText("Готово")
@@ -49,21 +48,9 @@ const BaidgeCategoryChoicer = ({
       else{
         enableColorAndActiveButton()
       }
-    } , [choisenCategory, setTaskInformation, setCatagoryChoiceOpen, professions, taskInformation, buttonHandler]  )
+    } , [choisenCategory, professions, buttonHandler]  );
 
-  
-    
-    useEffect( () => {
-      function closeFunction(){
-        setCatagoryChoiceOpen(false)
-      }
-      BackButton.show()
-      BackButton.onClick(closeFunction)
-      return () => {
-        BackButton.offClick(closeFunction)
-        BackButton.hide()
-      }
-    } , [setCatagoryChoiceOpen] )
+    useNavigateBack({isSliderOpened : false, setSlideOpened:false, isWorks : true});
   
     const categoryClickHandler = (category) => () => {
       if (category.id === choisenCategory?.id){
@@ -83,12 +70,12 @@ const BaidgeCategoryChoicer = ({
     } )
 
     return (
-      <div className="bg-[#18222d] w-screen bottom-0 flex flex-col left-0 px-[16px] pt-[17px] fixed  z-[400] pb-[20px] overflow-y-scroll min-h-screen h-screen" {...props}>
-        <button onClick={buttonHandler}>ГОТОВО</button>
+      <div className="bg-[#18222d] flex flex-col px-[16px] pt-[17px] z-[400] pb-[20px]" >
+        <DevelopmentMainButton goForward={buttonHandler} />
         <p className="mt-[13px] ml-[17px] font-sf-pro-display-400 font-extralight text-[13px] tracking-[0.02em] text-[#84898f] uppercase mb-[9px]">КАТЕГОРИИ</p>
   
           <div className="flex rounded-[10px] bg-[#21303f] flex-col pl-[16px] pr-[16px]">
-              {realCategorys.map((category, id) => {
+              {sortedCategorys.map((category, id) => {
                 return (
                   <div onClick={categoryClickHandler(category)} className="grid cursor-pointer pt-[13px] grid-cols-[min-content_auto] gap-y-[10px] gap-x-[11px] w-full">
                     <div className={`rounded-full border-solid border-[1px] w-[21px] h-[21px] self-center flex justify-center items-center ${choisenCategory?.id === category.id ? "bg-[#2EA6FF] border-[#2EA6FF] " : "border-[#384656]"}`}>
@@ -100,7 +87,7 @@ const BaidgeCategoryChoicer = ({
                       <h3  className="font-light tracking-[-3.6%]  text-[17px] text-white font-sf-pro-text-400 leading-[17px]">{category.category}</h3>
                       <p className="font-sf-pro-display-400 font-light tracking-[1%] leading-[17.7px] text-[14px] text-[#dbf5ff]">{category.description}</p>
                     </div>
-                    <div className={`h-[0.5px] col-start-2 col-end-3 w-[100%] bg-[#384656]  ${id === realCategorys.length-1 ? "opacity-0" : ""}`}></div>
+                    <div className={`h-[0.5px] col-start-2 col-end-3 w-[100%] bg-[#384656]  ${id === sortedCategorys.length-1 ? "opacity-0" : ""}`}></div>
                 </div>
                 )
               })}

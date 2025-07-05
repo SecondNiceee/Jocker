@@ -3,41 +3,42 @@ import useBlockInputs from '../../../hooks/useBlockInputs';
 import MainButton from '../../../constants/MainButton';
 import { disableColorAndActiveButton } from '../../../functions/disableColorAndActiveButton';
 import { enableColorAndActiveButton } from '../../../functions/enableColorAndActiveButton';
-import BackButton from '../../../constants/BackButton';
 import { softVibration } from '../../../functions/softVibration';
 import menuController from '../../../functions/menuController';
+import { useDispatch, useSelector } from 'react-redux';
+import { setCategoryInformation } from '../../../store/baidgeCreating';
+import { useNavigate } from 'react-router';
+import useNavigateBack from '../../../hooks/useNavigateBack';
+import DevelopmentMainButton from '../../../components/UI/DevelopmentMainButton/DevelopmentMainButton';
 
-const BaidgeSubCategoryChoiser = ({
-    setTaskInformation,
-    taskInformation,
-    setProfessionOpen,
-    professions,
-    category,
-    ...props
-  }) => {
+const BaidgeProfessionChoicer = () => {
 
-    const realProfessions = useMemo( () => {
-        return professions
-    } , [professions] )
+    const professions = useSelector( state => state.profession.professions);
 
-    useEffect( () => {
-      document.documentElement.style.overflowY = "hidden"
-      return () => {
-        document.documentElement.style.overflowY = "auto"
-      }
-    } , [] )
+    const navigate = useNavigate();
+    
+    const categorysInformation = useSelector( (state) => state.baidgeCreatingSlice.categoryInformation )
+
+    const dispatch = useDispatch();
+
+    const sortedProfessions = useMemo( () => {
+      return professions.filter( (prof) => prof.category.id === categorysInformation.category.id );
+    }, [professions, categorysInformation] )
+
+    const setCategoryInformationToStore = useCallback( (categoryInf) => {
+      dispatch(setCategoryInformation(categoryInf));
+    }, [dispatch] )
   
     useBlockInputs();
   
-    const [choisenProfession, setChoisenProfession] = useState(taskInformation.profession);
+    const [choisenProfession, setChoisenProfession] = useState(categorysInformation.profession);
   
     const buttonHandler = useCallback( () => {
-        setTaskInformation({ ...taskInformation , profession : choisenProfession });
-        setProfessionOpen(false);
-    } , [setTaskInformation, choisenProfession, setProfessionOpen, taskInformation] )
+        setCategoryInformationToStore({ ...categorysInformation , profession : choisenProfession });
+        navigate(-1);
+    } , [setCategoryInformationToStore, choisenProfession, categorysInformation, navigate] );
+    
     useEffect( () => {
-
-    MainButton.setText("Готово")
 
     MainButton.onClick(buttonHandler)
       if (!choisenProfession){
@@ -50,20 +51,9 @@ const BaidgeSubCategoryChoiser = ({
         MainButton.setText("ДАЛЕЕ")
         MainButton.offClick(buttonHandler)
       }
-    } , [choisenProfession, setTaskInformation, setChoisenProfession, professions, taskInformation, buttonHandler]  )
-  
-    
-    useEffect( () => {
-      function closeFunction(){
-        setProfessionOpen(false)
-      }
-      BackButton.show()
-      BackButton.onClick(closeFunction)
-      return () => {
-        BackButton.offClick(closeFunction)
-        BackButton.hide()
-      }
-    } , [setProfessionOpen, buttonHandler] )
+    } , [choisenProfession, setCategoryInformationToStore, setChoisenProfession, professions, categorysInformation, buttonHandler]  );
+
+    useNavigateBack({isSliderOpened : false, setSlideOpened : () => {}, isWorks : true});
   
     const categoryClickHandler = (profession) => () => {
       if (profession.id === choisenProfession?.id){
@@ -83,12 +73,12 @@ const BaidgeSubCategoryChoiser = ({
     } )
 
     return (
-      <div className="bg-[#18222d] w-screen bottom-0 flex flex-col left-0 px-[16px] pt-[17px] fixed  z-[400] pb-[20px] overflow-y-scroll min-h-screen h-screen" {...props}>
-        <button onClick={buttonHandler}>ГОТОВО</button>
+      <div className="bg-[#18222d] flex flex-col px-[16px] pt-[17px] z-[400] pb-[20px]" >
+        <DevelopmentMainButton goForward={buttonHandler} />
         <p className="mt-[13px] ml-[17px] font-sf-pro-display-400 font-extralight text-[13px] tracking-[0.02em] text-[#84898f] uppercase mb-[9px]">Профессии</p>
   
           <div className="flex rounded-[10px] bg-[#21303f] flex-col pl-[16px] pr-[16px]">
-              {realProfessions.map((profession, id) => {
+              {sortedProfessions.map((profession, id) => {
                 return (
                   <div onClick={categoryClickHandler(profession)} className="grid cursor-pointer pt-[13px] grid-cols-[min-content_auto] gap-y-[10px] gap-x-[11px] w-full">
                     <div className={`rounded-full border-solid border-[1px] w-[21px] h-[21px] self-center flex justify-center items-center ${choisenProfession?.id === profession.id ? "bg-[#2EA6FF] border-[#2EA6FF] " : "border-[#384656]"}`}>
@@ -99,7 +89,7 @@ const BaidgeSubCategoryChoiser = ({
                     <div className="flex flex-col gap-[3px]">
                       <h3  className="font-light tracking-[-3.6%]  text-[17px] text-white font-sf-pro-text-400 leading-[17px]">{profession.profession}</h3>
                     </div>
-                    <div className={`h-[0.5px] col-start-2 col-end-3 w-[100%] bg-[#384656]  ${id === realProfessions.length-1 ? "opacity-0" : ""}`}></div>
+                    <div className={`h-[0.5px] col-start-2 col-end-3 w-[100%] bg-[#384656]  ${id + 1 === sortedProfessions.length ? "opacity-0" : ""}`}></div>
                 </div>
                 )
               })}
@@ -108,4 +98,4 @@ const BaidgeSubCategoryChoiser = ({
       );
   };
 
-export default BaidgeSubCategoryChoiser;
+export default BaidgeProfessionChoicer;

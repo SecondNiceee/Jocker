@@ -36,12 +36,12 @@ import { isIphone } from "./functions/isIphone";
 import ChoiceCategory from "./pages/AdCreatingOne/ui/components/ChoiceCategory/ChoiceCategory";
 import ChoiceSubCategory from "./pages/AdCreatingOne/ui/components/ChoiceCategory/ChoiceSubCategory";
 import NewChangeCard from "./pages/NewChangeCard/NewChangeCard";
+import BaidgeProfessionChoicer from "./pages/BaidgeCreating/ui/BaidgeProfessionChoicer";
+import BaidgeCategoryChoicer from "./pages/BaidgeCreating/ui/BaidgeCategoryChoicer";
 
-const HappyPage = lazy(() => import("./pages/HappyHold/HappyPage"));
 const First = lazy(() => import("./pages/First/First"));
 const AdCreating = lazy(() => import("./pages/AdCreating/AdCreating"));
 const NewProfile = lazy(() => import("./pages/Profile/NewProfile"));
-const Balance = lazy(() => import("./pages/Balance"));
 const MyAds = lazy(() => import("./pages/MyAds/MyAds"));
 const AllShablons = lazy(() => import("./pages/AllShablons/AllShablons"));
 const SavedPage = lazy(() => import("./pages/SavedPage/SavedPage"));
@@ -290,29 +290,25 @@ const AnimatedSwitch = () => {
                 }
               />
 
+  
               <Route
-                path="/Balance"
+                path="/choiceBaidgeProfession"
                 element={
                   <Suspense fallback={<MyLoader />}>
-                    <Balance />
+                    <BaidgeProfessionChoicer />
                   </Suspense>
                 }
               />
 
               <Route
-                path="/HappyPage"
+                path="/choiceBaidgeCategory"
                 element={
                   <Suspense fallback={<MyLoader />}>
-                    <HappyPage
-                    // setShowCongradulate={setShowCongradulate}
-                    // congradulate={congratulate}
-                    // task={
-                    //   congratulate ? congratulate[congratulate.length - 1] : []
-                    // }
-                    />
+                    <BaidgeCategoryChoicer />
                   </Suspense>
                 }
-              />
+              />  
+
               <Route
                 path="/MyAds"
                 element={

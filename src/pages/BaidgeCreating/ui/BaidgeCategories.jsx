@@ -1,37 +1,15 @@
-import React, { useCallback, useRef } from "react";
+import { useCallback, useRef } from "react";
 import cl from "../../AdCreatingOne/ui/components/Categories/Categories.module.css";
 import Text from "../../../components/Text/Text";
 import translation from "../../../functions/translate";
+import { useNavigate } from "react-router";
+import limitText from "../../../functions/limitText";
 
 const BaidgeCategories = ({
   className,
   categoryInformation,
-  setCatagoryChoiceOpen,
-  setProfessionOpen,
   upper = "Категория",
 }) => {
-  function format(arg) {
-    if (arg) {
-      let str = arg.split(" ");
-      let rezult = "";
-      for (let word of str) {
-        if (rezult.length < 15) {
-          rezult += word + " ";
-        } else {
-          rezult = rezult.slice(0, rezult.length - 1);
-          if (rezult[rezult.length - 1] === ",") {
-            rezult = rezult.slice(0, rezult.length - 1);
-          }
-          rezult += "..";
-          break;
-        }
-      }
-
-      return rezult;
-    }
-    return "";
-  }
-
   const topRef = useRef(null);
   const topText = useRef(null);
   const topWhiteText = useRef(null);
@@ -39,6 +17,8 @@ const BaidgeCategories = ({
   const bottomRef = useRef(null);
   const bottomText = useRef(null);
   const bottomWhiteText = useRef(null);
+
+  const navigate = useNavigate();
 
   const topVibrate = useCallback(() => {
     if (topRef.current && topText.current && topWhiteText.current) {
@@ -145,7 +125,7 @@ const BaidgeCategories = ({
         onTouchEnd={bottomTouchEnd}
         onTouchStart={bottomClickHandler}
         onClick={() => {
-          setProfessionOpen(true);
+          navigate('/choiceBaidgeProfession')
           bottomVibrate();
         }}
         className={cl.bottomBlock}
@@ -154,9 +134,9 @@ const BaidgeCategories = ({
       <div
         onTouchEnd={topTouchEnd}
         onTouchStart={topClickHandler}
-        onClick={(e) => {
+        onClick={() => {
           topVibrate();
-          setCatagoryChoiceOpen(true);
+          navigate('/choiceBaidgeCategory')
         }}
         style={{
           zIndex: 200,
@@ -181,7 +161,7 @@ const BaidgeCategories = ({
         onTouchEnd={bottomTouchEnd}
         onTouchStart={bottomClickHandler}
         onClick={() => {
-          setProfessionOpen(true);
+          navigate('/choiceBaidgeProfession')
           bottomVibrate();
         }}
         style={{
@@ -196,7 +176,7 @@ const BaidgeCategories = ({
           href=""
         >
           {categoryInformation.profession.profession
-            ? format(translation(categoryInformation.profession.profession))
+            ? limitText(translation(categoryInformation.profession.profession))
             : ""}
           {/* {taskInformation.subCategory=== 'Выбрать' ? '' : '.'} */}
         </Text>

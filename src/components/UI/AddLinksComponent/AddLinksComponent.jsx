@@ -1,4 +1,4 @@
-import { memo, useCallback, useEffect } from 'react';
+import { memo, useCallback } from 'react';
 import BaidgeCreatingLink from '../../../pages/BaidgeCreating/ui/BaidgeCreatingLink';
 import { showAllert } from '../../../functions/showAlert';
 
@@ -30,16 +30,6 @@ const AddLinksComponent = ({links, setLinks}) => {
     } , [setLinks] )
 
     const isAddActive = links?.length !== 5;
-
-    useEffect( () => {
-        console.log(links);
-        console.log(links.length);
-        if (!links || !links.length){
-            alert();
-            setLinks([""])
-        }        
-        // eslint-disable-next-line
-    } , [] )
 
 
     return (
