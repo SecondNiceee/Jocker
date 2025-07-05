@@ -35,13 +35,13 @@ const BaidgeCategoryChoicer = () => {
     const buttonHandler = useCallback( () => {
         const sortedProfessions = professions.filter(el => el.category.id === choisenCategory.id)
         setCategorysInformationToStore({ category: choisenCategory , profession : sortedProfessions[0] });
-        navigate(-1);
+        // navigate(-1);
     } , [setCategorysInformationToStore, choisenCategory, professions, navigate] );
 
     useEffect( () => {
         MainButton.show();
     }, [] );
-    
+  
     useEffect( () => {
       MainButton.setText("Готово")
       MainButton.onClick(buttonHandler);

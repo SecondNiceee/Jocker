@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { getProfessions } from "../../store/profession";
 import MyLoader from "../../components/UI/MyLoader/MyLoader";
@@ -109,7 +109,7 @@ const BaidgeCreating = ({isChanging = false}) => {
     baidgeButtonController.controlVisability({ errors, step });
   }, [errors, step]);
 
-  const postBaidge = async () => {
+  const postBaidge = useCallback( async () => {
         await dispatch(putUserInfo([{
             links : links.filter( (tag) => tag.length ),
             taggs : taggs.filter( (tag) => tag.length ),
@@ -120,18 +120,21 @@ const BaidgeCreating = ({isChanging = false}) => {
         await dispatch(fetchUserInfo())
         await dispatch(fetchMyAdditionalUserInfo({isCommonRating : true, isRatingByProfession : true}));
         navigate("/Baidge")
-  }
+  }, [dispatch, categoryInformation?.profession?.id, description, links, navigate, stage, taggs] )
 
-  const goFoward = baidgeButtonController.forwardFunction({
-    setStep,
-    step,
-    description,
-    dispatch,
-    links,
-    professionId : categoryInformation?.profession?.id,
-    taggs,
-    postBaidge
-  });
+  const goFoward = useCallback( () => {
+      baidgeButtonController.forwardFunction({
+        setStep,
+        step,
+        description,
+        dispatch,
+        links,
+        professionId : categoryInformation?.profession?.id,
+        taggs,
+        postBaidge
+    });
+  }, [setStep, step, description, dispatch, links, categoryInformation?.profession?.id, taggs, postBaidge ] ) ;
+
   useEffect(() => {
     const goBack = baidgeButtonController.backFunction({
       navigate,
