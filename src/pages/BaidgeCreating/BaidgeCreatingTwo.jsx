@@ -4,7 +4,7 @@ import Text from '../../components/Text/Text';
 import DescriptionAndPhoto from '../../components/UI/DescriptionAndPhoto/DescriptionAndPhoto';
 import AddLinksComponent from '../../components/UI/AddLinksComponent/AddLinksComponent';
 import { useDispatch, useSelector } from 'react-redux';
-import { setTaggs, setTaggsText } from '../../store/baidgeCreating';
+import { setLinks, setTaggs, setTaggsText } from '../../store/baidgeCreating';
 
 const BaidgeCreatingTwo = () => {
 
@@ -13,7 +13,7 @@ const BaidgeCreatingTwo = () => {
     const dispatch = useDispatch();
 
     const setLinksToStore = useCallback( (links) => {
-        dispatch(setLinksToStore(links));
+        dispatch(setLinks(links));
     }, [dispatch]);
 
     const setTaggsToStore = useCallback( (taggs) => {
