@@ -9,28 +9,27 @@ const AddLinksComponent = ({links, setLinks}) => {
         }
         else{
             if (!(links[links.length-1] === "")){
-                setLinks((value) => ([...value, ""]))
+                setLinks([...links, ""])
             }
         }
     } 
 
     const deleteLink = (index) => () => {
-        setLinks((value) => ([...value].filter((link, id) => {
+        setLinks([...links].filter((link, id) => {
             return id !== index;
-        })))
+        }))
     }
 
     const changeLinksHandler = useCallback( (id) => (text) => {
-        setLinks((value) => ([...value.map( (link, index) => {
+        setLinks([...links.map( (link, index) => {
             if (index === id) {
                 return text
             }
             return link;
-        } )]))
-    } , [setLinks] )
+        } )])
+    } , [setLinks, links] )
 
     const isAddActive = links?.length !== 5;
-
 
     return (
         <div className='flex flex-col gap-2 mt-[18px]'>
